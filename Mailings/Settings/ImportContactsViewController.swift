@@ -2,8 +2,7 @@
 //  ImportContactsViewController.swift
 //  CustomerManager
 //
-//  Created by Harry Huebner on 10.11.17.
-//  Copyright © 2017 Huebner. All rights reserved.
+//  Created on 10.11.17.
 //
 
 import UIKit

@@ -2,8 +2,7 @@
 //  SecondViewController.swift
 //  Mailings
 //
-//  Created by Harry Huebner on 25.12.17.
-//  Copyright © 2017 Huebner. All rights reserved.
+//  Created on 25.12.17.
 //
 
 import UIKit
