@@ -10,6 +10,7 @@
 		4A17ADAF1FF58BD900FEDD1E /* MailingContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADAE1FF58BD900FEDD1E /* MailingContact.swift */; };
 		4A17ADB11FF58CE400FEDD1E /* Mailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADB01FF58CE400FEDD1E /* Mailing.swift */; };
 		4A17ADB31FF58E2400FEDD1E /* ImportContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADB21FF58E2400FEDD1E /* ImportContactsViewController.swift */; };
+		4A17ADB51FF5985300FEDD1E /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 4A17ADB41FF5985300FEDD1E /* Readme.md */; };
 		4A985E441FF14BD80055F6BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A985E431FF14BD80055F6BA /* AppDelegate.swift */; };
 		4A985E461FF14BD80055F6BA /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A985E451FF14BD80055F6BA /* FirstViewController.swift */; };
 		4A985E481FF14BD80055F6BA /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A985E471FF14BD80055F6BA /* SecondViewController.swift */; };
@@ -29,6 +30,7 @@
 		4A17ADAE1FF58BD900FEDD1E /* MailingContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingContact.swift; sourceTree = "<group>"; };
 		4A17ADB01FF58CE400FEDD1E /* Mailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mailing.swift; sourceTree = "<group>"; };
 		4A17ADB21FF58E2400FEDD1E /* ImportContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportContactsViewController.swift; sourceTree = "<group>"; };
+		4A17ADB41FF5985300FEDD1E /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
 		4A985E401FF14BD80055F6BA /* Mailings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mailings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A985E431FF14BD80055F6BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4A985E451FF14BD80055F6BA /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 		4A985E371FF14BD80055F6BA = {
 			isa = PBXGroup;
 			children = (
+				4A17ADB41FF5985300FEDD1E /* Readme.md */,
 				4A985E421FF14BD80055F6BA /* Mailings */,
 				4A985E411FF14BD80055F6BA /* Products */,
 			);
@@ -180,6 +183,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A17ADB51FF5985300FEDD1E /* Readme.md in Resources */,
 				4A9F23951FF45BDC00B48349 /* settings.png in Resources */,
 				4A985E501FF14BD80055F6BA /* LaunchScreen.storyboard in Resources */,
 				4A9F23931FF45B5600B48349 /* link.png in Resources */,
