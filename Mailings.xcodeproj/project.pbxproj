@@ -7,15 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A17ADAF1FF58BD900FEDD1E /* MailingContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADAE1FF58BD900FEDD1E /* MailingContact.swift */; };
+		4A17ADB11FF58CE400FEDD1E /* Mailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADB01FF58CE400FEDD1E /* Mailing.swift */; };
+		4A17ADB31FF58E2400FEDD1E /* ImportContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADB21FF58E2400FEDD1E /* ImportContactsViewController.swift */; };
 		4A985E441FF14BD80055F6BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A985E431FF14BD80055F6BA /* AppDelegate.swift */; };
 		4A985E461FF14BD80055F6BA /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A985E451FF14BD80055F6BA /* FirstViewController.swift */; };
 		4A985E481FF14BD80055F6BA /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A985E471FF14BD80055F6BA /* SecondViewController.swift */; };
 		4A985E4B1FF14BD80055F6BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A985E491FF14BD80055F6BA /* Main.storyboard */; };
 		4A985E4D1FF14BD80055F6BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A985E4C1FF14BD80055F6BA /* Assets.xcassets */; };
 		4A985E501FF14BD80055F6BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A985E4E1FF14BD80055F6BA /* LaunchScreen.storyboard */; };
+		4A9F238C1FF459EF00B48349 /* message.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A9F238B1FF459EF00B48349 /* message.png */; };
+		4A9F23931FF45B5600B48349 /* link.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A9F23921FF45B5500B48349 /* link.png */; };
+		4A9F23951FF45BDC00B48349 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A9F23941FF45BDB00B48349 /* settings.png */; };
+		4AB9AF0A1FF559D20005EFFA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB9AF091FF559D20005EFFA /* SettingsViewController.swift */; };
+		4AB9AF0E1FF55C680005EFFA /* Mailings.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4AB9AF0C1FF55C680005EFFA /* Mailings.xcdatamodeld */; };
+		4AB9AF101FF56CC30005EFFA /* CommonInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB9AF0F1FF56CC30005EFFA /* CommonInfoViewController.swift */; };
+		4AB9AF121FF56CE10005EFFA /* InfoElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB9AF111FF56CE10005EFFA /* InfoElement.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4A17ADAE1FF58BD900FEDD1E /* MailingContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingContact.swift; sourceTree = "<group>"; };
+		4A17ADB01FF58CE400FEDD1E /* Mailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mailing.swift; sourceTree = "<group>"; };
+		4A17ADB21FF58E2400FEDD1E /* ImportContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportContactsViewController.swift; sourceTree = "<group>"; };
 		4A985E401FF14BD80055F6BA /* Mailings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mailings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A985E431FF14BD80055F6BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4A985E451FF14BD80055F6BA /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -24,6 +37,13 @@
 		4A985E4C1FF14BD80055F6BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4A985E4F1FF14BD80055F6BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4A985E511FF14BD80055F6BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4A9F238B1FF459EF00B48349 /* message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message.png; sourceTree = "<group>"; };
+		4A9F23921FF45B5500B48349 /* link.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = link.png; sourceTree = "<group>"; };
+		4A9F23941FF45BDB00B48349 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
+		4AB9AF091FF559D20005EFFA /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		4AB9AF0D1FF55C680005EFFA /* Mailings.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mailings.xcdatamodel; sourceTree = "<group>"; };
+		4AB9AF0F1FF56CC30005EFFA /* CommonInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonInfoViewController.swift; sourceTree = "<group>"; };
+		4AB9AF111FF56CE10005EFFA /* InfoElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoElement.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +76,49 @@
 		4A985E421FF14BD80055F6BA /* Mailings */ = {
 			isa = PBXGroup;
 			children = (
-				4A985E431FF14BD80055F6BA /* AppDelegate.swift */,
+				4AB9AF081FF559A00005EFFA /* Settings */,
+				4A9F23911FF45A5F00B48349 /* icons */,
+				4AB9AF0B1FF55B2B0005EFFA /* Supporting Files */,
 				4A985E451FF14BD80055F6BA /* FirstViewController.swift */,
 				4A985E471FF14BD80055F6BA /* SecondViewController.swift */,
 				4A985E491FF14BD80055F6BA /* Main.storyboard */,
-				4A985E4C1FF14BD80055F6BA /* Assets.xcassets */,
-				4A985E4E1FF14BD80055F6BA /* LaunchScreen.storyboard */,
 				4A985E511FF14BD80055F6BA /* Info.plist */,
+				4AB9AF0C1FF55C680005EFFA /* Mailings.xcdatamodeld */,
+				4A17ADAE1FF58BD900FEDD1E /* MailingContact.swift */,
+				4A17ADB01FF58CE400FEDD1E /* Mailing.swift */,
 			);
 			path = Mailings;
+			sourceTree = "<group>";
+		};
+		4A9F23911FF45A5F00B48349 /* icons */ = {
+			isa = PBXGroup;
+			children = (
+				4A9F23941FF45BDB00B48349 /* settings.png */,
+				4A9F23921FF45B5500B48349 /* link.png */,
+				4A9F238B1FF459EF00B48349 /* message.png */,
+			);
+			path = icons;
+			sourceTree = "<group>";
+		};
+		4AB9AF081FF559A00005EFFA /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				4A17ADB21FF58E2400FEDD1E /* ImportContactsViewController.swift */,
+				4AB9AF111FF56CE10005EFFA /* InfoElement.swift */,
+				4AB9AF0F1FF56CC30005EFFA /* CommonInfoViewController.swift */,
+				4AB9AF091FF559D20005EFFA /* SettingsViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		4AB9AF0B1FF55B2B0005EFFA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4A985E431FF14BD80055F6BA /* AppDelegate.swift */,
+				4A985E4C1FF14BD80055F6BA /* Assets.xcassets */,
+				4A985E4E1FF14BD80055F6BA /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,9 +180,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A9F23951FF45BDC00B48349 /* settings.png in Resources */,
 				4A985E501FF14BD80055F6BA /* LaunchScreen.storyboard in Resources */,
+				4A9F23931FF45B5600B48349 /* link.png in Resources */,
 				4A985E4D1FF14BD80055F6BA /* Assets.xcassets in Resources */,
 				4A985E4B1FF14BD80055F6BA /* Main.storyboard in Resources */,
+				4A9F238C1FF459EF00B48349 /* message.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,9 +196,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A17ADB31FF58E2400FEDD1E /* ImportContactsViewController.swift in Sources */,
 				4A985E481FF14BD80055F6BA /* SecondViewController.swift in Sources */,
+				4A17ADB11FF58CE400FEDD1E /* Mailing.swift in Sources */,
+				4AB9AF0E1FF55C680005EFFA /* Mailings.xcdatamodeld in Sources */,
 				4A985E441FF14BD80055F6BA /* AppDelegate.swift in Sources */,
+				4AB9AF121FF56CE10005EFFA /* InfoElement.swift in Sources */,
+				4A17ADAF1FF58BD900FEDD1E /* MailingContact.swift in Sources */,
+				4AB9AF101FF56CC30005EFFA /* CommonInfoViewController.swift in Sources */,
 				4A985E461FF14BD80055F6BA /* FirstViewController.swift in Sources */,
+				4AB9AF0A1FF559D20005EFFA /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,6 +390,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		4AB9AF0C1FF55C680005EFFA /* Mailings.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4AB9AF0D1FF55C680005EFFA /* Mailings.xcdatamodel */,
+			);
+			currentVersion = 4AB9AF0D1FF55C680005EFFA /* Mailings.xcdatamodel */;
+			path = Mailings.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 4A985E381FF14BD80055F6BA /* Project object */;
 }
