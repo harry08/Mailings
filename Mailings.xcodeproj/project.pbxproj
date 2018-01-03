@@ -11,6 +11,9 @@
 		4A17ADB11FF58CE400FEDD1E /* Mailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADB01FF58CE400FEDD1E /* Mailing.swift */; };
 		4A17ADB31FF58E2400FEDD1E /* ImportContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADB21FF58E2400FEDD1E /* ImportContactsViewController.swift */; };
 		4A17ADB51FF5985300FEDD1E /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 4A17ADB41FF5985300FEDD1E /* Readme.md */; };
+		4A7FF5C21FFCAB7F00685105 /* MailingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7FF5C11FFCAB7F00685105 /* MailingList.swift */; };
+		4A7FF5C41FFCAC2D00685105 /* MailingContactDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7FF5C31FFCAC2D00685105 /* MailingContactDTO.swift */; };
+		4A7FF5C61FFCAC7500685105 /* MailingContactMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7FF5C51FFCAC7500685105 /* MailingContactMapper.swift */; };
 		4A985E441FF14BD80055F6BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A985E431FF14BD80055F6BA /* AppDelegate.swift */; };
 		4A985E461FF14BD80055F6BA /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A985E451FF14BD80055F6BA /* FirstViewController.swift */; };
 		4A985E481FF14BD80055F6BA /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A985E471FF14BD80055F6BA /* SecondViewController.swift */; };
@@ -31,6 +34,9 @@
 		4A17ADB01FF58CE400FEDD1E /* Mailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mailing.swift; sourceTree = "<group>"; };
 		4A17ADB21FF58E2400FEDD1E /* ImportContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportContactsViewController.swift; sourceTree = "<group>"; };
 		4A17ADB41FF5985300FEDD1E /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
+		4A7FF5C11FFCAB7F00685105 /* MailingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingList.swift; sourceTree = "<group>"; };
+		4A7FF5C31FFCAC2D00685105 /* MailingContactDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingContactDTO.swift; sourceTree = "<group>"; };
+		4A7FF5C51FFCAC7500685105 /* MailingContactMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingContactMapper.swift; sourceTree = "<group>"; };
 		4A985E401FF14BD80055F6BA /* Mailings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mailings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A985E431FF14BD80055F6BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4A985E451FF14BD80055F6BA /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -89,6 +95,9 @@
 				4AB9AF0C1FF55C680005EFFA /* Mailings.xcdatamodeld */,
 				4A17ADAE1FF58BD900FEDD1E /* MailingContact.swift */,
 				4A17ADB01FF58CE400FEDD1E /* Mailing.swift */,
+				4A7FF5C31FFCAC2D00685105 /* MailingContactDTO.swift */,
+				4A7FF5C51FFCAC7500685105 /* MailingContactMapper.swift */,
+				4A7FF5C11FFCAB7F00685105 /* MailingList.swift */,
 			);
 			path = Mailings;
 			sourceTree = "<group>";
@@ -202,10 +211,13 @@
 			files = (
 				4A17ADB31FF58E2400FEDD1E /* ImportContactsViewController.swift in Sources */,
 				4A985E481FF14BD80055F6BA /* SecondViewController.swift in Sources */,
+				4A7FF5C41FFCAC2D00685105 /* MailingContactDTO.swift in Sources */,
 				4A17ADB11FF58CE400FEDD1E /* Mailing.swift in Sources */,
+				4A7FF5C61FFCAC7500685105 /* MailingContactMapper.swift in Sources */,
 				4AB9AF0E1FF55C680005EFFA /* Mailings.xcdatamodeld in Sources */,
 				4A985E441FF14BD80055F6BA /* AppDelegate.swift in Sources */,
 				4AB9AF121FF56CE10005EFFA /* InfoElement.swift in Sources */,
+				4A7FF5C21FFCAB7F00685105 /* MailingList.swift in Sources */,
 				4A17ADAF1FF58BD900FEDD1E /* MailingContact.swift in Sources */,
 				4AB9AF101FF56CC30005EFFA /* CommonInfoViewController.swift in Sources */,
 				4A985E461FF14BD80055F6BA /* FirstViewController.swift in Sources */,
