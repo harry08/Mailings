@@ -13,7 +13,7 @@ class MailingContact: NSManagedObject {
 
     // MARK: -  class functions
     
-    // Checks if for the given contact a customer already exists.
+    // Checks if for the given addressbook contact a mailingcontact already exists.
     // Check is done by firstname and lastname
     class func contactExists(contact: CNContact, in context: NSManagedObjectContext) throws -> Bool {
         var existing : Bool = false
@@ -32,8 +32,44 @@ class MailingContact: NSManagedObject {
         return existing
     }
     
-    // Creates a new customer or updates an already existing customer
-    // Depends on the objectId in CustomerDTO.
+    // Creates a new mailingcontact from a given addressbook contact.
+    class func createContact(contact: CNContact, groupName: String, in context: NSManagedObjectContext) throws {
+        var existing : Bool = false
+        do {
+            existing = try contactExists(contact: contact, in: context)
+        } catch {
+            throw error
+        }
+        
+        if !existing {
+            var email : String?
+            if contact.emailAddresses.count > 0 {
+                email = contact.emailAddresses[0].value as String
+            }
+            print("Creating customer \(contact.givenName) \(contact.familyName), \(String(describing: email))...")
+            let mailingContact = MailingContact(context: context)
+            mailingContact.lastname = contact.familyName
+            mailingContact.firstname = contact.givenName
+            if (email != nil) {
+                mailingContact.email = email
+            }
+            mailingContact.createtime = Date()
+            mailingContact.updatetime = Date()
+            mailingContact.notes = "Import aus Kontaktgruppe: " + groupName
+            
+            // Assignment to default mailinglists
+            let defaultMailingLists = MailingList.getDefaultMailingLists(in: context)
+            for i in 0 ..< defaultMailingLists.count {
+                let mailingList = defaultMailingLists[i]
+                mailingList.addToContacts(mailingContact)
+            }
+        } else {
+            print("Customer \(contact.givenName) \(contact.familyName) already exists.")
+        }
+    }
+    
+    // Creates a new contact or updates an already existing contact
+    // Depends on the objectId in MailingContactDTO.
     class func createOrUpdateFromDTO(contactDTO: MailingContactDTO, in context: NSManagedObjectContext) throws {
         if contactDTO.objectId == nil {
             // New contact
@@ -42,10 +78,17 @@ class MailingContact: NSManagedObject {
             contactEntity.createtime = Date()
             contactEntity.updatetime = Date()
             MailingContactMapper.mapToEntity(contactDTO: contactDTO, contact: &contactEntity)
+            
+            // Assignment to default mailinglists
+            let defaultMailingLists = MailingList.getDefaultMailingLists(in: context)
+            for i in 0 ..< defaultMailingLists.count {
+                let mailingList = defaultMailingLists[i]
+                mailingList.addToContacts(contactEntity)
+            }
         } else {
             // Load and update existing contact
             if let objectId = contactDTO.objectId {
-                print("Updating existing customer with id \(objectId) ...")
+                print("Updating existing contact with id \(objectId) ...")
                 
                 do {
                     var contactEntity = try context.existingObject(with: objectId) as! MailingContact
@@ -66,7 +109,20 @@ class MailingContact: NSManagedObject {
             throw error
         }
     }
-
+    
+    // Loads a contact with a given id.
+    class func loadContact(objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws -> MailingContactDTO {
+        do {
+            let contactEntity = try context.existingObject(with: objectId) as! MailingContact
+            let contactDTO = MailingContactMapper.mapToDTO(contact: contactEntity)
+            
+            return contactDTO
+        } catch let error as NSError {
+            print("Could not load contact. \(error), \(error.userInfo)")
+            throw error
+        }
+    }
+    
     // MARK: - statistic functions
     
     // Returns the number of non retired contacts
