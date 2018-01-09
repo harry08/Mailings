@@ -1,6 +1,6 @@
 //
 //  CommonInfoViewController.swift
-//  CustomerManager
+//  Mailings
 //
 //  Created on 19.12.17.
 //

@@ -1,6 +1,6 @@
 //
 //  SettingsViewController.swift
-//  CustomerManager
+//  Mailings
 //
 //  Created on 10.11.17.
 //

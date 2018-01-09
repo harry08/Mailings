@@ -97,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func showMessage(message: String) {
-        let alertController = UIAlertController(title: "CustomerManager", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let alertController = UIAlertController(title: "Mailings", message: message, preferredStyle: UIAlertControllerStyle.alert)
         
         let dismissAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action) -> Void in
         }

@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import Contacts
+import os.log
 
 class MailingContact: NSManagedObject {
 
@@ -41,12 +42,14 @@ class MailingContact: NSManagedObject {
             throw error
         }
         
+        var email : String?
+        if contact.emailAddresses.count > 0 {
+            email = contact.emailAddresses[0].value as String
+        }
+        let contactInfo = contact.givenName + " " + contact.familyName + ", " + String(describing: email)
+        
         if !existing {
-            var email : String?
-            if contact.emailAddresses.count > 0 {
-                email = contact.emailAddresses[0].value as String
-            }
-            print("Creating customer \(contact.givenName) \(contact.familyName), \(String(describing: email))...")
+            os_log("Creating contact %s ...", log: OSLog.default, type: .info, contactInfo)
             let mailingContact = MailingContact(context: context)
             mailingContact.lastname = contact.familyName
             mailingContact.firstname = contact.givenName
@@ -64,7 +67,7 @@ class MailingContact: NSManagedObject {
                 mailingList.addToContacts(mailingContact)
             }
         } else {
-            print("Customer \(contact.givenName) \(contact.familyName) already exists.")
+            os_log("Contact %s already exists...", log: OSLog.default, type: .info, contactInfo)
         }
     }
     
@@ -73,7 +76,7 @@ class MailingContact: NSManagedObject {
     class func createOrUpdateFromDTO(contactDTO: MailingContactDTO, in context: NSManagedObjectContext) throws {
         if contactDTO.objectId == nil {
             // New contact
-            print("Creating new contact...")
+            os_log("Creating new contact...", log: OSLog.default, type: .debug)
             var contactEntity = MailingContact(context: context)
             contactEntity.createtime = Date()
             contactEntity.updatetime = Date()
@@ -88,14 +91,14 @@ class MailingContact: NSManagedObject {
         } else {
             // Load and update existing contact
             if let objectId = contactDTO.objectId {
-                print("Updating existing contact with id \(objectId) ...")
+                os_log("Updating existing contact with id %s...", log: OSLog.default, type: .debug, objectId)
                 
                 do {
                     var contactEntity = try context.existingObject(with: objectId) as! MailingContact
                     MailingContactMapper.mapToEntity(contactDTO: contactDTO, contact: &contactEntity)
                     contactEntity.updatetime = Date()
                 } catch let error as NSError {
-                    print("Could not load contact. \(error), \(error.userInfo)")
+                    os_log("Could not load contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
                     throw error
                 }
             }
@@ -103,9 +106,9 @@ class MailingContact: NSManagedObject {
         
         do {
             try context.save()
-            print("Saved changes")
+            os_log("Contact saved", log: OSLog.default, type: .debug)
         } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
+            os_log("Could not save contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
             throw error
         }
     }
@@ -118,7 +121,7 @@ class MailingContact: NSManagedObject {
             
             return contactDTO
         } catch let error as NSError {
-            print("Could not load contact. \(error), \(error.userInfo)")
+            os_log("Could not load contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
             throw error
         }
     }
@@ -135,7 +138,7 @@ class MailingContact: NSManagedObject {
             let matches = try context.fetch(request)
             count = matches.count
         } catch let error as NSError {
-            print("Could not count contacts. \(error), \(error.userInfo)")
+            os_log("Could not count contacts. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
         }
         
         return count
