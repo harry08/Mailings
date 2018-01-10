@@ -179,9 +179,11 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
         
         return true
     }
-    
-    // Navigate back from adding a new contact. Save data in MailingContactDTO
-    // MailingContactDTO is already filled
+   
+    /**
+     Navigate back from adding a new contact. Saves data from MailingContactDTO in DB.
+     MailingContactDTO has been filled by EditContactViewController
+     */
     @IBAction func unwindFromSave(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? EditContactViewController,
             let contactDTO = sourceViewController.contactDTO {
@@ -209,7 +211,9 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
         self.navigationController?.pushViewController(chooseMailingsVc, animated: true)
     }
     
-    // Navigate back from choosing a mailing to send to the selected contacts
+    /**
+     Navigate back from choosing a mailing to send to the selected contacts
+     */
     @IBAction func unwindFromChoooseMailing(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? ChooseMailingTableViewController,
             let selectedMailing = sourceViewController.getSelectedMailing() {
@@ -228,10 +232,21 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
         composeMail(emailAddresses: emailAddresses)
     }
     
+    /**
+     Calls the EditContactviewController to add a new contact.
+     The View is opened modally
+     */
     @objc func addAction(sender: UIButton) {
         print("Add contact")
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let editContactVc = storyBoard.instantiateViewController(withIdentifier: "EditContactNavigationVC")
+        
+        present(editContactVc, animated: true, completion: nil)
     }
     
+    /**
+     Displays a menu to choose several actions for the selected contacts.
+     */
     @objc func multiSelectShareAction(sender: UIButton) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Sende Email", style: .default) { _ in
