@@ -13,7 +13,7 @@ import os.log
 /**
  Handles creation of a new contact and editing an existing contact.
  */
-class EditContactViewController: UIViewController, UITextFieldDelegate {
+class EditContactViewController: UIViewController {
     
     @IBOutlet weak var firstNameField: UITextField!
     @IBOutlet weak var lastNameField: UITextField!
@@ -22,6 +22,8 @@ class EditContactViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var eventSwitch: UISwitch!
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
+    
+    var editMode = false
     
     var container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     
@@ -32,9 +34,6 @@ class EditContactViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Handle the text field’s user input through delegate callbacks.
-        lastNameField.delegate = self
-        
         // Set up views if editing an existing contact.
         if let contactDTO = self.contactDTO {
             navigationItem.title = contactDTO.lastname
@@ -42,39 +41,21 @@ class EditContactViewController: UIViewController, UITextFieldDelegate {
             lastNameField.text = contactDTO.lastname
             emaiField.text = contactDTO.email
         }
-        
-        // Enable the Save button only if the text field has a valid name.
-        updateSaveButtonState()
-    }
-    
-    private func updateSaveButtonState() {
-        // Disable the Save button if the text field is empty.
-        let text = lastNameField.text ?? ""
-        saveButton.isEnabled = !text.isEmpty
-    }
-    
-    //MARK: UITextFieldDelegate
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        saveButton.isEnabled = false
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        updateSaveButtonState()
-        navigationItem.title = textField.text
     }
     
     //MARK: Navigation
     
-    // Depending on style of presentation (modal or push presentation),
-    // this view controller needs to be dismissed in two different ways.
+    /**
+     Depending on edit mode
+     this view controller needs to be dismissed in two different ways.
+     */
     @IBAction func cancel(_ sender: Any) {
-        let isPresentingInAddMode = presentingViewController is UINavigationController
-        if isPresentingInAddMode {
+        if editMode == false {
+            // In add mode the detail scence Was called as popup
             dismiss(animated: true, completion: nil)
         } else if let owningNavigationController = navigationController{
             // In edit mode the detail scene was pushed onto a navigation stack
-            owningNavigationController.popViewController(animated: true)
+            owningNavigationController.popViewController(animated: true)            
         } else {
             fatalError("The EditContactViewController is not inside a navigation controller.")
         }

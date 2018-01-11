@@ -239,7 +239,7 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
     @objc func addAction(sender: UIButton) {
         print("Add contact")
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let editContactVc = storyBoard.instantiateViewController(withIdentifier: "EditContactNavigationVC")
+        let editContactVc = storyBoard.instantiateViewController(withIdentifier: "EditContactNavigationVC") 
         
         present(editContactVc, animated: true, completion: nil)
     }

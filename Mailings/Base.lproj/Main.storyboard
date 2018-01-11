@@ -499,14 +499,14 @@
                         <viewLayoutGuide key="safeArea" id="zYl-hh-MZW"/>
                     </view>
                     <navigationItem key="navigationItem" title="Neuer Kontakt" id="Jbc-fL-8nL">
-                        <barButtonItem key="leftBarButtonItem" title="Abbrechen" id="VFz-hh-b7y">
+                        <barButtonItem key="leftBarButtonItem" title="Abbrechen" style="plain" id="VFz-hh-b7y">
                             <connections>
                                 <action selector="cancel:" destination="wCc-o6-mYg" id="ceq-Bh-0Md"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Speichern" style="plain" id="yZP-5n-CHk">
                             <connections>
-                                <segue destination="8Y1-BE-Vyi" kind="unwind" identifier="doneAddCustomer" unwindAction="unwindFromSaveWithSender:" id="IdG-yF-xuv"/>
+                                <segue destination="8Y1-BE-Vyi" kind="unwind" identifier="doneSaveContact" unwindAction="unwindFromSaveWithSender:" id="IdG-yF-xuv"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -548,6 +548,6 @@
         <image name="user_male.png" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="y4O-cv-eCz"/>
+        <segue reference="BrF-oP-lIX"/>
     </inferredMetricsTieBreakers>
 </document>

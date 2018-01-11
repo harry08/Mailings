@@ -43,11 +43,6 @@ class ShowContactViewController: UIViewController, MFMailComposeViewControllerDe
         super.viewDidLoad()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     // MARK: - Send Email
     
     @IBAction func sendEmail(_ sender: Any) {
@@ -116,6 +111,7 @@ class ShowContactViewController: UIViewController, MFMailComposeViewControllerDe
             // Edit contact
             destinationVC.container = container
             destinationVC.contactDTO = contactDTO
+            destinationVC.editMode = true
         }
     }
 }
