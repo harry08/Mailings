@@ -265,38 +265,15 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
     // MARK: - Send Email
     
     @IBAction func sendEmail(_ sender: Any) {
-        composeMail(emailAddresses: getSelectedEmailAddresses())
+        self.composeMail(emailAddresses: getSelectedEmailAddresses())
     }
     
     func composeMail(emailAddresses: [String]) {
-        let mailComposeViewController = configuredMailComposeViewController(emailAddresses: emailAddresses)
-        if !MFMailComposeViewController.canSendMail() {
-            self.showSendMailErrorAlert()
-        } else {
-            self.present(mailComposeViewController, animated: true, completion: nil)
-        }
-    }
-    
-    func showSendMailErrorAlert() {
-        let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
-        
-        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(defaultAction)
-        
-        present(alertController, animated: true, completion: nil)
+        MailComposerUtil.presentMailComposeViewController(parent: self, delegate: self, emailAddresses: emailAddresses)
     }
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
-    }
-    
-    func configuredMailComposeViewController(emailAddresses: [String]) -> MFMailComposeViewController {
-        let mailComposerVC = MFMailComposeViewController()
-        mailComposerVC.mailComposeDelegate = self // Set the mailComposeDelegate property to self
-        
-        mailComposerVC.setBccRecipients(emailAddresses)
-        
-        return mailComposerVC
     }
     
     private func getSelectedEmailAddresses() -> [String] {
