@@ -112,11 +112,30 @@
 				4AE86FD2200348DB00D981B4 /* Util */,
 				4AB9AF081FF559A00005EFFA /* Settings */,
 				4AD59F5B2004954F008FC37C /* Mailing */,
+				4A9E1FEE20088884006C698F /* Contact */,
+				4A9E1FEF200888CF006C698F /* Model */,
 				4A985E451FF14BD80055F6BA /* FirstViewController.swift */,
 				4A985E471FF14BD80055F6BA /* SecondViewController.swift */,
 				4A985E491FF14BD80055F6BA /* Main.storyboard */,
 				4A985E511FF14BD80055F6BA /* Info.plist */,
 				4AB9AF0C1FF55C680005EFFA /* Mailings.xcdatamodeld */,
+			);
+			path = Mailings;
+			sourceTree = "<group>";
+		};
+		4A9E1FEE20088884006C698F /* Contact */ = {
+			isa = PBXGroup;
+			children = (
+				4AE86FD3200349B000D981B4 /* ContactTableViewController.swift */,
+				4AE86FD52003CFFC00D981B4 /* ShowContactViewController.swift */,
+				4AE86FD72003D01900D981B4 /* EditContactViewController.swift */,
+			);
+			path = Contact;
+			sourceTree = "<group>";
+		};
+		4A9E1FEF200888CF006C698F /* Model */ = {
+			isa = PBXGroup;
+			children = (
 				4AE86FCC2002036600D981B4 /* MailingDTO.swift */,
 				4A17ADB01FF58CE400FEDD1E /* Mailing.swift */,
 				4AE86FCA2002034F00D981B4 /* MailingMapper.swift */,
@@ -126,11 +145,8 @@
 				4A6DE0751FFE0319009BEFA1 /* MailingListDTO.swift */,
 				4A7FF5C11FFCAB7F00685105 /* MailingList.swift */,
 				4A7FF5C71FFCB2F500685105 /* MailingListMapper.swift */,
-				4AE86FD3200349B000D981B4 /* ContactTableViewController.swift */,
-				4AE86FD52003CFFC00D981B4 /* ShowContactViewController.swift */,
-				4AE86FD72003D01900D981B4 /* EditContactViewController.swift */,
 			);
-			path = Mailings;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		4A9F23911FF45A5F00B48349 /* icons */ = {
