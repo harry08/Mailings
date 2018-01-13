@@ -37,7 +37,7 @@ class MailingTableViewController: FetchedResultsTableViewController {
         if let context = container?.viewContext {
             let request : NSFetchRequest<Mailing> = Mailing.fetchRequest()
             request.sortDescriptors = [NSSortDescriptor(
-                key: "createTime",
+                key: "createtime",
                 ascending: false,
                 selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
                 )]
@@ -85,7 +85,11 @@ class MailingTableViewController: FetchedResultsTableViewController {
             }
             
             // Update database
-            Mailing.createOrUpdateFromDTO(mailingDTO: mailingDTO, in: container.viewContext)
+            do {
+                try Mailing.createOrUpdateFromDTO(mailingDTO: mailingDTO, in: container.viewContext)
+            } catch {
+                // TODO show Alert
+            }
         }
     }
     

@@ -45,7 +45,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1359" y="345"/>
+            <point key="canvasLocation" x="-249" y="-968"/>
         </scene>
         <!--Mailinglists-->
         <scene sceneID="pqH-XE-KeP">
@@ -134,7 +134,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="tcw-CX-cry" kind="relationship" relationship="viewControllers" id="VlZ-rL-8Df"/>
-                        <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
+                        <segue destination="6hS-LM-XmC" kind="relationship" relationship="viewControllers" id="b1E-Eg-Yfb"/>
                         <segue destination="Uew-rw-GLj" kind="relationship" relationship="viewControllers" id="7xU-1b-sIZ"/>
                         <segue destination="l82-T6-Wgq" kind="relationship" relationship="viewControllers" id="9JA-84-Iby"/>
                     </connections>
@@ -459,7 +459,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dI0-cU-pzh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2670" y="-204"/>
+            <point key="canvasLocation" x="2670" y="-470"/>
         </scene>
         <!--Edit Contact-->
         <scene sceneID="h4I-uA-Ofm">
@@ -520,7 +520,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5LX-oY-6Vd" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="8Y1-BE-Vyi" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3594" y="-610"/>
+            <point key="canvasLocation" x="3575" y="-826"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ahS-I9-jRg">
@@ -538,7 +538,227 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f5r-IG-ie6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2670" y="-894"/>
+            <point key="canvasLocation" x="2670" y="-1157"/>
+        </scene>
+        <!--Mailings-->
+        <scene sceneID="Kot-GH-EUh">
+            <objects>
+                <tableViewController storyboardIdentifier="MailingsVC" id="npN-cf-PpV" customClass="MailingTableViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="y03-ir-xFG">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MailingCell" textLabel="ron-dL-jNe" detailTextLabel="igs-kN-zcA" style="IBUITableViewCellStyleSubtitle" id="LW2-Np-hhN">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LW2-Np-hhN" id="sqe-Ou-0oW">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ron-dL-jNe">
+                                            <rect key="frame" x="16" y="5" width="33.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="igs-kN-zcA">
+                                            <rect key="frame" x="16" y="25.5" width="44" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="vOW-tZ-wee" kind="show" identifier="showMailing" id="R0Z-20-WoV"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="npN-cf-PpV" id="jZJ-ce-bez"/>
+                            <outlet property="delegate" destination="npN-cf-PpV" id="SQW-iO-Bho"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Mailings" id="4mJ-QF-2gV">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="XYk-JY-iEM">
+                            <connections>
+                                <segue destination="LGh-ER-ZZy" kind="presentation" identifier="addNewMailing" id="rXe-bc-1G5"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DGd-sS-ICd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1359" y="351"/>
+        </scene>
+        <!--Mailing-->
+        <scene sceneID="CoS-NQ-8Az">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6hS-LM-XmC" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Mailing" image="message.png" id="e8f-oi-uoh"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yRy-Jx-LEZ">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="npN-cf-PpV" kind="relationship" relationship="rootViewController" id="SqW-y8-enn"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IYU-Hf-6Fl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="553" y="351"/>
+        </scene>
+        <!--Show Mailing-->
+        <scene sceneID="OLr-Ux-Xs7">
+            <objects>
+                <viewController title="Mailing" id="vOW-tZ-wee" userLabel="Show Mailing" customClass="ShowMailingViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Dzg-Ye-nog"/>
+                        <viewControllerLayoutGuide type="bottom" id="oec-ha-1gA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lRE-qX-u3D">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="219-Fr-HWH" userLabel="Title Label">
+                                <rect key="frame" x="16" y="171" width="343" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Mailingtype Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SU8-CB-eko" userLabel="Mailingtype Text Label">
+                                <rect key="frame" x="16" y="213" width="343" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uLd-op-FO9" userLabel="Send Mailing">
+                                <rect key="frame" x="16" y="86" width="69" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Senden"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gesendet am 29.11.2017" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="511-89-la8" userLabel="Lastsend Info">
+                                <rect key="frame" x="144" y="91" width="215" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Mailtext" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cX7-fg-4I7">
+                                <rect key="frame" x="16" y="264" width="343" height="383"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="PxN-cz-SjO"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Mailing" id="aME-Fp-jFj">
+                        <barButtonItem key="rightBarButtonItem" title="Bearbeiten" id="zPB-y9-Luf">
+                            <connections>
+                                <segue destination="ViN-Kv-V7M" kind="show" identifier="editMailing" id="Hut-cf-qlc"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="lastSendLabel" destination="511-89-la8" id="MfZ-hb-aAE"/>
+                        <outlet property="mailingTextViewLabel" destination="cX7-fg-4I7" id="Ek4-t9-tw7"/>
+                        <outlet property="mailingTypeTextLabel" destination="SU8-CB-eko" id="UPE-6l-6yi"/>
+                        <outlet property="titleLabel" destination="219-Fr-HWH" id="YGw-9N-wwk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Eh-iM-lY4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2670" y="928"/>
+        </scene>
+        <!--Edit Mailing-->
+        <scene sceneID="LPD-2x-T3Y">
+            <objects>
+                <viewController id="ViN-Kv-V7M" userLabel="Edit Mailing" customClass="EditMailingViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LsK-tl-g0a"/>
+                        <viewControllerLayoutGuide type="bottom" id="xqc-vp-1zV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ewn-6E-BDz">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Titel" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jcd-YQ-spF">
+                                <rect key="frame" x="16" y="83" width="343" height="30"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Typ (info, kochevent, sonstige)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UbN-lT-msG" userLabel="Mailingtype Text Field">
+                                <rect key="frame" x="16" y="138" width="343" height="30"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="MailingText" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="DGw-0h-dtZ" userLabel="Mailing Text View">
+                                <rect key="frame" x="16" y="196" width="343" height="451"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="continue"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="w6K-Pd-FN5"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Neues Mailing" id="vXA-q5-CIV">
+                        <barButtonItem key="leftBarButtonItem" title="Abbrechen" id="ypL-Ce-5h8">
+                            <connections>
+                                <action selector="cancel:" destination="ViN-Kv-V7M" id="eYd-Ar-HeT"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Speichern" id="bVx-q7-2EL">
+                            <connections>
+                                <segue destination="Il6-Pm-MNJ" kind="unwind" identifier="doneEditMailing" unwindAction="unwindFromSaveWithSender:" id="HrC-gy-smA"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="mailingTextView" destination="DGw-0h-dtZ" id="45L-u5-DbU"/>
+                        <outlet property="mailingTypeTextField" destination="UbN-lT-msG" id="aAX-dn-aJ5"/>
+                        <outlet property="saveButton" destination="bVx-q7-2EL" id="3C3-bp-M53"/>
+                        <outlet property="titleField" destination="jcd-YQ-spF" id="mm7-PW-9K0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GLi-r2-KCC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Il6-Pm-MNJ" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="3626" y="490"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Ltr-Iu-73K">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LGh-ER-ZZy" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="37t-FM-lLZ">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ViN-Kv-V7M" kind="relationship" relationship="rootViewController" id="NTK-0F-GdE"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yI9-Dc-hUZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2670" y="227"/>
         </scene>
     </scenes>
     <resources>
@@ -548,6 +768,7 @@
         <image name="user_male.png" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="NTK-0F-GdE"/>
         <segue reference="BrF-oP-lIX"/>
     </inferredMetricsTieBreakers>
 </document>

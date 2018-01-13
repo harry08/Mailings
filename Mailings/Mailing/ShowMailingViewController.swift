@@ -104,13 +104,14 @@ class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDe
                 return
             }
             
-            // Update database
-            Mailing.createOrUpdateFromDTO(mailingDTO: mailingDTO, in: container.viewContext)
             do {
+                // Update database
+                try Mailing.createOrUpdateFromDTO(mailingDTO: mailingDTO, in: container.viewContext)
+                
                 // Reload mailingDTO. UI is updated automatically
                 self.mailingDTO = try Mailing.loadMailing(objectId: mailingDTO.objectId!, in: container.viewContext)
             } catch let error as NSError {
-                print("Could not reload mailing data. \(error), \(error.userInfo)")
+                // TODO show Alert
             }
         }
     }
