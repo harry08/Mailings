@@ -18,10 +18,10 @@ class MailComposerUtil {
     /**
      Shows the MFMailComposerViewController for the given email address.
      If mail sending is not possible an alert message is shown.
-     
-     @param      parent   parent UIViewController. Used as parent to call the mail view
-     @param      delegate   Delegate class which implements the required functions
-     @param      emailAddress   The email recipient
+     - parameters:
+       - parent:   parent UIViewController. Used as parent to call the mail view
+       - delegate:   Delegate class which implements the required functions
+       - emailAddress:   The email recipient
      */
     class func presentMailComposeViewController(parent: UIViewController, delegate: MFMailComposeViewControllerDelegate, emailAddress: String) {
         let mailComposeVc = configuredMailComposeViewController(delegate: delegate)
@@ -34,10 +34,10 @@ class MailComposerUtil {
     /**
      Shows the MFMailComposerViewController for the given email addresses.
      If mail sending is not possible an alert message is shown.
-     
-     @param      parentViewController   parent UIViewController. Used as parent to call the mail view
-     @param      delegate   Delegate class which implements the required functions
-     @param      emailAddresses      The email recipients
+     - parameters:
+       - parent: parent UIViewController. Used as parent to call the mail view
+       - delegate: Delegate class which implements the required functions
+       - emailAddresses: The email recipients
      */
     class func presentMailComposeViewController(parent: UIViewController, delegate: MFMailComposeViewControllerDelegate, emailAddresses: [String]) {
         let mailComposeVc = configuredMailComposeViewController(delegate: delegate)

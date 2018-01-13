@@ -126,6 +126,33 @@ class MailingContact: NSManagedObject {
         }
     }
     
+    // Returns all Email addresses for the given mailinglist
+    class func getEmailAddressesForMailingList(_ mailingList: String, in context: NSManagedObjectContext) -> [String] {
+        var emailAddresses = [String]()
+        
+        let request : NSFetchRequest<MailingList> = MailingList.fetchRequest()
+        let predicate = NSPredicate(format: "name = = %@", mailingList)
+        request.predicate = predicate
+        
+        do {
+            let mailingLists = try context.fetch(request)
+            if let mailingList = mailingLists.first {
+                let contacts = mailingList.contacts?.allObjects as! [MailingContact]
+                
+                emailAddresses.reserveCapacity(contacts.count)
+                contacts.forEach { contact in
+                    if let email = contact.email {
+                        emailAddresses.append(email)
+                    }
+                }
+            }
+        } catch let error as NSError {
+            print("Could not select contacts for mailinglist. \(error)")
+        }
+        
+        return emailAddresses
+    }
+    
     // MARK: - statistic functions
     
     // Returns the number of non retired contacts
