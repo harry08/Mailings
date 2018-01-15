@@ -12,5 +12,4 @@ struct MailingDTO {
     var objectId: NSManagedObjectID?
     var title: String?
     var text: String?
-    var mailingList: String?
 }

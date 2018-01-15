@@ -10,10 +10,8 @@ import os.log
 import CoreData
 
 class EditMailingViewController: UIViewController, UITextFieldDelegate {
-
     
     @IBOutlet weak var titleField: UITextField!
-    @IBOutlet weak var mailingTypeTextField: UITextField!
     @IBOutlet weak var mailingTextView: UITextView!
     
     var container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer

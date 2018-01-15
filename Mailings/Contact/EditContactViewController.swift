@@ -18,8 +18,6 @@ class EditContactViewController: UIViewController {
     @IBOutlet weak var firstNameField: UITextField!
     @IBOutlet weak var lastNameField: UITextField!
     @IBOutlet weak var emaiField: UITextField!
-    @IBOutlet weak var infoSwitch: UISwitch!
-    @IBOutlet weak var eventSwitch: UISwitch!
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
     

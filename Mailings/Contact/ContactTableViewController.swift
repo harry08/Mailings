@@ -204,9 +204,7 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
     
     func sendMailingToContacts() {
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let chooseMailingsVc = storyboard.instantiateViewController(withIdentifier: "PopoverViewController")
-        //vc.modalPresentationStyle = UIModalPresentationStyle.popover
-        //present(vc, animated: true, completion:nil)
+        let chooseMailingsVc = storyboard.instantiateViewController(withIdentifier: "MailingPickerViewController")
         
         self.navigationController?.pushViewController(chooseMailingsVc, animated: true)
     }
@@ -215,7 +213,7 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
      Navigate back from choosing a mailing to send to the selected contacts
      */
     @IBAction func unwindFromChoooseMailing(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? ChooseMailingTableViewController,
+        if let sourceViewController = sender.source as? MailingPickerTableViewController,
             let selectedMailing = sourceViewController.getSelectedMailing() {
             
             if let title = selectedMailing.title {

@@ -12,8 +12,6 @@ import MessageUI
 class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDelegate {
 
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var mailingTypeTextLabel: UILabel!
-    @IBOutlet weak var lastSendLabel: UILabel!
     @IBOutlet weak var mailingTextViewLabel: UITextView!
     
     var container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
@@ -42,6 +40,11 @@ class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDe
         mailingTextViewLabel.isEditable = false
     }
 
+    @IBAction func sendMailing(_ sender: Any) {
+        // TODO Implement
+        // Unklar, ob Verteilerliste Attribut eines Mailings sein sollte.
+    }
+    
     // MARK: - Send Email
     
     func composeMailsToSend() -> [MailDTO] {
@@ -52,7 +55,7 @@ class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDe
             print("Sending mail not possible. No PersistentContainer.")
             return mailsToSend
         }
-        
+        /* TODO
         if let mailingDTO = mailingDTO {
             let emailAddresses = MailingContact.getEmailAddressesForMailingList(mailingDTO.mailingList!, in: container.viewContext)
             
@@ -76,7 +79,7 @@ class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDe
                     continueProcessing = false
                 }
             }
-        }
+        }*/
         
         return mailsToSend
     }

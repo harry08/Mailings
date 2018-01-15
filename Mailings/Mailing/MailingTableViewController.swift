@@ -37,7 +37,7 @@ class MailingTableViewController: FetchedResultsTableViewController {
         if let context = container?.viewContext {
             let request : NSFetchRequest<Mailing> = Mailing.fetchRequest()
             request.sortDescriptors = [NSSortDescriptor(
-                key: "createtime",
+                key: "title", // TODO sort by date desc
                 ascending: false,
                 selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
                 )]
@@ -64,7 +64,6 @@ class MailingTableViewController: FetchedResultsTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MailingCell", for: indexPath)
         if let mailing = fetchedResultsController?.object(at: indexPath) {
             cell.textLabel?.text = mailing.title
-            // TODO Formatting of date. Beispieltext: Erstellt am 01.11.2017
             cell.detailTextLabel?.text = mailing.text
         }
         

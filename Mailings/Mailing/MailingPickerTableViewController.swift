@@ -1,5 +1,5 @@
 //
-//  ChooseMailingTableViewController.swift
+//  MailingPickerTableViewController
 //  Mailings
 //
 //  Created on 09.01.18.
@@ -11,7 +11,7 @@ import CoreData
 /**
  Shows a a ist of mailings to choose from.
  */
-class ChooseMailingTableViewController: FetchedResultsTableViewController {
+class MailingPickerTableViewController: FetchedResultsTableViewController {
 
     @IBOutlet weak var chooseButton: UIBarButtonItem!
     
@@ -43,7 +43,7 @@ class ChooseMailingTableViewController: FetchedResultsTableViewController {
         if let context = container?.viewContext {
             let request : NSFetchRequest<Mailing> = Mailing.fetchRequest()
             request.sortDescriptors = [NSSortDescriptor(
-                key: "createTime",
+                key: "createtime",
                 ascending: false,
                 selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
                 )]
@@ -57,9 +57,6 @@ class ChooseMailingTableViewController: FetchedResultsTableViewController {
             
             fetchedResultsController?.delegate = self
             try? fetchedResultsController?.performFetch()
-            if let objects = fetchedResultsController?.fetchedObjects {
-                print("Mailings found: \(objects.count)")
-            }
             tableView.reloadData()
         }
     }
@@ -101,21 +98,21 @@ class ChooseMailingTableViewController: FetchedResultsTableViewController {
     // MARK: - Navigation and Actions
     
     @IBAction func cancel(_ sender: Any) {
-        let isPresentingInAddMode = presentingViewController is UINavigationController
-        if isPresentingInAddMode {
+        let isPresentingInModalMode = presentingViewController is UINavigationController
+        if isPresentingInModalMode {
             dismiss(animated: true, completion: nil)
         } else if let owningNavigationController = navigationController{
             // In edit mode the detail scene was pushed onto a navigation stack
             owningNavigationController.popViewController(animated: true)
         } else {
-            fatalError("The ChooseMailingTableViewController is not inside a navigation controller.")
+            fatalError("The MailingPickerTableViewController is not inside a navigation controller.")
         }
     }
 }
 
 // MARK: extension UITableViewDataSource
 
-extension ChooseMailingTableViewController {
+extension MailingPickerTableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedResultsController?.sections?.count ?? 1

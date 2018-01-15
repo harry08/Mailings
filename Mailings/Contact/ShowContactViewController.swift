@@ -14,8 +14,6 @@ class ShowContactViewController: UIViewController, MFMailComposeViewControllerDe
     @IBOutlet weak var firstnameLabel: UILabel!
     @IBOutlet weak var lastnameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
-    @IBOutlet weak var infoEmailLabel: UILabel!
-    @IBOutlet weak var eventEmailLabel: UILabel!
     
     var container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     
