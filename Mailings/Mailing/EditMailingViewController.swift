@@ -14,6 +14,8 @@ class EditMailingViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var titleField: UITextField!
     @IBOutlet weak var mailingTextView: UITextView!
     
+    var editMode = false
+    
     var container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     
     // In case of editing an existing mailing this variable is filled on startup.
@@ -58,11 +60,13 @@ class EditMailingViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: Navigation
     
-    // Depending on style of presentation (modal or push presentation),
-    // this view controller needs to be dismissed in two different ways.
+    /**
+     Depending on edit mode
+     this view controller needs to be dismissed in two different ways.
+     */
     @IBAction func cancel(_ sender: Any) {
-        let isPresentingInAddMailingMode = presentingViewController is UINavigationController
-        if isPresentingInAddMailingMode {
+        if editMode == false {
+            // In add mode the detail scence Was called as popup
             dismiss(animated: true, completion: nil)
         } else if let owningNavigationController = navigationController{
             // In edit mode the mailing detail scene was pushed onto a navigation stack

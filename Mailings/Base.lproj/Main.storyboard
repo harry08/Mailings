@@ -687,7 +687,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="MailingText" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="DGw-0h-dtZ" userLabel="Mailing Text View">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="DGw-0h-dtZ" userLabel="Mailing Text View">
                                 <rect key="frame" x="16" y="143" width="343" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -742,7 +742,7 @@
         <!--Mailing Picker-->
         <scene sceneID="51A-Xg-qXS">
             <objects>
-                <tableViewController storyboardIdentifier="MailingPickerViewController" id="lRZ-Zt-88F" userLabel="Mailing Picker" customClass="MailingPickerTableViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="MailingPickerVC" id="lRZ-Zt-88F" userLabel="Mailing Picker" customClass="MailingPickerTableViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="nfq-dl-KvR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -797,7 +797,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mal-1B-xku" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="BJ5-Ck-UNh" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5376.8000000000002" y="-1157.2713643178411"/>
+            <point key="canvasLocation" x="5406" y="-1157"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ydl-lH-D8b">
@@ -809,6 +809,9 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6C8-Qv-oER">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="lRZ-Zt-88F" kind="relationship" relationship="rootViewController" id="ygA-Di-7Lp"/>
                     </connections>
@@ -825,7 +828,7 @@
         <image name="user_male.png" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="NTK-0F-GdE"/>
-        <segue reference="y4O-cv-eCz"/>
+        <segue reference="Hut-cf-qlc"/>
+        <segue reference="BrF-oP-lIX"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -204,9 +204,12 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
     
     func sendMailingToContacts() {
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let chooseMailingsVc = storyboard.instantiateViewController(withIdentifier: "MailingPickerViewController")
+        let pickMailingVc = storyboard.instantiateViewController(withIdentifier: "MailingPickerVC")
         
-        self.navigationController?.pushViewController(chooseMailingsVc, animated: true)
+        // self.navigationController?.pushViewController(pickMailingVc, animated: true)
+        //pickMailingVc.modalPresentationStyle = .popover
+        present(pickMailingVc, animated: true, completion: nil)
+        // TODO Show modal.
     }
     
     /**
@@ -235,7 +238,6 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
      The View is opened modally
      */
     @objc func addAction(sender: UIButton) {
-        print("Add contact")
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let editContactVc = storyBoard.instantiateViewController(withIdentifier: "EditContactNavigationVC") 
         
@@ -266,10 +268,16 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
         self.composeMail(emailAddresses: getSelectedEmailAddresses())
     }
     
+    /**
+     Presents the iOS screen to write an email to the given email addresses
+     */
     func composeMail(emailAddresses: [String]) {
         MailComposerUtil.presentMailComposeViewController(parent: self, delegate: self, emailAddresses: emailAddresses)
     }
     
+    /**
+     MFMailCompose protocoll method
+     */
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
     }

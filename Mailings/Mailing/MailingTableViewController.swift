@@ -36,11 +36,8 @@ class MailingTableViewController: FetchedResultsTableViewController {
         // Display TableView
         if let context = container?.viewContext {
             let request : NSFetchRequest<Mailing> = Mailing.fetchRequest()
-            request.sortDescriptors = [NSSortDescriptor(
-                key: "title", // TODO sort by date desc
-                ascending: false,
-                selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
-                )]
+            let sortDescriptor = NSSortDescriptor(key: "createtime", ascending: false)
+            request.sortDescriptors = [sortDescriptor]
             
             fetchedResultsController = NSFetchedResultsController<Mailing>(
                 fetchRequest: request,
@@ -105,6 +102,10 @@ class MailingTableViewController: FetchedResultsTableViewController {
                 destinationVC.container = container
                 destinationVC.mailingDTO = mailingDTO
             }
+        } else if segue.identifier == "addNewMailing",
+            let destinationVC = segue.destination as? EditMailingViewController {
+            
+            destinationVC.editMode = true
         }
     }
 }

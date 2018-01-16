@@ -43,7 +43,7 @@ class MailingPickerTableViewController: FetchedResultsTableViewController {
         if let context = container?.viewContext {
             let request : NSFetchRequest<Mailing> = Mailing.fetchRequest()
             request.sortDescriptors = [NSSortDescriptor(
-                key: "createtime",
+                key: "title",
                 ascending: false,
                 selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
                 )]
