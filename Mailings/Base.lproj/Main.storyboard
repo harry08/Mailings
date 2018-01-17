@@ -778,47 +778,14 @@
                             <outlet property="delegate" destination="lRZ-Zt-88F" id="R76-iJ-ton"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Wähle Mailing" id="CB5-D4-mZN">
-                        <barButtonItem key="leftBarButtonItem" title="Abbrechen" id="nyn-RJ-VL0">
-                            <connections>
-                                <action selector="cancel:" destination="lRZ-Zt-88F" id="KPk-RO-EKv"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Wählen" id="Iwe-C7-Pk6">
-                            <connections>
-                                <segue destination="BJ5-Ck-UNh" kind="unwind" unwindAction="unwindFromChoooseMailingWithSender:" id="nMo-J7-epK"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
                     <connections>
-                        <outlet property="chooseButton" destination="Iwe-C7-Pk6" id="35j-Iq-Y1x"/>
+                        <segue destination="wEZ-uf-CGI" kind="unwind" identifier="unwindFromChoooseMailing" unwindAction="unwindFromChoooseMailingWithSender:" id="5IJ-Qo-a23"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mal-1B-xku" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="BJ5-Ck-UNh" userLabel="Exit" sceneMemberID="exit"/>
+                <exit id="wEZ-uf-CGI" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5406" y="-1157"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Ydl-lH-D8b">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="skw-N2-3rj" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="7Wl-yu-GRu">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6C8-Qv-oER">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="lRZ-Zt-88F" kind="relationship" relationship="rootViewController" id="ygA-Di-7Lp"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gL6-gI-0hf" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4665" y="-1157"/>
+            <point key="canvasLocation" x="4430" y="-300"/>
         </scene>
     </scenes>
     <resources>

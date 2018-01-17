@@ -127,6 +127,7 @@ class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDe
             // Edit mailing
             destinationVC.container = container
             destinationVC.mailingDTO = mailingDTO
+            destinationVC.editMode = true
         } /* TODO Remove comment    else if segue.identifier == "showEmailsToSend",
             let destinationVC = segue.destination as? MailsToSendTableViewController
         {

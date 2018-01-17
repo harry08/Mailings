@@ -10,10 +10,11 @@ import CoreData
 
 /**
  Shows a a ist of mailings to choose from.
+ Implements UIPopoverPresentationControllerDelegate to display tbe view in a navigation controller on compact width-devices.
  */
-class MailingPickerTableViewController: FetchedResultsTableViewController {
+class MailingPickerTableViewController: FetchedResultsTableViewController, UIPopoverPresentationControllerDelegate {
 
-    @IBOutlet weak var chooseButton: UIBarButtonItem!
+    var btnChoose: UIBarButtonItem?
     
     var container: NSPersistentContainer? =
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer {
@@ -42,11 +43,8 @@ class MailingPickerTableViewController: FetchedResultsTableViewController {
         // Display TableView
         if let context = container?.viewContext {
             let request : NSFetchRequest<Mailing> = Mailing.fetchRequest()
-            request.sortDescriptors = [NSSortDescriptor(
-                key: "title",
-                ascending: false,
-                selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
-                )]
+            let sortDescriptor = NSSortDescriptor(key: "createtime", ascending: false)
+            request.sortDescriptors = [sortDescriptor]
             
             fetchedResultsController = NSFetchedResultsController<Mailing>(
                 fetchRequest: request,
@@ -71,11 +69,39 @@ class MailingPickerTableViewController: FetchedResultsTableViewController {
     }
     
     private func updateChooseButtonState() {
-        if let _ = tableView.indexPathForSelectedRow {
-            chooseButton.isEnabled = true
-        } else {
-            chooseButton.isEnabled = false
+        if let btnChoose = self.btnChoose {
+            if let _ = tableView.indexPathForSelectedRow {
+                btnChoose.isEnabled = true
+            } else {
+                btnChoose.isEnabled = false
+            }
         }
+    }
+    
+    // MARK: - UIPopoverPresentationControllerDelegate
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .fullScreen
+    }
+    
+    func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
+        let navigationController = UINavigationController(rootViewController: controller.presentedViewController)
+        
+        let btnCancel = UIBarButtonItem(title: "Abbrechen", style: .done, target: self, action: #selector(cancel))
+        navigationController.topViewController?.navigationItem.leftBarButtonItem = btnCancel
+        btnChoose = UIBarButtonItem(title: "Wählen", style: .done, target: self, action: #selector(mailingSelected))
+        btnChoose?.isEnabled = false
+        navigationController.topViewController?.navigationItem.rightBarButtonItem = btnChoose
+        
+        return navigationController
+    }
+    
+    @objc func cancel(sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func mailingSelected(sender: UIButton) {
+        self.performSegue(withIdentifier: "unwindFromChoooseMailing", sender: self)
     }
     
     // MARK: - TableView
@@ -96,18 +122,6 @@ class MailingPickerTableViewController: FetchedResultsTableViewController {
     }
     
     // MARK: - Navigation and Actions
-    
-    @IBAction func cancel(_ sender: Any) {
-        let isPresentingInModalMode = presentingViewController is UINavigationController
-        if isPresentingInModalMode {
-            dismiss(animated: true, completion: nil)
-        } else if let owningNavigationController = navigationController{
-            // In edit mode the detail scene was pushed onto a navigation stack
-            owningNavigationController.popViewController(animated: true)
-        } else {
-            fatalError("The MailingPickerTableViewController is not inside a navigation controller.")
-        }
-    }
 }
 
 // MARK: extension UITableViewDataSource

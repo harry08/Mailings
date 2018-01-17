@@ -9,11 +9,13 @@ import UIKit
 import CoreData
 import MessageUI
 
-class ShowContactViewController: UIViewController, MFMailComposeViewControllerDelegate {
+class ShowContactViewController: UIViewController {
     
     @IBOutlet weak var firstnameLabel: UILabel!
     @IBOutlet weak var lastnameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
+    
+    let messageComposer = MessageComposer()
     
     var container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     
@@ -45,12 +47,25 @@ class ShowContactViewController: UIViewController, MFMailComposeViewControllerDe
     
     @IBAction func sendEmail(_ sender: Any) {
         if let email = contactDTO?.email {
-            MailComposerUtil.presentMailComposeViewController(parent: self, delegate: self, emailAddress: email)
+            composeMail(emailAddress: email)
         }
     }
     
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true, completion: nil)
+    /**
+     Presents the iOS screen to write an email to the given email addresses
+     */
+    func composeMail(emailAddress: String) {
+        if messageComposer.canSendText() {
+            let messageComposeVc = messageComposer.configuredMailComposeViewController(emailAddress: emailAddress)
+            self.present(messageComposeVc, animated: true, completion: nil)
+        } else {
+            let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
     
     // MARK: - Navigation

@@ -11,9 +11,11 @@ import UIKit
 import CoreData
 import MessageUI
 
-class ContactTableViewController: FetchedResultsTableViewController, MFMailComposeViewControllerDelegate {
+class ContactTableViewController: FetchedResultsTableViewController {
     
     var multiSelection = false
+    
+    let messageComposer = MessageComposer()
     
     @IBOutlet weak var multiSelectButton: UIButton!
     @IBOutlet weak var multiSelectActionButton: UIBarButtonItem!
@@ -207,9 +209,10 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
         let pickMailingVc = storyboard.instantiateViewController(withIdentifier: "MailingPickerVC")
         
         // self.navigationController?.pushViewController(pickMailingVc, animated: true)
-        //pickMailingVc.modalPresentationStyle = .popover
+        pickMailingVc.modalPresentationStyle = .popover
+        let popover: UIPopoverPresentationController = pickMailingVc.popoverPresentationController!
+        popover.delegate = (pickMailingVc as! UIPopoverPresentationControllerDelegate)
         present(pickMailingVc, animated: true, completion: nil)
-        // TODO Show modal.
     }
     
     /**
@@ -219,18 +222,19 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
         if let sourceViewController = sender.source as? MailingPickerTableViewController,
             let selectedMailing = sourceViewController.getSelectedMailing() {
             
-            if let title = selectedMailing.title {
-                print("Mailing selected: \(title)")
+            let emailAddresses = getSelectedEmailAddresses()
+            
+            self.multiSelection = false
+            updateMultiSelection()
+            updateUI()
+            
+            // Wait for 2 seconds in order to wait for the other
+            // view to be finished before displaying the mail view.
+            let when = DispatchTime.now() + 2 // wait 2 seconds
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                self.composeMailForMailing(selectedMailing, emailAddresses: emailAddresses)
             }
         }
-        
-        let emailAddresses = getSelectedEmailAddresses()
-        
-        self.multiSelection = false
-        updateMultiSelection()
-        updateUI()
-        
-        composeMail(emailAddresses: emailAddresses)
     }
     
     /**
@@ -254,6 +258,7 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
             self.composeMail(emailAddresses: self.getSelectedEmailAddresses())
         })
         alert.addAction(UIAlertAction(title: "Sende Mailing...", style: .default) { _ in
+            print("Action Sende Mailing")
             self.sendMailingToContacts()
         })
         alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
@@ -272,14 +277,34 @@ class ContactTableViewController: FetchedResultsTableViewController, MFMailCompo
      Presents the iOS screen to write an email to the given email addresses
      */
     func composeMail(emailAddresses: [String]) {
-        MailComposerUtil.presentMailComposeViewController(parent: self, delegate: self, emailAddresses: emailAddresses)
+        if messageComposer.canSendText() {
+            let messageComposeVc = messageComposer.configuredMailComposeViewController(emailAddresses: emailAddresses)
+            self.present(messageComposeVc, animated: true, completion: nil)
+        } else {
+            let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
     
     /**
-     MFMailCompose protocoll method
+     Presents the iOS screen to write an email with the contents of the provided mailing to the given email addresses
      */
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true, completion: nil)
+    func composeMailForMailing(_ mailingDTO: MailingDTO, emailAddresses: [String]) {
+        if messageComposer.canSendText() {
+            let messageComposeVc = messageComposer.configuredMailComposeViewController(mailing: mailingDTO, emailAddresses: emailAddresses)
+            self.present(messageComposeVc, animated: true, completion: nil)
+        } else {
+            let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
     
     private func getSelectedEmailAddresses() -> [String] {
