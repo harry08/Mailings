@@ -160,7 +160,6 @@ class MailingContact: NSManagedObject {
         var count = 0
         
         let request : NSFetchRequest<MailingContact> = MailingContact.fetchRequest()
-        request.predicate = NSPredicate(format: "retired = false")
         do {
             let matches = try context.fetch(request)
             count = matches.count

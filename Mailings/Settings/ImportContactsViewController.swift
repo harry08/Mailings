@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import os.log
 import CoreData
 import Contacts
 
@@ -79,8 +80,38 @@ class ImportContactsViewController: UIViewController {
             }
         }
     }
+    
+    private func selectGroups() -> [CNGroup]{
+        var selectedGroups : [CNGroup] = [CNGroup]()
+        
+        AppDelegate.getAppDelegate().requestForAccess { (accessGranted) -> Void in
+            if accessGranted,
+                let context = self.container?.viewContext {
+                
+                let contactsStore = AppDelegate.getAppDelegate().contactStore
+                
+                do {
+                    let groups = try contactsStore.groups(matching: nil)
+                    for i in 0 ..< groups.count {
+                        let group = groups[i]
+                        selectedGroups.append(group)
+                        print("Group: \(group.identifier): \(group.name).")
+                    }
+                }
+                catch let error as NSError {
+                    os_log("Could not fetch addressbook groups: %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+                }
+            }
+        }
+        
+        return selectedGroups
+    }
 
-    @IBAction func importContacts(_ sender: Any) {
+    @IBAction func importSelectedContacts(_ sender: Any) {
+        selectGroups()
+    }
+    
+    @IBAction func importContactsFromGroup(_ sender: Any) {
         loadContacts()
     }
 }
