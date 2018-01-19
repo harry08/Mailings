@@ -9,14 +9,15 @@ import Foundation
 
 class MailingListMapper {
     
-    class func mapToDTO(mailinglist: MailingList) -> MailingListDTO {
-        let mailingListDTO = MailingListDTO(objectId: mailinglist.objectID, name: mailinglist.name, recipientAsBcc: mailinglist.recipientasbcc)
+    class func mapToDTO(mailingList: MailingList) -> MailingListDTO {
+        let mailingListDTO = MailingListDTO(objectId: mailingList.objectID, name: mailingList.name, recipientAsBcc: mailingList.recipientasbcc, assignAsDefault: mailingList.assignasdefault)
         
         return mailingListDTO
     }
     
-    class func mapToEntity(mailingListDTO: MailingListDTO, mailinglist: inout MailingList) {
-        mailinglist.name = mailingListDTO.name
-        mailinglist.recipientasbcc = mailingListDTO.recipientAsBcc
+    class func mapToEntity(mailingListDTO: MailingListDTO, mailingList: inout MailingList) {
+        mailingList.name = mailingListDTO.name
+        mailingList.recipientasbcc = mailingListDTO.recipientAsBcc
+        mailingList.assignasdefault = mailingListDTO.assignAsDefault
     }
 }

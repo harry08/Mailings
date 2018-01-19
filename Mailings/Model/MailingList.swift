@@ -7,25 +7,29 @@
 
 import Foundation
 import CoreData
+import os.log
 
 class MailingList: NSManagedObject {
     
     // MARK: -  class functions
     
     // Loads a contact with a given id.
-    class func loadMailinglist(objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws -> MailingListDTO {
+    class func loadMailingList(objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws -> MailingListDTO {
         do {
             let mailingListEntity = try context.existingObject(with: objectId) as! MailingList
-            let mailinglistDTO = MailingListMapper.mapToDTO(mailinglist: mailingListEntity)
+            let mailinglistDTO = MailingListMapper.mapToDTO(mailingList: mailingListEntity)
             
             return mailinglistDTO
         } catch let error as NSError {
-            print("Could not load mailinglist. \(error), \(error.userInfo)")
+            print("Could not load mailingList. \(error), \(error.userInfo)")
             throw error
         }
     }
     
-    // Returns all Email addresses of the given mailinglist
+    /**
+     Returns all Email addresses from the contacts assigned to the given mailingList
+     Used when a mailing should be send to a mailingList.
+     */
     class func getEmailAddressesForMailing(objectId: NSManagedObjectID, in context: NSManagedObjectContext) -> [String] {
         var emailAddresses = [String]()
         
@@ -41,12 +45,16 @@ class MailingList: NSManagedObject {
                 }
             }
         } catch let error as NSError {
-            print("Could not select mailinglist. \(error)")
+            print("Could not select mailingList. \(error)")
         }
         
         return emailAddresses
     }
     
+    /**
+     Returns the mailingLists that are marked as default.
+     These mailingLists are automatically assigned to a newly created contact.
+     */
     class func getDefaultMailingLists(in context: NSManagedObjectContext) -> [MailingList] {
         let request : NSFetchRequest<MailingList> = MailingList.fetchRequest()
         request.predicate = NSPredicate(format: "assignasdefault = true")
@@ -54,9 +62,47 @@ class MailingList: NSManagedObject {
             let matches = try context.fetch(request)
             return matches
         } catch let error as NSError {
-           print("Could not select mailinglists. \(error)")
+           print("Could not select mailingLists. \(error)")
         }
         
         return []
+    }
+    
+    /**
+     Creates a new mailing or updates an already existing mailing
+     Depends on the objectId in MailingDTO.
+     */
+    class func createOrUpdateFromDTO(_ mailingListDTO: MailingListDTO, in context: NSManagedObjectContext) throws {
+        if mailingListDTO.objectId == nil {
+            // New mailing
+            os_log("Creating new mailingList...", log: OSLog.default, type: .debug)
+            var mailingListEntity = MailingList(context: context)
+            mailingListEntity.createtime = Date()
+            mailingListEntity.updatetime = Date()
+            MailingListMapper.mapToEntity(mailingListDTO: mailingListDTO, mailingList: &mailingListEntity)
+        } else {
+            // Load and update existing mailing
+            if let objectId = mailingListDTO.objectId {
+                os_log("Updating existing mailingList with id %s...", log: OSLog.default, type: .debug, objectId)
+                
+                do {
+                    var mailingListEntity = try context.existingObject(with: objectId) as! MailingList
+                    
+                    MailingListMapper.mapToEntity(mailingListDTO: mailingListDTO, mailingList: &mailingListEntity)
+                    mailingListEntity.updatetime = Date()
+                } catch let error as NSError {
+                    os_log("Could not load mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+                    throw error
+                }
+            }
+        }
+        
+        do {
+            try context.save()
+            os_log("MailingList saved", log: OSLog.default, type: .debug)
+        } catch let error as NSError {
+            os_log("Could not save mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            throw error
+        }
     }
 }
