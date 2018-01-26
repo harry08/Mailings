@@ -39,6 +39,7 @@
 		4ABEAACE200906A30073875E /* ShowMailingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABEAACB200906A30073875E /* ShowMailingViewController.swift */; };
 		4ABEAAD0200908310073875E /* MailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABEAACF200908310073875E /* MailDTO.swift */; };
 		4AD59F5A20049549008FC37C /* MailingPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD59F5920049549008FC37C /* MailingPickerTableViewController.swift */; };
+		4AD999C8201BCC3600C0CE6D /* MailingList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AD999C7201BCC3600C0CE6D /* MailingList.storyboard */; };
 		4AE86FCB2002034F00D981B4 /* MailingMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE86FCA2002034F00D981B4 /* MailingMapper.swift */; };
 		4AE86FCD2002036600D981B4 /* MailingDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE86FCC2002036600D981B4 /* MailingDTO.swift */; };
 		4AE86FD1200348D300D981B4 /* FetchedResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE86FD0200348D300D981B4 /* FetchedResultsTableViewController.swift */; };
@@ -82,6 +83,7 @@
 		4ABEAACB200906A30073875E /* ShowMailingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMailingViewController.swift; sourceTree = "<group>"; };
 		4ABEAACF200908310073875E /* MailDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailDTO.swift; sourceTree = "<group>"; };
 		4AD59F5920049549008FC37C /* MailingPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailingPickerTableViewController.swift; sourceTree = "<group>"; };
+		4AD999C7201BCC3600C0CE6D /* MailingList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MailingList.storyboard; sourceTree = "<group>"; };
 		4AE86FCA2002034F00D981B4 /* MailingMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingMapper.swift; sourceTree = "<group>"; };
 		4AE86FCC2002036600D981B4 /* MailingDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingDTO.swift; sourceTree = "<group>"; };
 		4AE86FD0200348D300D981B4 /* FetchedResultsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedResultsTableViewController.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				4A985E451FF14BD80055F6BA /* FirstViewController.swift */,
 				4A985E471FF14BD80055F6BA /* SecondViewController.swift */,
 				4A985E491FF14BD80055F6BA /* Main.storyboard */,
+				4AD999C7201BCC3600C0CE6D /* MailingList.storyboard */,
 				4A985E511FF14BD80055F6BA /* Info.plist */,
 				4AB9AF0C1FF55C680005EFFA /* Mailings.xcdatamodeld */,
 			);
@@ -293,6 +296,7 @@
 				4A985E4D1FF14BD80055F6BA /* Assets.xcassets in Resources */,
 				4A64E1A42005467000BA851F /* user_male.png in Resources */,
 				4A985E4B1FF14BD80055F6BA /* Main.storyboard in Resources */,
+				4AD999C8201BCC3600C0CE6D /* MailingList.storyboard in Resources */,
 				4A9F238C1FF459EF00B48349 /* message.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
