@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "static Mailing.createOrUpdateFromDTO(mailingDTO:in:):Mailing.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "mailingEntity">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "EditContactViewController.cancel(_:):EditContactViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "presentingViewController">
+            </PersistentString>
+            <PersistentString
+               value = "owningNavigationController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static MailingContact.createOrUpdateFromDTO(contactDTO:in:):MailingContact.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MailingListTableViewController.prepare(for:sender:):MailingListTableViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "segue.identifier">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static MailingContactMapper.mapToDTO(contact:):MailingContactMapper.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static MailingContactMapper.mapToEntity(contactDTO:contact:):MailingContactMapper.swift">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
