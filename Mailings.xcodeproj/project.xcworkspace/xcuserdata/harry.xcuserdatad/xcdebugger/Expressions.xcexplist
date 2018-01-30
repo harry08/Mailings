@@ -3,6 +3,32 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "MailingListTableViewController.prepare(for:sender:):MailingListTableViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "segue.destination">
+            </PersistentString>
+            <PersistentString
+               value = "segue.identifier">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static MailingContactMapper.mapToEntity(contactDTO:contact:):MailingContactMapper.swift">
+      </ContextState>
+      <ContextState
+         contextName = "EditMailingListViewController.cancel(_:):EditMailingListViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static MailingContact.createOrUpdateFromDTO(contactDTO:in:):MailingContact.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static MailingContactMapper.mapToDTO(contact:):MailingContactMapper.swift">
+      </ContextState>
+      <ContextState
+         contextName = "EditMailingListNewController.prepare(for:sender:):EditMailingListNewController.swift">
+      </ContextState>
+      <ContextState
          contextName = "static Mailing.createOrUpdateFromDTO(mailingDTO:in:):Mailing.swift">
          <PersistentStrings>
             <PersistentString
@@ -20,23 +46,6 @@
                value = "owningNavigationController">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "static MailingContact.createOrUpdateFromDTO(contactDTO:in:):MailingContact.swift">
-      </ContextState>
-      <ContextState
-         contextName = "MailingListTableViewController.prepare(for:sender:):MailingListTableViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "segue.identifier">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "static MailingContactMapper.mapToDTO(contact:):MailingContactMapper.swift">
-      </ContextState>
-      <ContextState
-         contextName = "static MailingContactMapper.mapToEntity(contactDTO:contact:):MailingContactMapper.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

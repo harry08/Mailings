@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 
 
-class MailingListTableViewController: FetchedResultsTableViewController {
+class MailingListTableViewController: FetchedResultsTableViewController, MailingListDetailViewControllerDelegate {
 
     var container: NSPersistentContainer? =
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer {
@@ -69,32 +69,10 @@ class MailingListTableViewController: FetchedResultsTableViewController {
     
     // MARK: - Navigation and Actions
     
-    /**
-     Navigate back from adding a new mailingList. Saves data from MailingListDTO in DB.
-     MailingListDTO has been filled by EditMailingListViewController
-     */
-    @IBAction func unwindFromSave(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? EditMailingListViewController,
-            let mailingListDTO = sourceViewController.mailingListDTO {
-            
-            guard let container = container else {
-                print("Save not possible. No PersistentContainer.")
-                return
-            }
-            
-            // Update database
-            do {
-                try MailingList.createOrUpdateFromDTO(mailingListDTO, in: container.viewContext)
-            } catch {
-                // TODO show Alert
-            }
-        }
-    }
-    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showMailingList",
-            let destinationVC = segue.destination as? ShowMailingListViewController
+            let destinationVC = segue.destination as? MailingListDetailViewController
         {
             // Navigate to existing mailinglist
             if let indexPath = tableView.indexPathForSelectedRow,
@@ -103,8 +81,64 @@ class MailingListTableViewController: FetchedResultsTableViewController {
                 let mailingListDTO = MailingListMapper.mapToDTO(mailingList: selectedMailingList)
                 destinationVC.container = container
                 destinationVC.mailingListDTO = mailingListDTO
+                destinationVC.editMode = true
             }
+            
+            destinationVC.delegate = self
+        } else if segue.identifier == "addNewMailingList",
+            let destinationVC = segue.destination as? MailingListDetailViewController {
+            destinationVC.delegate = self
         }
+    }
+    
+    // MARK:- MailingListDetailViewController Delegates
+    
+    /**
+     Protocol function. Called after canceled the detail view
+     Removes the edit view.
+     */
+    func mailingListDetailViewControllerDidCancel(_ controller: MailingListDetailViewController) {
+        navigationController?.popViewController(animated:true)
+    }
+    
+    /**
+     Protocol function. Called after finish adding a new MailingList
+     Saves data to database and removes the edit view.
+     */
+    func mailingListDetailViewController(_ controller: MailingListDetailViewController, didFinishAdding mailingList: MailingListDTO) {
+        
+        guard let container = container else {
+            print("Save not possible. No PersistentContainer.")
+            return
+        }
+        
+        // Update database
+        do {
+            try MailingList.createOrUpdateFromDTO(mailingList, in: container.viewContext)
+        } catch {
+            // TODO show Alert
+        }
+        navigationController?.popViewController(animated:true)
+    }
+    
+    /**
+     Protocol function. Called after finish editing an existing MailingList
+     Saves data to database and removes the edit view.
+     */
+    func mailingListDetailViewController(_ controller: MailingListDetailViewController, didFinishEditing mailingList: MailingListDTO) {
+        
+        guard let container = container else {
+            print("Save not possible. No PersistentContainer.")
+            return
+        }
+        
+        // Update database
+        do {
+            try MailingList.createOrUpdateFromDTO(mailingList, in: container.viewContext)
+        } catch {
+            // TODO show Alert
+        }
+        navigationController?.popViewController(animated:true)
     }
 }
 
