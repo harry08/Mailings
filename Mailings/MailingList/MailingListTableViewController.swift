@@ -69,7 +69,6 @@ class MailingListTableViewController: FetchedResultsTableViewController, Mailing
     
     // MARK: - Navigation and Actions
     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showMailingList",
             let destinationVC = segue.destination as? MailingListDetailViewController
@@ -91,7 +90,7 @@ class MailingListTableViewController: FetchedResultsTableViewController, Mailing
         }
     }
     
-    // MARK:- MailingListDetailViewController Delegates
+    // MARK:- MailingListDetailViewController Delegate
     
     /**
      Protocol function. Called after canceled the detail view

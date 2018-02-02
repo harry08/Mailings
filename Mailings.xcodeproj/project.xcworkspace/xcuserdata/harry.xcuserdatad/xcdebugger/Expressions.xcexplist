@@ -17,13 +17,32 @@
          contextName = "static MailingContactMapper.mapToEntity(contactDTO:contact:):MailingContactMapper.swift">
       </ContextState>
       <ContextState
-         contextName = "EditMailingListViewController.cancel(_:):EditMailingListViewController.swift">
+         contextName = "EditContactViewController.cancel(_:):EditContactViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "presentingViewController">
+            </PersistentString>
+            <PersistentString
+               value = "owningNavigationController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ContactPickerTableViewController.tableView(_:cellForRowAt:):ContactPickerTableViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "cell.isSelected">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "static MailingContact.createOrUpdateFromDTO(contactDTO:in:):MailingContact.swift">
       </ContextState>
       <ContextState
          contextName = "static MailingContactMapper.mapToDTO(contact:):MailingContactMapper.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ContactPickerTableViewController.tableView(_:didSelectRowAt:):ContactPickerTableViewController.swift">
       </ContextState>
       <ContextState
          contextName = "EditMailingListNewController.prepare(for:sender:):EditMailingListNewController.swift">
@@ -37,15 +56,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "EditContactViewController.cancel(_:):EditContactViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "presentingViewController">
-            </PersistentString>
-            <PersistentString
-               value = "owningNavigationController">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "EditMailingListViewController.cancel(_:):EditMailingListViewController.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

@@ -52,6 +52,30 @@ class MailingList: NSManagedObject {
     }
     
     /**
+     Returns an array of all contacts of a given mailingList.
+     */
+    class func getMailingContacts(objectId: NSManagedObjectID, in context: NSManagedObjectContext) -> [MailingContactDTO] {
+        
+        var mailingContacts = [MailingContactDTO]()
+        
+        do {
+            let mailingListEntity = try context.existingObject(with: objectId) as! MailingList
+            
+            if let contacts = mailingListEntity.contacts {
+                mailingContacts.reserveCapacity(contacts.count)
+                for case let contact as MailingContact in contacts {
+                    let mailingContactDTO = MailingContactMapper.mapToDTO(contact: contact)
+                    mailingContacts.append(mailingContactDTO)
+                }
+            }
+        } catch let error as NSError {
+            print("Could not select mailingList. \(error)")
+        }
+        
+        return mailingContacts
+    }
+    
+    /**
      Returns the mailingLists that are marked as default.
      These mailingLists are automatically assigned to a newly created contact.
      */
@@ -98,6 +122,43 @@ class MailingList: NSManagedObject {
         }
         
         do {
+            try context.save()
+            os_log("MailingList saved", log: OSLog.default, type: .debug)
+        } catch let error as NSError {
+            os_log("Could not save mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            throw error
+        }
+    }
+    
+    class func addContacts(_ contacts: [MailingContact], objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws {
+      
+        do {
+            let mailingListEntity = try context.existingObject(with: objectId) as! MailingList
+            
+            for i in 0 ..< contacts.count {
+                let contact = contacts[i]
+                mailingListEntity.addToContacts(contact)
+            }
+            
+            try context.save()
+            os_log("MailingList saved", log: OSLog.default, type: .debug)
+        } catch let error as NSError {
+            os_log("Could not save mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            throw error
+        }
+    }
+    
+    class func addContacts(_ contacts: [MailingContactDTO], objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws {
+        
+        do {
+            let mailingListEntity = try context.existingObject(with: objectId) as! MailingList
+            
+            for i in 0 ..< contacts.count {
+                let contactDTO = contacts[i]
+                let contact = try MailingContact.loadContactEntity(objectId: contactDTO.objectId!, in: context)
+                mailingListEntity.addToContacts(contact)
+            }
+            
             try context.save()
             os_log("MailingList saved", log: OSLog.default, type: .debug)
         } catch let error as NSError {

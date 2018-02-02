@@ -126,6 +126,17 @@ class MailingContact: NSManagedObject {
         }
     }
     
+    // Loads a contact with a given id.
+    class func loadContactEntity(objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws -> MailingContact {
+        do {
+            let contactEntity = try context.existingObject(with: objectId) as! MailingContact
+            return contactEntity
+        } catch let error as NSError {
+            os_log("Could not load contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            throw error
+        }
+    }
+    
     // Returns all Email addresses for the given mailinglist
     class func getEmailAddressesForMailingList(_ mailingList: String, in context: NSManagedObjectContext) -> [String] {
         var emailAddresses = [String]()

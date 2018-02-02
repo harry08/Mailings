@@ -56,7 +56,7 @@ class MailingListDetailViewController: UITableViewController, UITextFieldDelegat
             defaultAssignmentSwitch.isOn = mailingListDTO.assignAsDefault
             recipientAsBccSwitch.isOn = mailingListDTO.recipientAsBcc
             
-            title = ""
+            title = "Verteiler"
             doneButton.isEnabled = true
         }
     }
@@ -79,10 +79,24 @@ class MailingListDetailViewController: UITableViewController, UITextFieldDelegat
     
     // Do not allow cell selection
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        return nil
+        if indexPath.section == 2 {
+            // Section 2 should be selectable to navigate to the contact details.
+            return indexPath
+        } else {
+            return nil
+        }
     }
     
-    // MARK: - Navigation
+    // MARK: - Navigation and Actions
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showMailingListContacts",
+            let destinationVC = segue.destination as? MailingListContactsTableViewController
+        {
+            destinationVC.container = container
+            destinationVC.mailingListDTO = mailingListDTO
+        }
+    }
     
     /**
      Fills the values from UI fields into the MailingListDTO.
