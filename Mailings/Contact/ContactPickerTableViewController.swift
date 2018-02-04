@@ -16,7 +16,7 @@ protocol ContactPickerTableViewControllerDelegate: class {
 /**
  Shows a list of contacts to choose from.
  Table is in Multiselection mode.
- The action after choosing contacts is done in ContactPickerTableViewControllerDelegate.
+ After contact selection is done the ContactPickerTableViewControllerDelegate is called.
  */
 class ContactPickerTableViewController: UITableViewController {
 
@@ -28,11 +28,6 @@ class ContactPickerTableViewController: UITableViewController {
      Contacts to choose from
      */
     var contacts = [MailingContactDTO]()
-    
-    /**
-     List of contacts that should not be shown
-     */
-    var contactsToExclude = [MailingContactDTO]()
     
     var container: NSPersistentContainer? =
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer {
