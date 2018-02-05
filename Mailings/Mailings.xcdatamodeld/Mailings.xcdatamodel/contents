@@ -15,6 +15,7 @@
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="retired" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="updatetime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MailingList" inverseName="contacts" inverseEntity="MailingList" syncable="YES"/>
     </entity>
     <entity name="MailingList" representedClassName=".MailingList" syncable="YES" codeGenerationType="category">
         <attribute name="assignasdefault" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -22,11 +23,11 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="recipientasbcc" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="updatetime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="contacts" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="MailingContact" syncable="YES"/>
+        <relationship name="contacts" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="MailingContact" inverseName="lists" inverseEntity="MailingContact" syncable="YES"/>
     </entity>
     <elements>
         <element name="Mailing" positionX="-54" positionY="-69" width="128" height="103"/>
-        <element name="MailingContact" positionX="-234" positionY="-9" width="128" height="165"/>
-        <element name="MailingList" positionX="-56" positionY="108" width="128" height="133"/>
+        <element name="MailingContact" positionX="-234" positionY="-9" width="128" height="178"/>
+        <element name="MailingList" positionX="-27" positionY="108" width="128" height="133"/>
     </elements>
 </model>
