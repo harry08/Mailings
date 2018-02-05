@@ -37,6 +37,12 @@ class MailingListDetailViewController: UITableViewController, UITextFieldDelegat
     // In case of a new one this will be created in the prepare method.
     var mailingListDTO : MailingListDTO?
     
+    var viewEdited = false {
+        didSet {
+            doneButton.isEnabled = viewEdited
+        }
+    }
+    
     private func isEditMode() -> Bool {
         return editMode
     }
@@ -57,8 +63,11 @@ class MailingListDetailViewController: UITableViewController, UITextFieldDelegat
             recipientAsBccSwitch.isOn = mailingListDTO.recipientAsBcc
             
             title = "Verteiler"
-            doneButton.isEnabled = true
+            doneButton.isEnabled = false
         }
+        
+        defaultAssignmentSwitch.addTarget(self, action: #selector(switchChanged), for: UIControlEvents.valueChanged)
+        recipientAsBccSwitch.addTarget(self, action: #selector(switchChanged), for: UIControlEvents.valueChanged)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,6 +76,10 @@ class MailingListDetailViewController: UITableViewController, UITextFieldDelegat
             // Only in add mode directly put the focus inside the name field.
             nameTextField.becomeFirstResponder()
         }
+    }
+    
+    @objc func switchChanged(mySwitch: UISwitch) {
+        viewEdited = true
     }
     
     
@@ -139,7 +152,8 @@ class MailingListDetailViewController: UITableViewController, UITextFieldDelegat
         let oldText = textField.text!
         let stringRange = Range(range, in:oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        doneButton.isEnabled = !newText.isEmpty
+        //doneButton.isEnabled = !newText.isEmpty
+        viewEdited = !newText.isEmpty
         return true
     }
 }
