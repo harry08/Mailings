@@ -52,27 +52,27 @@ class MailingList: NSManagedObject {
     }
     
     /**
-     Returns an array of all contacts of a given mailingList.
+     Returns an array of all assinged contacts of a given mailingList.
      */
-    class func getMailingContacts(objectId: NSManagedObjectID, in context: NSManagedObjectContext) -> [MailingContactDTO] {
+    class func getAssignedContacts(objectId: NSManagedObjectID, in context: NSManagedObjectContext) -> [AssignedContact] {
         
-        var mailingContacts = [MailingContactDTO]()
+        var assingedContacts = [AssignedContact]()
         
         do {
             let mailingListEntity = try context.existingObject(with: objectId) as! MailingList
             
             if let contacts = mailingListEntity.contacts {
-                mailingContacts.reserveCapacity(contacts.count)
+                assingedContacts.reserveCapacity(contacts.count)
                 for case let contact as MailingContact in contacts {
-                    let mailingContactDTO = MailingContactMapper.mapToDTO(contact: contact)
-                    mailingContacts.append(mailingContactDTO)
+                    let assingedContact = MailingContactMapper.mapToAssignedContact(contact: contact)
+                    assingedContacts.append(assingedContact)
                 }
             }
         } catch let error as NSError {
             print("Could not select mailingList. \(error)")
         }
         
-        return mailingContacts
+        return assingedContacts
     }
     
     /**
@@ -97,6 +97,14 @@ class MailingList: NSManagedObject {
      Depends on the objectId in MailingDTO.
      */
     class func createOrUpdateFromDTO(_ mailingListDTO: MailingListDTO, in context: NSManagedObjectContext) throws {
+        try createOrUpdateFromDTO(mailingListDTO, assignmentChanges: [ContactAssignmentChange](), in: context)
+    }
+    
+    /**
+     Creates a new mailing or updates an already existing mailing
+     Depends on the objectId in MailingDTO.
+     */
+    class func createOrUpdateFromDTO(_ mailingListDTO: MailingListDTO, assignmentChanges: [ContactAssignmentChange], in context: NSManagedObjectContext) throws {
         if mailingListDTO.objectId == nil {
             // New mailing
             os_log("Creating new mailingList...", log: OSLog.default, type: .debug)
@@ -104,6 +112,10 @@ class MailingList: NSManagedObject {
             mailingListEntity.createtime = Date()
             mailingListEntity.updatetime = Date()
             MailingListMapper.mapToEntity(mailingListDTO: mailingListDTO, mailingList: &mailingListEntity)
+            
+            if assignmentChanges.count > 0 {
+                try addContactAssignmentChanges(assignmentChanges, mailingList: mailingListEntity, in: context)
+            }
         } else {
             // Load and update existing mailing
             if let objectId = mailingListDTO.objectId {
@@ -114,8 +126,12 @@ class MailingList: NSManagedObject {
                     
                     MailingListMapper.mapToEntity(mailingListDTO: mailingListDTO, mailingList: &mailingListEntity)
                     mailingListEntity.updatetime = Date()
+                    
+                    if assignmentChanges.count > 0 {
+                        try addContactAssignmentChanges(assignmentChanges, mailingList: mailingListEntity, in: context)
+                    }
                 } catch let error as NSError {
-                    os_log("Could not load mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+                    os_log("Could not update existing mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
                     throw error
                 }
             }
@@ -130,39 +146,24 @@ class MailingList: NSManagedObject {
         }
     }
     
-    class func addContacts(_ contacts: [MailingContact], objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws {
-      
-        do {
-            let mailingListEntity = try context.existingObject(with: objectId) as! MailingList
-            
-            for i in 0 ..< contacts.count {
-                let contact = contacts[i]
-                mailingListEntity.addToContacts(contact)
-            }
-            
-            try context.save()
-            os_log("MailingList saved", log: OSLog.default, type: .debug)
-        } catch let error as NSError {
-            os_log("Could not save mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
-            throw error
-        }
-    }
+    /**
+     Saves the given list of contactassignment changes.
+     */
+    private class func addContactAssignmentChanges(_ assignmentChanges: [ContactAssignmentChange], mailingList: MailingList, in context: NSManagedObjectContext) throws {
     
-    class func addContacts(_ contacts: [MailingContactDTO], objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws {
-        
         do {
-            let mailingListEntity = try context.existingObject(with: objectId) as! MailingList
-            
-            for i in 0 ..< contacts.count {
-                let contactDTO = contacts[i]
-                let contact = try MailingContact.loadContactEntity(objectId: contactDTO.objectId!, in: context)
-                mailingListEntity.addToContacts(contact)
+            for i in 0 ..< assignmentChanges.count {
+                let assignmentChange = assignmentChanges[i]
+                
+                let contact = try MailingContact.loadContactEntity(objectId: assignmentChange.objectId, in: context)
+                if assignmentChange.action == "A" {
+                    mailingList.addToContacts(contact)
+                } else if assignmentChange.action == "R" {
+                    mailingList.removeFromContacts(contact)
+                }
             }
-            
-            try context.save()
-            os_log("MailingList saved", log: OSLog.default, type: .debug)
         } catch let error as NSError {
-            os_log("Could not save mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            os_log("Could not load contact and assign it to the mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
             throw error
         }
     }

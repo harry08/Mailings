@@ -104,7 +104,7 @@ class MailingListTableViewController: FetchedResultsTableViewController, Mailing
      Protocol function. Called after finish adding a new MailingList
      Saves data to database and removes the edit view.
      */
-    func mailingListDetailViewController(_ controller: MailingListDetailViewController, didFinishAdding mailingList: MailingListDTO) {
+    func mailingListDetailViewController(_ controller: MailingListDetailViewController, didFinishAdding mailingList: MailingListDTO, assignmentChanges: [ContactAssignmentChange]) {
         
         guard let container = container else {
             print("Save not possible. No PersistentContainer.")
@@ -113,7 +113,7 @@ class MailingListTableViewController: FetchedResultsTableViewController, Mailing
         
         // Update database
         do {
-            try MailingList.createOrUpdateFromDTO(mailingList, in: container.viewContext)
+            try MailingList.createOrUpdateFromDTO(mailingList, assignmentChanges: assignmentChanges, in: container.viewContext)
         } catch {
             // TODO show Alert
         }
@@ -124,7 +124,7 @@ class MailingListTableViewController: FetchedResultsTableViewController, Mailing
      Protocol function. Called after finish editing an existing MailingList
      Saves data to database and removes the edit view.
      */
-    func mailingListDetailViewController(_ controller: MailingListDetailViewController, didFinishEditing mailingList: MailingListDTO) {
+    func mailingListDetailViewController(_ controller: MailingListDetailViewController, didFinishEditing mailingList: MailingListDTO, assignmentChanges: [ContactAssignmentChange]) {
         
         guard let container = container else {
             print("Save not possible. No PersistentContainer.")
@@ -133,7 +133,7 @@ class MailingListTableViewController: FetchedResultsTableViewController, Mailing
         
         // Update database
         do {
-            try MailingList.createOrUpdateFromDTO(mailingList, in: container.viewContext)
+            try MailingList.createOrUpdateFromDTO(mailingList, assignmentChanges: assignmentChanges, in: container.viewContext)
         } catch {
             // TODO show Alert
         }

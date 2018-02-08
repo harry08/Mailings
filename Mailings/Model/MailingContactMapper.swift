@@ -20,4 +20,10 @@ class MailingContactMapper {
         contact.lastname = contactDTO.lastname
         contact.email = contactDTO.email
     }
+    
+    class func mapToAssignedContact(contact: MailingContact) -> AssignedContact {
+        let assingedContact = AssignedContact(objectId: contact.objectID, firstname: contact.firstname!, lastname: contact.lastname!)
+        
+        return assingedContact
+    }
 }

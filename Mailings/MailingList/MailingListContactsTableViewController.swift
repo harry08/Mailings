@@ -9,9 +9,21 @@ import UIKit
 import CoreData
 
 /**
+ Delegate that is called after doing assigning new contacts to the mailingList or removing contacts from the list.
+ */
+protocol MailingListContactsTableViewControllerDelegate: class {
+    func mailingListContactsTableViewController(_ controller: MailingListContactsTableViewController, didChangeContacts contactAssignmentChanges: [ContactAssignmentChange])
+}
+
+/**
  Shows the assigned contacts of a MailingList.
  */
 class MailingListContactsTableViewController: UITableViewController, ContactPickerTableViewControllerDelegate {
+    
+    /**
+     Delegate to call after adding or removing contacts
+     */
+    weak var delegate: MailingListContactsTableViewControllerDelegate?
     
     var container: NSPersistentContainer? =
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer {
@@ -20,20 +32,14 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
         }
     }
     
-    var mailingListDTO: MailingListDTO? {
+    /**
+     List of contacts to display
+     */
+    var assignedContacts : AssigndContacts? {
         didSet {
-            if let objectId = mailingListDTO?.objectId,
-                let container = container {
-                
-                mailingContacts = MailingList.getMailingContacts(objectId: objectId, in: container.viewContext)
-                updateUI()
-            }
+            updateUI()
         }
     }
-    
-    var mailingContacts = [MailingContactDTO]()
-
-    fileprivate var fetchedResultsController: NSFetchedResultsController<MailingContact>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,9 +69,9 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MailingContactCell", for: indexPath)
         
-        let mailingContact = mailingContacts[indexPath.row]
-        cell.textLabel?.text = mailingContact.lastname!
-        cell.detailTextLabel?.text = mailingContact.firstname!
+        let assignedContact = assignedContacts!.contacts[indexPath.row]
+        cell.textLabel?.text = assignedContact.lastname!
+        cell.detailTextLabel?.text = assignedContact.firstname!
         
         return cell
     }
@@ -75,7 +81,26 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mailingContacts.count
+        if let assingedContacts = self.assignedContacts {
+            return assingedContacts.contacts.count
+        } else {
+            return 0
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,        forRowAt indexPath: IndexPath) {
+        
+        
+            let removedContact = assignedContacts!.contacts[indexPath.row]
+            let contactAssignmentChange = ContactAssignmentChange(objectId: removedContact.objectId, action: "R")
+        
+            assignedContacts!.contacts.remove(at: indexPath.row)
+        
+            let indexPaths = [indexPath]
+            tableView.deleteRows(at: indexPaths, with: .automatic)
+        
+            delegate?.mailingListContactsTableViewController(self, didChangeContacts: [contactAssignmentChange])
+        
     }
     
     // MARK: - ContactPickerTableViewControllerDelegate
@@ -86,21 +111,25 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
      */
     func contactPicker(_ picker: ContactPickerTableViewController, didPick chosenContacts: [MailingContactDTO]) {
         
-        if let objectId = mailingListDTO?.objectId,
-            let container = container {
-            
-            // Add contacts
-            do {
-                try MailingList.addContacts(chosenContacts, objectId: objectId, in: container.viewContext)
-            } catch {
-                // TODO show Alert
+        // Add chosen contacts
+        var contactAssignmentChanges = [ContactAssignmentChange]()
+        for i in 0 ..< chosenContacts.count {
+            let chosenContact = chosenContacts[i]
+            let contactAlreadyAdded = assignedContacts!.contacts.contains {$0.objectId == chosenContact.objectId}
+            if !contactAlreadyAdded {
+                let assignedContact = AssignedContact(objectId: chosenContact.objectId!, firstname: chosenContact.firstname!, lastname: chosenContact.lastname!)
+                assignedContacts!.contacts.append(assignedContact)
+                
+                contactAssignmentChanges.append(ContactAssignmentChange(objectId: chosenContact.objectId!, action: "A"))
             }
-            
-            navigationController?.popViewController(animated:true)
-            
-            // Reload contacts
-            mailingContacts = MailingList.getMailingContacts(objectId: objectId, in: container.viewContext)
-            updateUI()
         }
+    
+        if contactAssignmentChanges.count > 0 {
+            delegate?.mailingListContactsTableViewController(self, didChangeContacts: contactAssignmentChanges)
+        }
+    
+        navigationController?.popViewController(animated:true)
+    
+        updateUI()
     }
 }

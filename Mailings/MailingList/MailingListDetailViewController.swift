@@ -9,14 +9,18 @@ import UIKit
 import os.log
 import CoreData
 
+/**
+ Delegate that is called after closing the DetailController.
+ Database update can be done in the implementing classes.
+ */
 protocol MailingListDetailViewControllerDelegate: class {
     func mailingListDetailViewControllerDidCancel(_ controller: MailingListDetailViewController)
-    func mailingListDetailViewController(_ controller: MailingListDetailViewController, didFinishAdding mailingList: MailingListDTO)
-    func mailingListDetailViewController(_ controller: MailingListDetailViewController, didFinishEditing mailingList: MailingListDTO)
+    func mailingListDetailViewController(_ controller: MailingListDetailViewController, didFinishAdding mailingList: MailingListDTO, assignmentChanges: [ContactAssignmentChange])
+    func mailingListDetailViewController(_ controller: MailingListDetailViewController, didFinishEditing mailingList: MailingListDTO, assignmentChanges: [ContactAssignmentChange])
 }
 
-class MailingListDetailViewController: UITableViewController, UITextFieldDelegate {
-
+class MailingListDetailViewController: UITableViewController, UITextFieldDelegate, MailingListContactsTableViewControllerDelegate {
+    
     var editMode = false
     
     @IBOutlet weak var nameTextField: UITextField!
@@ -37,9 +41,23 @@ class MailingListDetailViewController: UITableViewController, UITextFieldDelegat
     // In case of a new one this will be created in the prepare method.
     var mailingListDTO : MailingListDTO?
     
+    /**
+     List of contacts assinged to this MailingList.
+     Used for displaying assignments in the sub view.‚
+     */
+    var assignedContacts = AssigndContacts()
+    
+    /**
+     List of changes of contact assignments for this MailingList.
+     */
+    var contactAssignmentChanges = [ContactAssignmentChange]()
+    
+    /**
+     Controls the doneButton
+     */
     var viewEdited = false {
         didSet {
-            doneButton.isEnabled = viewEdited
+            updateDoneButtonState()
         }
     }
     
@@ -49,6 +67,10 @@ class MailingListDetailViewController: UITableViewController, UITextFieldDelegat
     
     private func isAddMode() -> Bool {
         return !editMode
+    }
+    
+    private func updateDoneButtonState() {
+        doneButton.isEnabled = viewEdited || contactAssignmentChanges.count > 0
     }
     
     override func viewDidLoad() {
@@ -63,7 +85,7 @@ class MailingListDetailViewController: UITableViewController, UITextFieldDelegat
             recipientAsBccSwitch.isOn = mailingListDTO.recipientAsBcc
             
             title = "Verteiler"
-            doneButton.isEnabled = false
+            updateDoneButtonState()
         }
         
         defaultAssignmentSwitch.addTarget(self, action: #selector(switchChanged), for: UIControlEvents.valueChanged)
@@ -106,8 +128,24 @@ class MailingListDetailViewController: UITableViewController, UITextFieldDelegat
         if segue.identifier == "showMailingListContacts",
             let destinationVC = segue.destination as? MailingListContactsTableViewController
         {
+            guard let container = container else {
+                return
+            }
+            
             destinationVC.container = container
-            destinationVC.mailingListDTO = mailingListDTO
+            destinationVC.delegate = self
+            
+            // Init assignedContacts list and pass as a reference to the sub view
+            // This list is modified by the sub view when new contacts a are assigned or contacts are removed.
+            if !assignedContacts.isInit() {
+                // Init list of assigned contacts
+                if let objectId = mailingListDTO?.objectId {
+                    assignedContacts.initWithContactList(MailingList.getAssignedContacts(objectId: objectId, in: container.viewContext))
+                } else {
+                    assignedContacts.initWithEmptyList()
+                }
+            }
+            destinationVC.assignedContacts = assignedContacts
         }
     }
     
@@ -137,11 +175,10 @@ class MailingListDetailViewController: UITableViewController, UITextFieldDelegat
         fillMailingListDTO()
         
         if isAddMode() {
-            delegate?.mailingListDetailViewController(self, didFinishAdding: mailingListDTO!)
+            delegate?.mailingListDetailViewController(self, didFinishAdding: mailingListDTO!, assignmentChanges: contactAssignmentChanges)
         } else {
-            delegate?.mailingListDetailViewController(self, didFinishEditing: mailingListDTO!)
+            delegate?.mailingListDetailViewController(self, didFinishEditing: mailingListDTO!, assignmentChanges: contactAssignmentChanges)
         }
-        
     }
     
     // MARK:- UITextField Delegates
@@ -152,8 +189,38 @@ class MailingListDetailViewController: UITableViewController, UITextFieldDelegat
         let oldText = textField.text!
         let stringRange = Range(range, in:oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        //doneButton.isEnabled = !newText.isEmpty
         viewEdited = !newText.isEmpty
         return true
+    }
+    
+    // MARK:- MailingListContactsTableViewController Delegates
+    
+    /**
+     Called after changing contact assignment in sub view.
+     Takes the changes into the contactAssignmentChanges list.
+     */
+    func mailingListContactsTableViewController(_ controller: MailingListContactsTableViewController, didChangeContacts contactAssignmentChanges: [ContactAssignmentChange]) {
+        
+        for i in 0 ..< contactAssignmentChanges.count {
+            let contactAssignmentChange = contactAssignmentChanges[i]
+            let contactAlreadyChanged = self.contactAssignmentChanges.contains {$0.objectId == contactAssignmentChange.objectId}
+            if !contactAlreadyChanged {
+                // no entry with the objectId exists in the change list -> add it
+                self.contactAssignmentChanges.append(contactAssignmentChange)
+            } else {
+                // A change entry for this contact already exists in the change list.
+                if let existing = self.contactAssignmentChanges.first(where: { $0.objectId == contactAssignmentChange.objectId }) {
+                    
+                    if existing.action != contactAssignmentChange.action {
+                        // The entry has a different action -> remove it from the change list.
+                        if let index = self.contactAssignmentChanges.index(where: { $0.objectId == existing.objectId } ) {
+                            self.contactAssignmentChanges.remove(at: index)
+                        }
+                    }
+                }
+            }
+        }
+        
+        updateDoneButtonState()
     }
 }
