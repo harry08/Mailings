@@ -9,6 +9,7 @@ import Foundation
 
 /**
  Container for Contact assignments
+ Designed as a class to be passed as a reference.‚
  */
 class AssigndContacts {
     var contacts = [AssignedContact]()
