@@ -18,6 +18,7 @@
 		4A5F4F38202A520B00ED10D7 /* AssingedContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5F4F37202A520B00ED10D7 /* AssingedContacts.swift */; };
 		4A64E1A42005467000BA851F /* user_male.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A64E1A32005467000BA851F /* user_male.png */; };
 		4A65A209202CB084009A73FF /* ContactAssignmentChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A65A208202CB084009A73FF /* ContactAssignmentChange.swift */; };
+		4A6CF6ED202D774000F791D1 /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A6CF6EC202D774000F791D1 /* Contact.storyboard */; };
 		4A6DE0761FFE0319009BEFA1 /* MailingListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6DE0751FFE0319009BEFA1 /* MailingListDTO.swift */; };
 		4A707E4F20106DA0005243BE /* MailingListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A707E4E20106DA0005243BE /* MailingListTableViewController.swift */; };
 		4A7FF5C21FFCAB7F00685105 /* MailingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7FF5C11FFCAB7F00685105 /* MailingList.swift */; };
@@ -64,6 +65,7 @@
 		4A5F4F37202A520B00ED10D7 /* AssingedContacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssingedContacts.swift; sourceTree = "<group>"; };
 		4A64E1A32005467000BA851F /* user_male.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_male.png; sourceTree = "<group>"; };
 		4A65A208202CB084009A73FF /* ContactAssignmentChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAssignmentChange.swift; sourceTree = "<group>"; };
+		4A6CF6EC202D774000F791D1 /* Contact.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Contact.storyboard; sourceTree = "<group>"; };
 		4A6DE0751FFE0319009BEFA1 /* MailingListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingListDTO.swift; sourceTree = "<group>"; };
 		4A707E4E20106DA0005243BE /* MailingListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingListTableViewController.swift; sourceTree = "<group>"; };
 		4A7FF5C11FFCAB7F00685105 /* MailingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingList.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				4A985E451FF14BD80055F6BA /* FirstViewController.swift */,
 				4A985E471FF14BD80055F6BA /* SecondViewController.swift */,
 				4A985E491FF14BD80055F6BA /* Main.storyboard */,
+				4A6CF6EC202D774000F791D1 /* Contact.storyboard */,
 				4AD999C7201BCC3600C0CE6D /* MailingList.storyboard */,
 				4A985E511FF14BD80055F6BA /* Info.plist */,
 				4AB9AF0C1FF55C680005EFFA /* Mailings.xcdatamodeld */,
@@ -310,6 +313,7 @@
 				4A985E4B1FF14BD80055F6BA /* Main.storyboard in Resources */,
 				4AD999C8201BCC3600C0CE6D /* MailingList.storyboard in Resources */,
 				4A9F238C1FF459EF00B48349 /* message.png in Resources */,
+				4A6CF6ED202D774000F791D1 /* Contact.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
