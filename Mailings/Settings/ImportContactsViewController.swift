@@ -108,10 +108,12 @@ class ImportContactsViewController: UIViewController {
     }
 
     @IBAction func importSelectedContacts(_ sender: Any) {
+        print("importSelectedContacts called")
         selectGroups()
     }
     
     @IBAction func importContactsFromGroup(_ sender: Any) {
-        loadContacts()
+        print("importContactsFromGroup called")
     }
+    
 }

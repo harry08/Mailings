@@ -205,7 +205,7 @@ class ContactTableViewController: FetchedResultsTableViewController {
     }
     
     func sendMailingToContacts() {
-        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard : UIStoryboard = UIStoryboard(name: "Contact", bundle: nil)
         let pickMailingVc = storyboard.instantiateViewController(withIdentifier: "MailingPickerVC")
         
         // self.navigationController?.pushViewController(pickMailingVc, animated: true)
@@ -242,7 +242,7 @@ class ContactTableViewController: FetchedResultsTableViewController {
      The View is opened modally
      */
     @objc func addAction(sender: UIButton) {
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Contact", bundle: nil)
         let editContactVc = storyBoard.instantiateViewController(withIdentifier: "EditContactNavigationVC") 
         
         present(editContactVc, animated: true, completion: nil)

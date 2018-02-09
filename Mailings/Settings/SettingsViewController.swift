@@ -57,12 +57,12 @@ class SettingsViewController: UITableViewController {
         let row = indexPath.row
         
         if row == 0 {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Settings", bundle: nil)
             let contactImportVc = storyBoard.instantiateViewController(withIdentifier: "CommonInfoVC")
             
             self.navigationController?.pushViewController(contactImportVc, animated: true)
         } else if row == 1 {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Settings", bundle: nil)
             let contactImportVc = storyBoard.instantiateViewController(withIdentifier: "ContactImportVC")
             
             self.navigationController?.pushViewController(contactImportVc, animated: true)
