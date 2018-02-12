@@ -26,8 +26,6 @@
 		4A7FF5C61FFCAC7500685105 /* MailingContactMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7FF5C51FFCAC7500685105 /* MailingContactMapper.swift */; };
 		4A7FF5C81FFCB2F500685105 /* MailingListMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7FF5C71FFCB2F500685105 /* MailingListMapper.swift */; };
 		4A985E441FF14BD80055F6BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A985E431FF14BD80055F6BA /* AppDelegate.swift */; };
-		4A985E461FF14BD80055F6BA /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A985E451FF14BD80055F6BA /* FirstViewController.swift */; };
-		4A985E481FF14BD80055F6BA /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A985E471FF14BD80055F6BA /* SecondViewController.swift */; };
 		4A985E4B1FF14BD80055F6BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A985E491FF14BD80055F6BA /* Main.storyboard */; };
 		4A985E4D1FF14BD80055F6BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A985E4C1FF14BD80055F6BA /* Assets.xcassets */; };
 		4A985E501FF14BD80055F6BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A985E4E1FF14BD80055F6BA /* LaunchScreen.storyboard */; };
@@ -76,8 +74,6 @@
 		4A7FF5C71FFCB2F500685105 /* MailingListMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingListMapper.swift; sourceTree = "<group>"; };
 		4A985E401FF14BD80055F6BA /* Mailings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mailings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A985E431FF14BD80055F6BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4A985E451FF14BD80055F6BA /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		4A985E471FF14BD80055F6BA /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		4A985E4A1FF14BD80055F6BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4A985E4C1FF14BD80055F6BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4A985E4F1FF14BD80055F6BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -157,8 +153,6 @@
 				4AD59F5B2004954F008FC37C /* Mailing */,
 				4A9E1FEE20088884006C698F /* Contact */,
 				4A9E1FEF200888CF006C698F /* Model */,
-				4A985E451FF14BD80055F6BA /* FirstViewController.swift */,
-				4A985E471FF14BD80055F6BA /* SecondViewController.swift */,
 				4A985E491FF14BD80055F6BA /* Main.storyboard */,
 				4A6CF6EC202D774000F791D1 /* Contact.storyboard */,
 				4AD999C7201BCC3600C0CE6D /* MailingList.storyboard */,
@@ -337,7 +331,6 @@
 				4AE86FD4200349B000D981B4 /* ContactTableViewController.swift in Sources */,
 				4A17ADB31FF58E2400FEDD1E /* ImportContactsViewController.swift in Sources */,
 				4AE86FD82003D01900D981B4 /* EditContactViewController.swift in Sources */,
-				4A985E481FF14BD80055F6BA /* SecondViewController.swift in Sources */,
 				4A7FF5C41FFCAC2D00685105 /* MailingContactDTO.swift in Sources */,
 				4A707E4F20106DA0005243BE /* MailingListTableViewController.swift in Sources */,
 				4AE86FCD2002036600D981B4 /* MailingDTO.swift in Sources */,
@@ -364,7 +357,6 @@
 				4A5F4F38202A520B00ED10D7 /* AssingedContacts.swift in Sources */,
 				4A4BA9A32022F7C900BF0594 /* ContactPickerTableViewController.swift in Sources */,
 				4ABEAAD0200908310073875E /* MailDTO.swift in Sources */,
-				4A985E461FF14BD80055F6BA /* FirstViewController.swift in Sources */,
 				4AB9AF0A1FF559D20005EFFA /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
