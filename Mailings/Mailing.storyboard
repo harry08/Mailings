@@ -107,7 +107,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Senden"/>
                                 <connections>
-                                    <action selector="sendMailing:" destination="vOW-tZ-wee" eventType="touchUpInside" id="5iS-eX-iM0"/>
+                                    <segue destination="nfA-hz-lQ0" kind="show" identifier="pickMailingList" id="XhG-KS-EH3"/>
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Mailtext" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cX7-fg-4I7">
@@ -137,6 +137,44 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Eh-iM-lY4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2669.5999999999999" y="927.88605697151434"/>
+        </scene>
+        <!--Verteiler wählen-->
+        <scene sceneID="oLe-dl-8TA">
+            <objects>
+                <tableViewController id="nfA-hz-lQ0" customClass="MailingListPickerTableViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="s8V-ml-bIw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MailingListCell" textLabel="bFb-y6-K5U" style="IBUITableViewCellStyleDefault" id="EoG-sq-DGx">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EoG-sq-DGx" id="uH1-af-8V4">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bFb-y6-K5U">
+                                            <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="nfA-hz-lQ0" id="9VQ-xL-svs"/>
+                            <outlet property="delegate" destination="nfA-hz-lQ0" id="z6L-8n-2mQ"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Verteiler wählen" id="Zib-0A-ar5"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KLF-ow-BeA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3622" y="1222"/>
         </scene>
         <!--Edit Mailing-->
         <scene sceneID="LPD-2x-T3Y">
@@ -214,6 +252,6 @@
         <image name="message.png" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="NTK-0F-GdE"/>
+        <segue reference="Hut-cf-qlc"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -9,8 +9,8 @@ import UIKit
 import CoreData
 import MessageUI
 
-class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDelegate {
-
+class ShowMailingViewController: UIViewController, MailingListPickerTableViewControllerDelegate, MFMailComposeViewControllerDelegate {
+    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var mailingTextViewLabel: UITextView!
     
@@ -39,26 +39,14 @@ class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDe
         super.viewDidLoad()
         mailingTextViewLabel.isEditable = false
     }
-
-    @IBAction func sendMailing(_ sender: Any) {
-        // TODO Implement
-        // Unklar, ob Verteilerliste Attribut eines Mailings sein sollte.
-    }
-    
+ 
     // MARK: - Send Email
     
-    func composeMailsToSend() -> [MailDTO] {
+    func composeMailsToSend(emailAddresses: [String]) -> [MailDTO] {
         var mailsToSend = [MailDTO]()
         let chunkSize = 80
         
-        guard let container = container else {
-            print("Sending mail not possible. No PersistentContainer.")
-            return mailsToSend
-        }
-        /* TODO
         if let mailingDTO = mailingDTO {
-            let emailAddresses = MailingContact.getEmailAddressesForMailingList(mailingDTO.mailingList!, in: container.viewContext)
-            
             var startIndex = 0
             var continueProcessing = true
             while (continueProcessing) {
@@ -79,7 +67,7 @@ class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDe
                     continueProcessing = false
                 }
             }
-        }*/
+        }
         
         return mailsToSend
     }
@@ -128,6 +116,12 @@ class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDe
             destinationVC.container = container
             destinationVC.mailingDTO = mailingDTO
             destinationVC.editMode = true
+        } else if segue.identifier == "pickMailingList",
+            let destinationVC = segue.destination as? MailingListPickerTableViewController
+        {
+            // Choose mailing list to send mailing to.
+            destinationVC.container = container
+            destinationVC.delegate = self            
         } /* TODO Remove comment    else if segue.identifier == "showEmailsToSend",
             let destinationVC = segue.destination as? MailsToSendTableViewController
         {
@@ -135,5 +129,25 @@ class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDe
             let mailsToSend = composeMailsToSend()
             destinationVC.mailsToSend = mailsToSend
         }*/
+    }
+    
+    // MARK: - MailingListPickerTableViewController Delegate
+    /**
+     Called after mailing list was chosen. Send the selected mailing to the chosen mailing list.
+     */
+    func mailingListPicker(_ picker: MailingListPickerTableViewController, didPick chosenMailingList: MailingListDTO) {
+        // Return from view
+        navigationController?.popViewController(animated:true)
+        
+        // Get email addresses of mailing list
+        guard let container = container else {
+            return
+        }
+        
+        let emailAddresses = MailingList.getEmailAddressesForMailingList(objectId: chosenMailingList.objectId!, in: container.viewContext)
+        
+        // Prepare mails to send
+        let mailsToSend = composeMailsToSend(emailAddresses: emailAddresses)
+        print("Mails to send: \(mailsToSend)")
     }
 }

@@ -30,7 +30,7 @@ class MailingList: NSManagedObject {
      Returns all Email addresses from the contacts assigned to the given mailingList
      Used when a mailing should be send to a mailingList.
      */
-    class func getEmailAddressesForMailing(objectId: NSManagedObjectID, in context: NSManagedObjectContext) -> [String] {
+    class func getEmailAddressesForMailingList(objectId: NSManagedObjectID, in context: NSManagedObjectContext) -> [String] {
         var emailAddresses = [String]()
         
         do {

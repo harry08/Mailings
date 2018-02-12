@@ -8,6 +8,8 @@
 import UIKit
 import CoreData
 
+// TODO: Use Delegate to provide chosen Mailing to caller. See ContactPickerTableViewController
+
 /**
  Shows a a ist of mailings to choose from.
  Implements UIPopoverPresentationControllerDelegate to display tbe view in a navigation controller on compact width-devices.
