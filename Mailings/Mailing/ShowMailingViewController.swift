@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 import MessageUI
 
-class ShowMailingViewController: UIViewController, MailingListPickerTableViewControllerDelegate, MFMailComposeViewControllerDelegate {
+class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDelegate {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var mailingTextViewLabel: UITextView!
@@ -40,48 +40,6 @@ class ShowMailingViewController: UIViewController, MailingListPickerTableViewCon
         mailingTextViewLabel.isEditable = false
     }
  
-    // MARK: - Send Email
-    
-    func composeMailsToSend(emailAddresses: [String]) -> [MailDTO] {
-        var mailsToSend = [MailDTO]()
-        let chunkSize = 80
-        
-        if let mailingDTO = mailingDTO {
-            var startIndex = 0
-            var continueProcessing = true
-            while (continueProcessing) {
-                var endIndex = startIndex + chunkSize
-                if endIndex >= emailAddresses.endIndex {
-                    endIndex = emailAddresses.endIndex
-                }
-                
-                let chunk = emailAddresses[startIndex ..< endIndex]
-                let ccAddresses = convertToArray(slice: chunk)
-                
-                print("Sending mails to \(ccAddresses)")
-                let mailToSend = MailDTO(mailingDTO: mailingDTO, emailAddresses: ccAddresses)
-                mailsToSend.append(mailToSend)
-                
-                startIndex = endIndex
-                if startIndex >= emailAddresses.endIndex {
-                    continueProcessing = false
-                }
-            }
-        }
-        
-        return mailsToSend
-    }
-    
-    func convertToArray(slice: ArraySlice<String>) -> [String] {
-        var result = [String]()
-        result.reserveCapacity(slice.count)
-        slice.forEach{ element in
-            result.append(element)
-        }
-        
-        return result
-    }
-    
     // MARK: - Navigation
     
     // Navigate back from editing mailing. Save data in MailingDTO
@@ -121,7 +79,8 @@ class ShowMailingViewController: UIViewController, MailingListPickerTableViewCon
         {
             // Choose mailing list to send mailing to.
             destinationVC.container = container
-            destinationVC.delegate = self            
+            destinationVC.mailingDTO = mailingDTO
+            destinationVC.delegate = destinationVC
         } /* TODO Remove comment    else if segue.identifier == "showEmailsToSend",
             let destinationVC = segue.destination as? MailsToSendTableViewController
         {
@@ -135,6 +94,7 @@ class ShowMailingViewController: UIViewController, MailingListPickerTableViewCon
     /**
      Called after mailing list was chosen. Send the selected mailing to the chosen mailing list.
      */
+    /*
     func mailingListPicker(_ picker: MailingListPickerTableViewController, didPick chosenMailingList: MailingListDTO) {
         // Return from view
         navigationController?.popViewController(animated:true)
@@ -148,6 +108,13 @@ class ShowMailingViewController: UIViewController, MailingListPickerTableViewCon
         
         // Prepare mails to send
         let mailsToSend = composeMailsToSend(emailAddresses: emailAddresses)
-        print("Mails to send: \(mailsToSend)")
-    }
+        if mailsToSend.count == 1 {
+            // Show Mail view directly
+            
+        } else if mailsToSend.count > 1 {
+            // The mailing needs to be send in more than one mail.
+            // Display tableview to show the different mails.
+            
+        }
+    }*/
 }

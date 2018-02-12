@@ -171,6 +171,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Verteiler wählen" id="Zib-0A-ar5"/>
+                    <connections>
+                        <segue destination="vZz-XU-wCA" kind="show" identifier="sendMailingToMailingList" id="H26-3f-oCF"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KLF-ow-BeA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -247,11 +250,62 @@
             </objects>
             <point key="canvasLocation" x="2670" y="227"/>
         </scene>
+        <!--MailsToSend-->
+        <scene sceneID="dmO-5O-0CE">
+            <objects>
+                <tableViewController id="vZz-XU-wCA" userLabel="MailsToSend" customClass="MailsToSendTableViewController" customModule="CustomerManager" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="nj2-Jr-ajZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MailToSendCell" textLabel="Rbj-wP-95d" detailTextLabel="YZQ-S4-mMY" style="IBUITableViewCellStyleSubtitle" id="8mF-cz-an8">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8mF-cz-an8" id="ljT-lE-AYg">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Rbj-wP-95d">
+                                            <rect key="frame" x="16" y="5" width="33.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YZQ-S4-mMY">
+                                            <rect key="frame" x="16" y="25.5" width="44" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="vZz-XU-wCA" id="ZHy-W8-G2t"/>
+                            <outlet property="delegate" destination="vZz-XU-wCA" id="Tzs-Vy-Nf3"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Sende Emails" id="Hbx-fW-YvM">
+                        <barButtonItem key="rightBarButtonItem" title="Fertig" id="6kc-xu-Ylp">
+                            <connections>
+                                <action selector="done:" destination="vZz-XU-wCA" id="zBR-Rz-Lf5"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9bq-Gl-rkl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4476" y="1221"/>
+        </scene>
     </scenes>
     <resources>
         <image name="message.png" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Hut-cf-qlc"/>
+        <segue reference="NTK-0F-GdE"/>
     </inferredMetricsTieBreakers>
 </document>

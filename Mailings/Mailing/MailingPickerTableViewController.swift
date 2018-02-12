@@ -124,6 +124,7 @@ class MailingPickerTableViewController: FetchedResultsTableViewController, UIPop
     }
     
     // MARK: - Navigation and Actions
+    
 }
 
 // MARK: extension UITableViewDataSource
