@@ -9,8 +9,9 @@ import UIKit
 import os.log
 import CoreData
 import Contacts
+import ContactsUI
 
-class ImportContactsViewController: UIViewController {
+class ImportContactsViewController: UIViewController, CNContactPickerDelegate, AddressbookGroupPickerTableViewControllerDelegate {
     
     var container: NSPersistentContainer? =
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
@@ -19,75 +20,68 @@ class ImportContactsViewController: UIViewController {
         super.viewDidLoad()
     }
     
-    // Loads all contacts which are assigned to a group from the device.
-    private func loadContacts() {
+    /**
+     Loads all contacts from the given addressbook group
+     */
+    private func importContactsOfGroup(_ group: CNGroup) -> Int {
+        var contactCounter : Int = 0
+        
         AppDelegate.getAppDelegate().requestForAccess { (accessGranted) -> Void in
             if accessGranted,
                 let context = self.container?.viewContext {
-                print("Loading contacts...")
                 let contactsStore = AppDelegate.getAppDelegate().contactStore
                 
                 let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactBirthdayKey, CNContactImageDataKey]
                 var contacts = [CNContact]()
                 do {
-                    var contactCounter : Int = 0
+                    let predicate = CNContact.predicateForContactsInGroup(withIdentifier: group.identifier)
+                        
+                    contacts = try contactsStore.unifiedContacts(matching: predicate, keysToFetch: keys as [CNKeyDescriptor])
                     
-                    // Selecting all groups
-                    let groups = try contactsStore.groups(matching: nil)
-                    for i in 0 ..< groups.count {
-                        let group = groups[i]
-                        print("Group: \(group.identifier): \(group.name). Fetching contacts for this group...")
-                        
-                        let predicate = CNContact.predicateForContactsInGroup(withIdentifier: group.identifier)
-                        
-                        contacts = try contactsStore.unifiedContacts(matching: predicate, keysToFetch: keys as [CNKeyDescriptor])
-                        if contacts.count == 0 {
-                            print("No contacts were found for group \(group.name)")
-                        } else {
-                            print("# of contacts for group \(group.name): \(contacts.count)")
-                            for x in 0 ..< contacts.count {
-                                let contact = contacts[x]
-                                print("Contact: \(contact.givenName) \(contact.familyName). Adding to database...")
-                                
-                                // TDDO Import
-                            }
+                    for i in 0 ..< contacts.count {
+                        let contact = contacts[i]
+                        if try !MailingContact.contactExists(contact: contact, in: context) {
+                            try MailingContact.createContact(contact: contact, in: context)
+                            contactCounter += 1
                         }
                     }
                     
+                    
                     // Loading done. Save data.
                     try? context.save()
-                    var message : String
-                    if contactCounter > 1 {
-                        message = "\(contactCounter) Kontakte importiert"
-                    } else if contactCounter == 1 {
-                        message = "Ein Kontakt importiert"
-                    } else {
-                        message = "Keine Kontakte importiert"
-                    }
-                    print(message)
-                    
-                    let alertController = UIAlertController(title: "Kontaktimport abeschlossen", message: message, preferredStyle: .alert)
-                    let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                    alertController.addAction(defaultAction)
-                    
-                    self.present(alertController, animated: true, completion: nil)
                 }
                 catch {
                     print("Unable to fetch contacts")
                 }
-                
-                print("Loading contacts done")
             }
         }
+        
+        return contactCounter
     }
     
-    private func selectGroups() -> [CNGroup]{
+    private func showImportResult(importedContacts: Int) {
+        var message : String
+        if importedContacts > 1 {
+            message = "\(importedContacts) Kontakte importiert"
+        } else if importedContacts == 1 {
+            message = "Ein Kontakt importiert"
+        } else {
+            message = "Keine Kontakte importiert"
+        }
+        print(message)
+        
+        let alertController = UIAlertController(title: "Kontaktimport abeschlossen", message: message, preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(defaultAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    private func getAddressbookGroups() -> [CNGroup]{
         var selectedGroups : [CNGroup] = [CNGroup]()
         
         AppDelegate.getAppDelegate().requestForAccess { (accessGranted) -> Void in
-            if accessGranted,
-                let context = self.container?.viewContext {
-                
+            if accessGranted {
                 let contactsStore = AppDelegate.getAppDelegate().contactStore
                 
                 do {
@@ -95,7 +89,6 @@ class ImportContactsViewController: UIViewController {
                     for i in 0 ..< groups.count {
                         let group = groups[i]
                         selectedGroups.append(group)
-                        print("Group: \(group.identifier): \(group.name).")
                     }
                 }
                 catch let error as NSError {
@@ -106,14 +99,62 @@ class ImportContactsViewController: UIViewController {
         
         return selectedGroups
     }
+    
+    // MARK: - Navigation and Actions
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "pickGroup",
+            let destinationVC = segue.destination as? AddressbookGroupPickerTableViewController
+        {
+            destinationVC.delegate = self
+            destinationVC.groups = getAddressbookGroups()
+        }
+    }
 
+    /**
+     Action that calls the ContactPicker View.
+     */
     @IBAction func importSelectedContacts(_ sender: Any) {
-        print("importSelectedContacts called")
-        selectGroups()
+        let contactPickerViewController = CNContactPickerViewController()
+        contactPickerViewController.delegate = self
+        present(contactPickerViewController, animated: true, completion: nil)
     }
     
-    @IBAction func importContactsFromGroup(_ sender: Any) {
-        print("importContactsFromGroup called")
+    // MARK: - ContactPicker Delegate
+    
+    /**
+     ContactPicker Delegate method. Called after contacts where picked.
+     Imports the chosen contacts
+     */
+    public func contactPicker(_ picker: CNContactPickerViewController, didSelect contacts: [CNContact]) {
+        guard let container = container else {
+            return
+        }
+        
+        do {
+            for i in 0 ..< contacts.count {
+                let contact = contacts[i]
+                if try !MailingContact.contactExists(contact: contact, in: container.viewContext) {
+                    try MailingContact.createContact(contact: contact, in: container.viewContext)
+                }
+            }
+            
+            try container.viewContext.save()
+        } catch let error as NSError {
+            os_log("Could not save addressbook contact: %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+        }
     }
     
+    // MARK: - AddressbookGroupPicker Delegate
+    
+    /**
+     Addressbook group picker Delegate method. Called after group was picked.
+     Imports all contacts of the selected group
+     */
+    func groupPicker(_ picker: AddressbookGroupPickerTableViewController, didPick chosenGroup: CNGroup) {
+        navigationController?.popViewController(animated:true)
+        
+        let importedContacts = importContactsOfGroup(chosenGroup)
+        showImportResult(importedContacts: importedContacts)
+    }
 }

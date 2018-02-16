@@ -212,6 +212,7 @@ class ContactTableViewController: FetchedResultsTableViewController {
         pickMailingVc.modalPresentationStyle = .popover
         let popover: UIPopoverPresentationController = pickMailingVc.popoverPresentationController!
         popover.delegate = (pickMailingVc as! UIPopoverPresentationControllerDelegate)
+        popover.sourceView = view
         present(pickMailingVc, animated: true, completion: nil)
     }
     
@@ -251,7 +252,7 @@ class ContactTableViewController: FetchedResultsTableViewController {
     /**
      Displays a menu to choose several actions for the selected contacts.
      */
-    @objc func multiSelectShareAction(sender: UIButton) {
+    @objc func multiSelectShareAction(sender: UIBarButtonItem) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Sende Email", style: .default) { _ in
             print("Action Sende Email called")
@@ -264,6 +265,9 @@ class ContactTableViewController: FetchedResultsTableViewController {
         alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
             print("Cancel called")
         })
+        // The following 2 lines are needed for iPad.
+        alert.popoverPresentationController?.sourceView = view
+        alert.popoverPresentationController?.barButtonItem = sender
         present(alert, animated: true)
     }
     

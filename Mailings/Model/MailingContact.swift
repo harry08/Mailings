@@ -34,7 +34,7 @@ class MailingContact: NSManagedObject {
     }
     
     // Creates a new mailingcontact from a given addressbook contact.
-    class func createContact(contact: CNContact, groupName: String, in context: NSManagedObjectContext) throws {
+    class func createContact(contact: CNContact, in context: NSManagedObjectContext) throws {
         var existing : Bool = false
         do {
             existing = try contactExists(contact: contact, in: context)
@@ -58,7 +58,6 @@ class MailingContact: NSManagedObject {
             }
             mailingContact.createtime = Date()
             mailingContact.updatetime = Date()
-            mailingContact.notes = "Import aus Kontaktgruppe: " + groupName
             
             // Assignment to default mailinglists
             let defaultMailingLists = MailingList.getDefaultMailingLists(in: context)
