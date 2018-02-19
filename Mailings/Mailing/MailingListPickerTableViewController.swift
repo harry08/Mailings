@@ -18,10 +18,13 @@ protocol MailingListPickerTableViewControllerDelegate: class {
  Table is in Singleselection mode.
  After mailinglist selection is done the MailingListPickerTableViewControllerDelegate is called.
  */
-class MailingListPickerTableViewController: FetchedResultsTableViewController, MailingListPickerTableViewControllerDelegate {
+class MailingListPickerTableViewController: FetchedResultsTableViewController {
     
     var mailsToSend = [MailDTO]()
     
+    /**
+     Mailing to send
+     */
     var mailingDTO : MailingDTO?
 
     /**
@@ -73,48 +76,6 @@ class MailingListPickerTableViewController: FetchedResultsTableViewController, M
         }
     }
     
-    // MARK: - Email address preparation
-    
-    func composeMailsToSend(emailAddresses: [String]) -> [MailDTO] {
-        var mailsToSend = [MailDTO]()
-        let chunkSize = 4
-        
-        if let mailingDTO = mailingDTO {
-            var startIndex = 0
-            var continueProcessing = true
-            while (continueProcessing) {
-                var endIndex = startIndex + chunkSize
-                if endIndex >= emailAddresses.endIndex {
-                    endIndex = emailAddresses.endIndex
-                }
-                
-                let chunk = emailAddresses[startIndex ..< endIndex]
-                let ccAddresses = convertToArray(slice: chunk)
-                
-                print("Sending mails to \(ccAddresses)")
-                let mailToSend = MailDTO(mailingDTO: mailingDTO, emailAddresses: ccAddresses)
-                mailsToSend.append(mailToSend)
-                
-                startIndex = endIndex
-                if startIndex >= emailAddresses.endIndex {
-                    continueProcessing = false
-                }
-            }
-        }
-        
-        return mailsToSend
-    }
-    
-    func convertToArray(slice: ArraySlice<String>) -> [String] {
-        var result = [String]()
-        result.reserveCapacity(slice.count)
-        slice.forEach{ element in
-            result.append(element)
-        }
-        
-        return result
-    }
-    
     // MARK: - TableView
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -132,37 +93,6 @@ class MailingListPickerTableViewController: FetchedResultsTableViewController, M
             let mailingListDTO = MailingListMapper.mapToDTO(mailingList: mailingList)
             delegate?.mailingListPicker(self, didPick: mailingListDTO)
         }
-    }
-    
-    // MARK: - Navigation
-    
-    // Prepare for navigate to editing the Mailing data
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "sendMailingToMailingList",
-            let destinationVC = segue.destination as? MailsToSendTableViewController
-        {
-            // Edit mailing
-            destinationVC.mailsToSend = mailsToSend
-        } 
-    }
-    
-    // MARK: - MailingListPickerTableViewController Delegate
-    /**
-     Called after mailing list was chosen. Send the selected mailing to the chosen mailing list.
-     */
-    func mailingListPicker(_ picker: MailingListPickerTableViewController, didPick chosenMailingList: MailingListDTO) {
-        
-        // Get email addresses of mailing list
-        guard let container = container else {
-            return
-        }
-        
-        let emailAddresses = MailingList.getEmailAddressesForMailingList(objectId: chosenMailingList.objectId!, in: container.viewContext)
-        
-        // Prepare mails to send
-        mailsToSend = composeMailsToSend(emailAddresses: emailAddresses)
-        
-        performSegue(withIdentifier: "sendMailingToMailingList", sender: nil)
     }
 }
 

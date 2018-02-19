@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 import MessageUI
 
-class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDelegate {
+class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDelegate, MailingListPickerTableViewControllerDelegate {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var mailingTextViewLabel: UITextView!
@@ -27,6 +27,8 @@ class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDe
             updateUI()
         }
     }
+    
+    var mailsToSend = [MailDTO]()
     
     private func updateUI() {
         if let mailingDTO = self.mailingDTO {
@@ -80,21 +82,19 @@ class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDe
             // Choose mailing list to send mailing to.
             destinationVC.container = container
             destinationVC.mailingDTO = mailingDTO
-            destinationVC.delegate = destinationVC
-        } /* TODO Remove comment    else if segue.identifier == "showEmailsToSend",
+            destinationVC.delegate = self
+        } else if segue.identifier == "showEmailsToSend",
             let destinationVC = segue.destination as? MailsToSendTableViewController
         {
-            destinationVC.container = container
-            let mailsToSend = composeMailsToSend()
             destinationVC.mailsToSend = mailsToSend
-        }*/
+        }
     }
     
     // MARK: - MailingListPickerTableViewController Delegate
+    
     /**
      Called after mailing list was chosen. Send the selected mailing to the chosen mailing list.
      */
-    /*
     func mailingListPicker(_ picker: MailingListPickerTableViewController, didPick chosenMailingList: MailingListDTO) {
         // Return from view
         navigationController?.popViewController(animated:true)
@@ -107,14 +107,18 @@ class ShowMailingViewController: UIViewController, MFMailComposeViewControllerDe
         let emailAddresses = MailingList.getEmailAddressesForMailingList(objectId: chosenMailingList.objectId!, in: container.viewContext)
         
         // Prepare mails to send
-        let mailsToSend = composeMailsToSend(emailAddresses: emailAddresses)
-        if mailsToSend.count == 1 {
-            // Show Mail view directly
+        if let mailingDTO = mailingDTO {
+            let mailComposer = MailComposer(mailingDTO: mailingDTO)
+            mailsToSend = mailComposer.composeMailsToSend(emailAddresses: emailAddresses)
+            if mailsToSend.count == 1 {
+                // Show Mail view directly
+                
             
-        } else if mailsToSend.count > 1 {
-            // The mailing needs to be send in more than one mail.
-            // Display tableview to show the different mails.
-            
+            } else if mailsToSend.count > 1 {
+                // The mailing needs to be send in more than one mail.
+                // Display tableview to show the different mails.                
+                performSegue(withIdentifier: "showEmailsToSend", sender: nil)
+            }
         }
-    }*/
+    }
 }

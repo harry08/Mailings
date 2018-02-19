@@ -17,6 +17,7 @@
 		4A5C6F822036CBE800ECF1F3 /* AddressbookGroupPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5C6F812036CBE800ECF1F3 /* AddressbookGroupPickerTableViewController.swift */; };
 		4A5F4F36202A461F00ED10D7 /* AssignedContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5F4F35202A461F00ED10D7 /* AssignedContact.swift */; };
 		4A5F4F38202A520B00ED10D7 /* AssingedContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5F4F37202A520B00ED10D7 /* AssingedContacts.swift */; };
+		4A63556D203B307B00140F2B /* MailComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A63556C203B307B00140F2B /* MailComposer.swift */; };
 		4A64E1A42005467000BA851F /* user_male.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A64E1A32005467000BA851F /* user_male.png */; };
 		4A65A209202CB084009A73FF /* ContactAssignmentChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A65A208202CB084009A73FF /* ContactAssignmentChange.swift */; };
 		4A6CF6ED202D774000F791D1 /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A6CF6EC202D774000F791D1 /* Contact.storyboard */; };
@@ -67,6 +68,7 @@
 		4A5C6F812036CBE800ECF1F3 /* AddressbookGroupPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressbookGroupPickerTableViewController.swift; sourceTree = "<group>"; };
 		4A5F4F35202A461F00ED10D7 /* AssignedContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignedContact.swift; sourceTree = "<group>"; };
 		4A5F4F37202A520B00ED10D7 /* AssingedContacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssingedContacts.swift; sourceTree = "<group>"; };
+		4A63556C203B307B00140F2B /* MailComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposer.swift; sourceTree = "<group>"; };
 		4A64E1A32005467000BA851F /* user_male.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_male.png; sourceTree = "<group>"; };
 		4A65A208202CB084009A73FF /* ContactAssignmentChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAssignmentChange.swift; sourceTree = "<group>"; };
 		4A6CF6EC202D774000F791D1 /* Contact.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Contact.storyboard; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 		4AD59F5B2004954F008FC37C /* Mailing */ = {
 			isa = PBXGroup;
 			children = (
+				4A63556C203B307B00140F2B /* MailComposer.swift */,
 				4ABEAACF200908310073875E /* MailDTO.swift */,
 				4ABEAAC9200906A20073875E /* EditMailingViewController.swift */,
 				4ABEAACA200906A20073875E /* MailingTableViewController.swift */,
@@ -363,6 +366,7 @@
 				4AB386D4201BD9EA00840237 /* MailingListDetailViewController.swift in Sources */,
 				4A65A209202CB084009A73FF /* ContactAssignmentChange.swift in Sources */,
 				4A17ADAF1FF58BD900FEDD1E /* MailingContact.swift in Sources */,
+				4A63556D203B307B00140F2B /* MailComposer.swift in Sources */,
 				4A7FF5C81FFCB2F500685105 /* MailingListMapper.swift in Sources */,
 				4A5C6F822036CBE800ECF1F3 /* AddressbookGroupPickerTableViewController.swift in Sources */,
 				4AB9AF101FF56CC30005EFFA /* CommonInfoViewController.swift in Sources */,

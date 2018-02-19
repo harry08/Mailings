@@ -10,4 +10,5 @@ import Foundation
 struct MailDTO {
     var mailingDTO: MailingDTO
     var emailAddresses: [String]
+    var emailSent = false
 }

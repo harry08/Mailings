@@ -21,8 +21,16 @@ class MailsToSendTableViewController: UITableViewController, MFMailComposeViewCo
         }
     }
     
+    var currentMailToSendIndex : Int?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    func updateMailSent(index: Int) {
+        var mail = mailsToSend![index]
+        mail.emailSent = true
+        mailsToSend![index] = mail
     }
    
     // MARK: - Table view data source
@@ -53,13 +61,11 @@ class MailsToSendTableViewController: UITableViewController, MFMailComposeViewCo
         }
         cell.detailTextLabel?.text = labelText
         
+        configureCheckmark(for: cell, at: indexPath)
+        
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        composeMail(index: indexPath.row)
-    }
-
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -74,6 +80,17 @@ class MailsToSendTableViewController: UITableViewController, MFMailComposeViewCo
         return [sendMail]
     }
     
+    func configureCheckmark(for cell: UITableViewCell,
+                            at indexPath: IndexPath) {
+        let mail = mailsToSend![indexPath.row]
+        
+        if mail.emailSent {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
+        }
+    }
+    
     // MARK: - Navigation
     
     @IBAction func done(_ sender: Any) {
@@ -86,6 +103,7 @@ class MailsToSendTableViewController: UITableViewController, MFMailComposeViewCo
     // MARK: - Send mail
     
     func composeMail(index: Int) {
+        currentMailToSendIndex = index
         let mailDTO = mailsToSend![index]
         let mailComposeViewController = configuredMailComposeViewController(mailDTO: mailDTO)
         if !MFMailComposeViewController.canSendMail() {
@@ -115,6 +133,10 @@ class MailsToSendTableViewController: UITableViewController, MFMailComposeViewCo
     }
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        if result != MFMailComposeResult.failed {
+            updateMailSent(index: currentMailToSendIndex!)
+        }
+        
         controller.dismiss(animated: true, completion: nil)
     }
     

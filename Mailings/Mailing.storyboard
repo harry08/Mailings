@@ -132,6 +132,7 @@
                     <connections>
                         <outlet property="mailingTextViewLabel" destination="cX7-fg-4I7" id="Ek4-t9-tw7"/>
                         <outlet property="titleLabel" destination="219-Fr-HWH" id="YGw-9N-wwk"/>
+                        <segue destination="vZz-XU-wCA" kind="show" identifier="showEmailsToSend" id="NBb-Ht-Kit"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Eh-iM-lY4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -171,9 +172,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Verteiler wählen" id="Zib-0A-ar5"/>
-                    <connections>
-                        <segue destination="vZz-XU-wCA" kind="show" identifier="sendMailingToMailingList" id="H26-3f-oCF"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KLF-ow-BeA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -253,7 +251,7 @@
         <!--MailsToSend-->
         <scene sceneID="dmO-5O-0CE">
             <objects>
-                <tableViewController id="vZz-XU-wCA" userLabel="MailsToSend" customClass="MailsToSendTableViewController" customModule="CustomerManager" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="vZz-XU-wCA" userLabel="MailsToSend" customClass="MailsToSendTableViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="nj2-Jr-ajZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -299,13 +297,13 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9bq-Gl-rkl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4476" y="1221"/>
+            <point key="canvasLocation" x="3625" y="1926"/>
         </scene>
     </scenes>
     <resources>
         <image name="message.png" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="NTK-0F-GdE"/>
+        <segue reference="Hut-cf-qlc"/>
     </inferredMetricsTieBreakers>
 </document>
