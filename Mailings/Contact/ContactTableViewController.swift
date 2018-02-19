@@ -11,7 +11,7 @@ import UIKit
 import CoreData
 import MessageUI
 
-class ContactTableViewController: FetchedResultsTableViewController {
+class ContactTableViewController: FetchedResultsTableViewController, MailingPickerTableViewControllerDelegate {
     
     var multiSelection = false
     
@@ -169,6 +169,11 @@ class ContactTableViewController: FetchedResultsTableViewController {
                 destinationVC.container = container
                 destinationVC.contactDTO = contactDTO
             }
+        } else if segue.identifier == "pickMailing",
+            let destinationVC = segue.destination as? MailingPickerTableViewController
+        {
+            destinationVC.container = container
+            destinationVC.delegate = self
         }
     }
     
@@ -204,40 +209,6 @@ class ContactTableViewController: FetchedResultsTableViewController {
         }
     }
     
-    func sendMailingToContacts() {
-        let storyboard : UIStoryboard = UIStoryboard(name: "Contact", bundle: nil)
-        let pickMailingVc = storyboard.instantiateViewController(withIdentifier: "MailingPickerVC")
-        
-        // self.navigationController?.pushViewController(pickMailingVc, animated: true)
-        pickMailingVc.modalPresentationStyle = .popover
-        let popover: UIPopoverPresentationController = pickMailingVc.popoverPresentationController!
-        popover.delegate = (pickMailingVc as! UIPopoverPresentationControllerDelegate)
-        popover.sourceView = view
-        present(pickMailingVc, animated: true, completion: nil)
-    }
-    
-    /**
-     Navigate back from choosing a mailing to send to the selected contacts
-     */
-    @IBAction func unwindFromChoooseMailing(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? MailingPickerTableViewController,
-            let selectedMailing = sourceViewController.getSelectedMailing() {
-            
-            let emailAddresses = getSelectedEmailAddresses()
-            
-            self.multiSelection = false
-            updateMultiSelection()
-            updateUI()
-            
-            // Wait for 2 seconds in order to wait for the other
-            // view to be finished before displaying the mail view.
-            let when = DispatchTime.now() + 2 // wait 2 seconds
-            DispatchQueue.main.asyncAfter(deadline: when) {
-                self.composeMailForMailing(selectedMailing, emailAddresses: emailAddresses)
-            }
-        }
-    }
-    
     /**
      Calls the EditContactviewController to add a new contact.
      The View is opened modally
@@ -260,7 +231,7 @@ class ContactTableViewController: FetchedResultsTableViewController {
         })
         alert.addAction(UIAlertAction(title: "Sende Mailing...", style: .default) { _ in
             print("Action Sende Mailing")
-            self.sendMailingToContacts()
+            self.performSegue(withIdentifier: "pickMailing", sender: self)
         })
         alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
             print("Cancel called")
@@ -335,8 +306,29 @@ class ContactTableViewController: FetchedResultsTableViewController {
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        print("Search text: \(searchText)")
         performFetch()
+    }
+    
+    // MARK: - MailPicker Delegate
+    
+    /**
+     Called after mailing was chosen. Send mailing to selected email addresses.
+     */
+    func mailingPicker(_ picker: MailingPickerTableViewController, didPick chosenMailing: MailingDTO) {
+        navigationController?.popViewController(animated:true)
+        
+        let emailAddresses = getSelectedEmailAddresses()
+        
+        self.multiSelection = false
+        updateMultiSelection()
+        updateUI()
+        
+        // Wait for 2 seconds in order to wait for the other
+        // view to be finished before displaying the mail view.
+        let when = DispatchTime.now() + 2 // wait 2 seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.composeMailForMailing(chosenMailing, emailAddresses: emailAddresses)
+        }
     }
 }
 

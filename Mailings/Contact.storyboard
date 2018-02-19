@@ -67,6 +67,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="multiSelectButton" destination="3jb-p1-TdE" id="na5-hR-KwC"/>
+                        <segue destination="lRZ-Zt-88F" kind="show" identifier="pickMailing" id="rzS-oM-PZZ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BnX-KU-rWT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -293,14 +294,10 @@
                             <outlet property="delegate" destination="lRZ-Zt-88F" id="R76-iJ-ton"/>
                         </connections>
                     </tableView>
-                    <connections>
-                        <segue destination="wEZ-uf-CGI" kind="unwind" identifier="unwindFromChoooseMailing" unwindAction="unwindFromChoooseMailingWithSender:" id="5IJ-Qo-a23"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mal-1B-xku" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="wEZ-uf-CGI" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3654" y="-36"/>
+            <point key="canvasLocation" x="2710" y="743"/>
         </scene>
     </scenes>
     <resources>

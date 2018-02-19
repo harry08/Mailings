@@ -137,22 +137,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Mailings/Mailing/MailingPickerTableViewController.swift"
-            timestampString = "540160731.187378"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "MailingPickerTableViewController"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Mailings/Mailing/EditMailingViewController.swift"
             timestampString = "537891750.272631"
             startingColumnNumber = "9223372036854775807"
@@ -201,22 +185,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Mailings/Mailing/MailingPickerTableViewController.swift"
-            timestampString = "540160731.190248"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
-            landmarkName = "MailingPickerTableViewController"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Mailings/Util/MessageComposer.swift"
             timestampString = "537917967.142449"
             startingColumnNumber = "9223372036854775807"
@@ -234,7 +202,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Settings/ImportContactsViewController.swift"
-            timestampString = "540472323.020345"
+            timestampString = "540747247.5811779"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "118"

@@ -8,15 +8,24 @@
 import UIKit
 import CoreData
 
-// TODO: Use Delegate to provide chosen Mailing to caller. See ContactPickerTableViewController
+protocol MailingPickerTableViewControllerDelegate: class {
+    func mailingPicker(_ picker: MailingPickerTableViewController,
+                           didPick chosenMailing: MailingDTO)
+}
 
 /**
  Shows a a ist of mailings to choose from.
  Implements UIPopoverPresentationControllerDelegate to display tbe view in a navigation controller on compact width-devices.
  */
-class MailingPickerTableViewController: FetchedResultsTableViewController, UIPopoverPresentationControllerDelegate {
+class MailingPickerTableViewController: FetchedResultsTableViewController {
 
     var btnChoose: UIBarButtonItem?
+    
+    /**
+     Delegate to call after choosing a mailing.
+     Weak reference to avoid ownership cycles.
+     */
+    weak var delegate: MailingPickerTableViewControllerDelegate?
     
     var container: NSPersistentContainer? =
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer {
@@ -35,9 +44,6 @@ class MailingPickerTableViewController: FetchedResultsTableViewController, UIPop
         super.viewDidLoad()
      
         updateUI()
-        
-        // Enable the Save button only if the text field has a valid name.
-        updateChooseButtonState()
     }
     
     // Performs the fetch on the database and reloads the tableView.
@@ -61,51 +67,6 @@ class MailingPickerTableViewController: FetchedResultsTableViewController, UIPop
         }
     }
     
-    public func getSelectedMailing() -> MailingDTO? {
-        if let indexPath = tableView.indexPathForSelectedRow,
-            let mailing = fetchedResultsController?.object(at: indexPath) {
-            return MailingMapper.mapToDTO(mailing: mailing)
-        }
-        
-        return nil
-    }
-    
-    private func updateChooseButtonState() {
-        if let btnChoose = self.btnChoose {
-            if let _ = tableView.indexPathForSelectedRow {
-                btnChoose.isEnabled = true
-            } else {
-                btnChoose.isEnabled = false
-            }
-        }
-    }
-    
-    // MARK: - UIPopoverPresentationControllerDelegate
-    
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .fullScreen
-    }
-    
-    func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
-        let navigationController = UINavigationController(rootViewController: controller.presentedViewController)
-        
-        let btnCancel = UIBarButtonItem(title: "Abbrechen", style: .done, target: self, action: #selector(cancel))
-        navigationController.topViewController?.navigationItem.leftBarButtonItem = btnCancel
-        btnChoose = UIBarButtonItem(title: "Wählen", style: .done, target: self, action: #selector(mailingSelected))
-        btnChoose?.isEnabled = false
-        navigationController.topViewController?.navigationItem.rightBarButtonItem = btnChoose
-        
-        return navigationController
-    }
-    
-    @objc func cancel(sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @objc func mailingSelected(sender: UIButton) {
-        self.performSegue(withIdentifier: "unwindFromChoooseMailing", sender: self)
-    }
-    
     // MARK: - TableView
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -120,7 +81,10 @@ class MailingPickerTableViewController: FetchedResultsTableViewController, UIPop
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        updateChooseButtonState()
+        if let mailing = fetchedResultsController?.object(at: indexPath) {
+            let mailingDTO = MailingMapper.mapToDTO(mailing: mailing)
+            delegate?.mailingPicker(self, didPick: mailingDTO)
+        }
     }
     
     // MARK: - Navigation and Actions
