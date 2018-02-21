@@ -234,7 +234,7 @@
         <scene sceneID="fLe-K6-n60">
             <objects>
                 <tableViewController hidesBottomBarWhenPushed="YES" id="uZT-hg-EcR" customClass="MailingDetailViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="CZm-PY-g7H">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="CZm-PY-g7H">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -293,21 +293,9 @@
                             <outlet property="delegate" destination="uZT-hg-EcR" id="U06-Wt-2aQ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Neues Mailing" id="awJ-6x-194">
-                        <barButtonItem key="leftBarButtonItem" title="Abbrechen" id="ODz-MG-20o">
-                            <connections>
-                                <action selector="cancelAction:" destination="uZT-hg-EcR" id="ZCs-MT-Uad"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Fertig" id="x2C-WL-w8d">
-                            <connections>
-                                <action selector="doneAction:" destination="uZT-hg-EcR" id="y6a-re-KE9"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Neues Mailing" id="awJ-6x-194"/>
                     <connections>
                         <outlet property="contentTextView" destination="hQo-yl-Og5" id="vWu-qT-293"/>
-                        <outlet property="doneButton" destination="x2C-WL-w8d" id="YvB-ZV-qGX"/>
                         <outlet property="titleTextField" destination="nXl-GW-YOn" id="Igv-ez-AOq"/>
                     </connections>
                 </tableViewController>
