@@ -37,7 +37,7 @@ class MailingListDetailViewController: UITableViewController, UITextFieldDelegat
     
     var container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     
-    // In case of editing an existing mailing this variable is filled on startup.
+    // In case of editing an existing mailing list this variable is filled on startup.
     // In case of a new one this will be created in the prepare method.
     var mailingListDTO : MailingListDTO?
     

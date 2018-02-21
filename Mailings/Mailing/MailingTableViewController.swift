@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class MailingTableViewController: FetchedResultsTableViewController {
+class MailingTableViewController: FetchedResultsTableViewController, MailingDetailViewControllerDelegate {
     
     var container: NSPersistentContainer? =
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer {
@@ -92,7 +92,7 @@ class MailingTableViewController: FetchedResultsTableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showMailing",
-            let destinationVC = segue.destination as? ShowMailingViewController
+            let destinationVC = segue.destination as? MailingDetailViewController
         {
             // Navigate to existing mailing
             if let indexPath = tableView.indexPathForSelectedRow,
@@ -101,12 +101,63 @@ class MailingTableViewController: FetchedResultsTableViewController {
                 let mailingDTO = MailingMapper.mapToDTO(mailing: selectedMailing)
                 destinationVC.container = container
                 destinationVC.mailingDTO = mailingDTO
+                destinationVC.editMode = true
             }
-        } else if segue.identifier == "addNewMailing",
-            let destinationVC = segue.destination as? EditMailingViewController {
             
-            destinationVC.editMode = true
+            destinationVC.delegate = self
+        } else if segue.identifier == "addNewMailing",
+            let destinationVC = segue.destination as? MailingDetailViewController {
+            
+            destinationVC.delegate = self
         }
+    }
+    
+    // MARK: MailingDetailViewController Delegate
+    
+    /**
+     Protocol function. Called after canceled the detail view
+     Removes the edit view.
+     */
+    func mailingDetailViewControllerDidCancel(_ controller: MailingDetailViewController) {
+        navigationController?.popViewController(animated:true)
+    }
+    
+    /**
+     Protocol function. Called after finish adding a new Mailing
+     Saves data to database and removes the edit view.
+     */
+    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishAdding mailing: MailingDTO) {
+        guard let container = container else {
+            print("Save not possible. No PersistentContainer.")
+            return
+        }
+        
+        // Update database
+        do {
+            try Mailing.createOrUpdateFromDTO(mailingDTO: mailing, in: container.viewContext)
+        } catch {
+            // TODO show Alert
+        }
+        navigationController?.popViewController(animated:true)
+    }
+    
+    /**
+     Protocol function. Called after finish editing an existing Mailing
+     Saves data to database and removes the edit view.
+     */
+    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishEditing mailing: MailingDTO) {
+        guard let container = container else {
+            print("Save not possible. No PersistentContainer.")
+            return
+        }
+        
+        // Update database
+        do {
+            try Mailing.createOrUpdateFromDTO(mailingDTO: mailing, in: container.viewContext)
+        } catch {
+            // TODO show Alert
+        }
+        navigationController?.popViewController(animated:true)
     }
 }
 

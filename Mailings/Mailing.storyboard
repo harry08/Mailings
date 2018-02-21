@@ -43,7 +43,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="vOW-tZ-wee" kind="show" identifier="showMailing" id="R0Z-20-WoV"/>
+                                    <segue destination="uZT-hg-EcR" kind="show" identifier="showMailing" id="3Dy-T2-aAz"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -55,7 +55,7 @@
                     <navigationItem key="navigationItem" title="Mailings" id="4mJ-QF-2gV">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="XYk-JY-iEM">
                             <connections>
-                                <segue destination="LGh-ER-ZZy" kind="presentation" identifier="addNewMailing" id="rXe-bc-1G5"/>
+                                <segue destination="uZT-hg-EcR" kind="show" identifier="addNewMailing" id="cZc-TR-k2q"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -137,7 +137,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Eh-iM-lY4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2669.5999999999999" y="927.88605697151434"/>
+            <point key="canvasLocation" x="2670" y="1524"/>
         </scene>
         <!--Verteiler wählen-->
         <scene sceneID="oLe-dl-8TA">
@@ -175,7 +175,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KLF-ow-BeA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3622" y="1222"/>
+            <point key="canvasLocation" x="3622" y="1818"/>
         </scene>
         <!--Edit Mailing-->
         <scene sceneID="LPD-2x-T3Y">
@@ -228,7 +228,92 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GLi-r2-KCC" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Il6-Pm-MNJ" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3624.8000000000002" y="489.80509745127438"/>
+            <point key="canvasLocation" x="3625" y="1086"/>
+        </scene>
+        <!--Neues Mailing-->
+        <scene sceneID="fLe-K6-n60">
+            <objects>
+                <tableViewController hidesBottomBarWhenPushed="YES" id="uZT-hg-EcR" customClass="MailingDetailViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="CZm-PY-g7H">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <sections>
+                            <tableViewSection headerTitle="Titel" id="t6a-zO-PvT">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Lc0-dl-Fac">
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Lc0-dl-Fac" id="9nT-XC-Axp">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nXl-GW-YOn">
+                                                    <rect key="frame" x="8" y="-1" width="351" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="uZT-hg-EcR" id="Eg4-kM-aOa"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Inhalt" id="SQN-U2-CXk">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="176" id="CUX-fS-n9T">
+                                        <rect key="frame" x="0.0" y="155.5" width="375" height="176"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CUX-fS-n9T" id="WQk-LY-EY3">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="175.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Mailinginhalt" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hQo-yl-Og5">
+                                                    <rect key="frame" x="8" y="10" width="351" height="146"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="uZT-hg-EcR" id="AQX-Ku-TEV"/>
+                                                    </connections>
+                                                </textView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="uZT-hg-EcR" id="0HT-zK-Tud"/>
+                            <outlet property="delegate" destination="uZT-hg-EcR" id="U06-Wt-2aQ"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Neues Mailing" id="awJ-6x-194">
+                        <barButtonItem key="leftBarButtonItem" title="Abbrechen" id="ODz-MG-20o">
+                            <connections>
+                                <action selector="cancelAction:" destination="uZT-hg-EcR" id="ZCs-MT-Uad"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Fertig" id="x2C-WL-w8d">
+                            <connections>
+                                <action selector="doneAction:" destination="uZT-hg-EcR" id="y6a-re-KE9"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="contentTextView" destination="hQo-yl-Og5" id="vWu-qT-293"/>
+                        <outlet property="doneButton" destination="x2C-WL-w8d" id="YvB-ZV-qGX"/>
+                        <outlet property="titleTextField" destination="nXl-GW-YOn" id="Igv-ez-AOq"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aKH-54-1kk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2669.5999999999999" y="83.208395802098963"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ltr-Iu-73K">
@@ -246,7 +331,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yI9-Dc-hUZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2670" y="227"/>
+            <point key="canvasLocation" x="2670" y="822"/>
         </scene>
         <!--MailsToSend-->
         <scene sceneID="dmO-5O-0CE">
@@ -297,13 +382,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9bq-Gl-rkl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3625" y="1926"/>
+            <point key="canvasLocation" x="3625" y="2499"/>
         </scene>
     </scenes>
     <resources>
         <image name="message.png" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="cZc-TR-k2q"/>
         <segue reference="Hut-cf-qlc"/>
     </inferredMetricsTieBreakers>
 </document>
