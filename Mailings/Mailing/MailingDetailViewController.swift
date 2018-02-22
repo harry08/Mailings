@@ -18,7 +18,7 @@ protocol MailingDetailViewControllerDelegate: class {
     func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishEditing mailing: MailingDTO)
 }
 
-class MailingDetailViewController: UITableViewController, UITextFieldDelegate, MailingDetailViewControllerDelegate {
+class MailingDetailViewController: UITableViewController, UITextFieldDelegate, MailingDetailViewControllerDelegate, MailingListPickerTableViewControllerDelegate {
 
     /**
      Flag indicates whether a new mailing is shown or an existing one.
@@ -55,6 +55,8 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
         }
     }
     
+    var mailsToSend = [MailDTO]()
+    
     private func isEditType() -> Bool {
         return editType
     }
@@ -80,6 +82,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
         }
         configureBarButtonItems()
         configureControls()
+        configureToolbar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,6 +91,13 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
             // Only in add mode directly put the focus inside the title field.
            titleTextField.becomeFirstResponder()
         }
+        configureToolbar()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.navigationController?.isToolbarHidden = true
     }
     
     /**
@@ -162,6 +172,24 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
         }
     }
     
+    private func configureToolbar() {
+        if editMode {
+            self.navigationController?.isToolbarHidden = true
+            
+        } else {
+            self.navigationController?.isToolbarHidden = false
+            self.navigationController?.toolbar.barStyle = .default
+            self.navigationController?.toolbar.isTranslucent = true
+            self.navigationController?.toolbar.barTintColor = UIColor.white
+            
+            var items = [UIBarButtonItem]()
+            items.append(
+                UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(sendMailingAction))
+            )
+            self.toolbarItems = items
+        }
+    }
+    
     @objc func cancelAction(sender: UIBarButtonItem) {
         if isEditType(){
             delegate?.mailingDetailViewControllerDidCancel(self)
@@ -185,6 +213,29 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
         viewEdited = false
         configureBarButtonItems()
         configureControls()
+        configureToolbar()
+    }
+    
+    /**
+     Triggers sending this mailing as mail. First the mailing list has to be chosen.
+     */
+    @objc func sendMailingAction(sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "pickMailingList", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "pickMailingList",
+            let destinationVC = segue.destination as? MailingListPickerTableViewController
+        {
+            // Choose mailing list to send mailing to.
+            destinationVC.container = container
+            destinationVC.mailingDTO = mailingDTO
+            destinationVC.delegate = self
+        } else if segue.identifier == "showEmailsToSend",
+            let destinationVC = segue.destination as? MailsToSendTableViewController
+        {
+            destinationVC.mailsToSend = mailsToSend
+        }
     }
     
     // MARK: - TableView Delegate
@@ -221,6 +272,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
             configureBarButtonItems()
             fillControls()
             configureControls()
+            configureToolbar()
         } else {
             navigationController?.popViewController(animated:true)
         }        
@@ -269,5 +321,38 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
         configureBarButtonItems()
         fillControls()
         configureControls()
+        configureToolbar()
+    }
+    
+    // MARK: - MailingListPickerTableViewController Delegate
+    
+    /**
+     Called after mailing list was chosen. Send the selected mailing to the chosen mailing list.
+     */
+    func mailingListPicker(_ picker: MailingListPickerTableViewController, didPick chosenMailingList: MailingListDTO) {
+        // Return from view
+        navigationController?.popViewController(animated:true)
+        
+        // Get email addresses of mailing list
+        guard let container = container else {
+            return
+        }
+        
+        let emailAddresses = MailingList.getEmailAddressesForMailingList(objectId: chosenMailingList.objectId!, in: container.viewContext)
+        
+        // Prepare mails to send
+        if let mailingDTO = mailingDTO {
+            let mailComposer = MailComposer(mailingDTO: mailingDTO)
+            mailsToSend = mailComposer.composeMailsToSend(emailAddresses: emailAddresses)
+            if mailsToSend.count == 1 {
+                // Show Mail view directly
+                // TODO
+                
+            } else if mailsToSend.count > 1 {
+                // The mailing needs to be send in more than one mail.
+                // Display tableview to show the different mails.
+                performSegue(withIdentifier: "showEmailsToSend", sender: nil)
+            }
+        }
     }
 }

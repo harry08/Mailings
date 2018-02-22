@@ -69,26 +69,6 @@ class MailingTableViewController: FetchedResultsTableViewController {
     
     // MARK: - Navigation and Actions
     
-    // Navigate back from adding a new mailing. Save data from MailingDTO
-    // MailingDTO is already filled
-    @IBAction func unwindFromSave(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? EditMailingViewController,
-            let mailingDTO = sourceViewController.mailingDTO {
-            
-            guard let container = container else {
-                print("Save not possible. No PersistentContainer.")
-                return
-            }
-            
-            // Update database
-            do {
-                try Mailing.createOrUpdateFromDTO(mailingDTO: mailingDTO, in: container.viewContext)
-            } catch {
-                // TODO show Alert
-            }
-        }
-    }
-    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showMailing",
