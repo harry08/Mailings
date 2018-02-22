@@ -49,29 +49,13 @@
             </objects>
             <point key="canvasLocation" x="541" y="-222"/>
         </scene>
-        <!--EditContactVC-->
-        <scene sceneID="SM6-6S-6sC">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="EditContactVC" storyboardName="Contact" referencedIdentifier="EditContactVC" id="Yb1-LM-cHC" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sJv-N4-W6g" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="766" y="-222"/>
-        </scene>
-        <!--EditContactNavigationVC-->
-        <scene sceneID="9RF-2P-7Gz">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="EditContactNavigationVC" storyboardName="Contact" referencedIdentifier="EditContactNavigationVC" id="UFe-cI-1Yd" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QSo-nG-3p8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1071" y="-222"/>
-        </scene>
         <!--MailingPickerVC-->
         <scene sceneID="YEj-sc-UUh">
             <objects>
                 <viewControllerPlaceholder storyboardIdentifier="MailingPickerVC" storyboardName="Contact" referencedIdentifier="MailingPickerVC" id="ctQ-EA-I2S" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="adS-bl-I26" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1386" y="-222"/>
+            <point key="canvasLocation" x="790" y="-222"/>
         </scene>
         <!--Settings-->
         <scene sceneID="M5d-kJ-bzp">

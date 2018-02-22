@@ -159,7 +159,7 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showContact",
-            let destinationVC = segue.destination as? ShowContactViewController
+            let destinationVC = segue.destination as? ContactDetailViewController
         {
             // Navigate to existing contact
             if let indexPath = tableView.indexPathForSelectedRow,
@@ -167,7 +167,8 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
             {
                 let contactDTO = MailingContactMapper.mapToDTO(contact: selectedContact)
                 destinationVC.container = container
-                destinationVC.contactDTO = contactDTO
+                destinationVC.mailingContactDTO = contactDTO
+                destinationVC.editType = true
             }
         } else if segue.identifier == "pickMailing",
             let destinationVC = segue.destination as? MailingPickerTableViewController
@@ -188,36 +189,10 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
     }
    
     /**
-     Navigate back from adding a new contact. Saves data from MailingContactDTO in DB.
-     MailingContactDTO has been filled by EditContactViewController
-     */
-    @IBAction func unwindFromSave(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? EditContactViewController,
-            let contactDTO = sourceViewController.contactDTO {
-            
-            guard let container = container else {
-                print("Save not possible. No PersistentContainer.")
-                return
-            }
-            
-            // Update database
-            do {
-                try MailingContact.createOrUpdateFromDTO(contactDTO: contactDTO, in: container.viewContext)
-            } catch {
-                // TODO show Alert
-            }
-        }
-    }
-    
-    /**
-     Calls the EditContactviewController to add a new contact.
-     The View is opened modally
+     Opens the ContactDetailController to add a new contact
      */
     @objc func addAction(sender: UIButton) {
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Contact", bundle: nil)
-        let editContactVc = storyBoard.instantiateViewController(withIdentifier: "EditContactNavigationVC") 
-        
-        present(editContactVc, animated: true, completion: nil)
+        self.performSegue(withIdentifier: "addNewContact", sender: self)
     }
     
     /**

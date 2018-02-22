@@ -1,25 +1,33 @@
 //
-//  MailingDetailTableViewController.swift
+//  ContactDetailViewController.swift
 //  Mailings
 //
-//  Created on 20.02.18.
+//  Created by Harry Huebner on 22.02.18.
+//  Copyright © 2018 Huebner. All rights reserved.
 //
 
 import UIKit
 import CoreData
+import MessageUI
 
 /**
  Delegate that is called after closing the DetailController.
  Database update can be done in the implementing classes.
  */
-protocol MailingDetailViewControllerDelegate: class {
-    func mailingDetailViewControllerDidCancel(_ controller: MailingDetailViewController)
-    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishAdding mailing: MailingDTO)
-    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishEditing mailing: MailingDTO)
+protocol ContactDetailViewControllerDelegate: class {
+    func contactDetailViewControllerDidCancel(_ controller: ContactDetailViewController)
+    func contactDetailViewController(_ controller: ContactDetailViewController, didFinishAdding contact: MailingContactDTO)
+    func contactDetailViewController(_ controller: ContactDetailViewController, didFinishEditing contact: MailingContactDTO)
 }
 
-class MailingDetailViewController: UITableViewController, UITextFieldDelegate, MailingDetailViewControllerDelegate, MailingListPickerTableViewControllerDelegate {
-
+class ContactDetailViewController: UITableViewController, ContactDetailViewControllerDelegate, UITextFieldDelegate {
+    
+    @IBOutlet weak var firstnameTextField: UITextField!
+    @IBOutlet weak var lastnameTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
+    
+    let messageComposer = MessageComposer()
+    
     /**
      Flag indicates whether a new mailing is shown or an existing one.
      */
@@ -30,21 +38,18 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
      */
     var editMode = false
     
-    @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var contentTextView: UITextView!
-    
     /**
      Delegate to call after finish editing
      Weak reference to avoid ownership cycles.
      The detailView has only a weak reference back to the owning tableView.
      */
-    weak var delegate: MailingDetailViewControllerDelegate?
+    weak var delegate: ContactDetailViewControllerDelegate?
     
     var container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     
-    // In case of editing an existing mailing this variable is filled on startup.
+    // In case of editing an existing contact this variable is filled on startup.
     // In case of a new one this will be created in the prepare method.
-    var mailingDTO : MailingDTO?
+    var mailingContactDTO : MailingContactDTO?
     
     /**
      Controls the doneButton
@@ -55,8 +60,6 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
         }
     }
     
-    var mailsToSend = [MailDTO]()
-    
     private func isEditType() -> Bool {
         return editType
     }
@@ -64,7 +67,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
     private func isAddType() -> Bool {
         return !editType
     }
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -76,7 +79,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
         if isEditType() {
             fillControls()
             
-            title = "Mailing"
+            title = "Kontakt"
         } else {
             editMode = true
         }
@@ -89,7 +92,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
         super.viewWillAppear(animated)
         if isAddType() {
             // Only in add mode directly put the focus inside the title field.
-           titleTextField.becomeFirstResponder()
+            firstnameTextField.becomeFirstResponder()
         }
         configureToolbar()
     }
@@ -104,30 +107,34 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
      Fills the values from UI fields into the MailingListDTO.
      */
     private func fillMailingDTO() {
-        let title = titleTextField.text ?? ""
-        let content = contentTextView.text ?? ""
+        let firstname = firstnameTextField.text ?? ""
+        let lastname = lastnameTextField.text ?? ""
+        let email = emailTextField.text ?? ""
         
-        if mailingDTO == nil {
-            // Create new MailingDTO object
-            mailingDTO = MailingDTO()
+        if mailingContactDTO == nil {
+            // Create new MailingContactDTO object
+            mailingContactDTO = MailingContactDTO()
         }
-        mailingDTO?.title = title
-        mailingDTO?.text = content
+        mailingContactDTO?.firstname = firstname
+        mailingContactDTO?.lastname = lastname
+        mailingContactDTO?.email = email
     }
     
     /**
      Fills the values from the DTO to the controls.
      */
     private func fillControls() {
-        if let mailingDTO = self.mailingDTO {
-            titleTextField.text = mailingDTO.title
-            contentTextView.text = mailingDTO.text
+        if let mailingContactDTO = self.mailingContactDTO {
+            firstnameTextField.text = mailingContactDTO.firstname
+            lastnameTextField.text = mailingContactDTO.lastname
+            emailTextField.text = mailingContactDTO.email
         }
     }
     
     private func configureControls() {
-        titleTextField.isEnabled = editMode
-        contentTextView.isEditable = editMode
+        firstnameTextField.isEnabled = editMode
+        lastnameTextField.isEnabled = editMode
+        emailTextField.isEnabled = editMode
     }
     
     // MARK: - Action and Navigation
@@ -167,7 +174,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
                 let rightItem1 = UIBarButtonItem(title: "Bearbeiten", style: .plain, target: self, action: #selector(editAction))
                 rightItems.append(rightItem1)
             }
-           
+            
             navigationItem.setRightBarButtonItems(rightItems, animated: false)
         }
     }
@@ -184,7 +191,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
             
             var items = [UIBarButtonItem]()
             items.append(
-                UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(sendMailingAction))
+                UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(sendEmailAction))
             )
             self.toolbarItems = items
         }
@@ -192,19 +199,19 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
     
     @objc func cancelAction(sender: UIBarButtonItem) {
         if isEditType(){
-            delegate?.mailingDetailViewControllerDidCancel(self)
+            delegate?.contactDetailViewControllerDidCancel(self)
         } else if isAddType() {
-            delegate?.mailingDetailViewControllerDidCancel(self)
+            delegate?.contactDetailViewControllerDidCancel(self)
         }
     }
     
     @objc func doneAction(sender: UIBarButtonItem) {
         if isEditType(){
             fillMailingDTO()
-            delegate?.mailingDetailViewController(self, didFinishEditing: mailingDTO!)
+            delegate?.contactDetailViewController(self, didFinishEditing: mailingContactDTO!)
         } else if isAddType() {
             fillMailingDTO()
-            delegate?.mailingDetailViewController(self, didFinishAdding: mailingDTO!)
+            delegate?.contactDetailViewController(self, didFinishAdding: mailingContactDTO!)
         }
     }
     
@@ -219,32 +226,89 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
     /**
      Triggers sending this mailing as mail. First the mailing list has to be chosen.
      */
-    @objc func sendMailingAction(sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "pickMailingList", sender: nil)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "pickMailingList",
-            let destinationVC = segue.destination as? MailingListPickerTableViewController
-        {
-            // Choose mailing list to send mailing to.
-            destinationVC.container = container
-            destinationVC.mailingDTO = mailingDTO
-            destinationVC.delegate = self
-        } else if segue.identifier == "showEmailsToSend",
-            let destinationVC = segue.destination as? MailsToSendTableViewController
-        {
-            destinationVC.mailsToSend = mailsToSend
+    @objc func sendEmailAction(sender: UIBarButtonItem) {
+        if let email = mailingContactDTO?.email {
+            composeMail(emailAddress: email)
         }
     }
     
-    // MARK: - TableView Delegate
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            titleTextField.becomeFirstResponder()
-        } else if indexPath.section == 1 {
-            contentTextView.becomeFirstResponder()
+    /**
+     Presents the iOS screen to write an email to the given email addresses
+     */
+    func composeMail(emailAddress: String) {
+        if messageComposer.canSendText() {
+            let messageComposeVc = messageComposer.configuredMailComposeViewController(emailAddress: emailAddress)
+            self.present(messageComposeVc, animated: true, completion: nil)
+        } else {
+            let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.present(alertController, animated: true, completion: nil)
         }
+    }
+    
+    // MARK: ContactDetailViewController Delegate
+    
+    func contactDetailViewControllerDidCancel(_ controller: ContactDetailViewController) {
+        editMode = false
+        viewEdited = false
+        
+        if isEditType() {
+            configureBarButtonItems()
+            fillControls()
+            configureControls()
+            configureToolbar()
+        } else {
+            navigationController?.popViewController(animated:true)
+        }   
+    }
+    
+    /**
+     Protocol function. Called after finish editing a new MailingContact
+     Saves data to database and navigates back to caller view.
+     */
+    func contactDetailViewController(_ controller: ContactDetailViewController, didFinishAdding contact: MailingContactDTO) {
+        guard let container = container else {
+            print("Save not possible. No PersistentContainer.")
+            return
+        }
+        
+        // Update database
+        do {
+            try MailingContact.createOrUpdateFromDTO(contactDTO: contact, in: container.viewContext)
+            editMode = false
+            viewEdited = false
+        } catch {
+            // TODO show Alert
+        }
+        
+        navigationController?.popViewController(animated:true)
+    }
+    
+    /**
+     Protocol function. Called after finish editing an existing MailingContact
+     Saves data to database and stays in this view.
+     */
+    func contactDetailViewController(_ controller: ContactDetailViewController, didFinishEditing contact: MailingContactDTO) {
+        guard let container = container else {
+            print("Save not possible. No PersistentContainer.")
+            return
+        }
+        
+        // Update database
+        do {
+            try MailingContact.createOrUpdateFromDTO(contactDTO: contact, in: container.viewContext)
+            editMode = false
+            viewEdited = false
+        } catch {
+            // TODO show Alert
+        }
+        configureBarButtonItems()
+        fillControls()
+        configureControls()
+        configureToolbar()
     }
     
     // MARK:- UITextField Delegates
@@ -257,106 +321,5 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         viewEdited = !newText.isEmpty
         return true
-    }
-    
-    // MARK:- UITextView Delegates
-    
-    // TODO Set viewEdited when textview was edited.
-    
-    // MARK: MailingDetailViewController Delegate
-    
-    /**
-     Protocol function. Called after canceled editing of an existing mailing.
-     */
-    func mailingDetailViewControllerDidCancel(_ controller: MailingDetailViewController) {
-        editMode = false
-        viewEdited = false
-        
-        if isEditType() {
-            configureBarButtonItems()
-            fillControls()
-            configureControls()
-            configureToolbar()
-        } else {
-            navigationController?.popViewController(animated:true)
-        }        
-    }
-    
-    /**
-     Protocol function. Called after finish editing a new Mailing
-     Saves data to database and navigates back to caller view.
-     */
-    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishAdding mailing: MailingDTO) {
-        guard let container = container else {
-            print("Save not possible. No PersistentContainer.")
-            return
-        }
-        
-        // Update database
-        do {
-            try Mailing.createOrUpdateFromDTO(mailingDTO: mailing, in: container.viewContext)
-            editMode = false
-            viewEdited = false
-        } catch {
-            // TODO show Alert
-        }
-        
-        navigationController?.popViewController(animated:true)
-    }
-    
-    /**
-     Protocol function. Called after finish editing an existing Mailing
-     Saves data to database and stays in this view.
-     */
-    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishEditing mailing: MailingDTO) {
-        guard let container = container else {
-            print("Save not possible. No PersistentContainer.")
-            return
-        }
-        
-        // Update database
-        do {
-            try Mailing.createOrUpdateFromDTO(mailingDTO: mailing, in: container.viewContext)
-            editMode = false
-            viewEdited = false
-        } catch {
-            // TODO show Alert
-        }
-        configureBarButtonItems()
-        fillControls()
-        configureControls()
-        configureToolbar()
-    }
-    
-    // MARK: - MailingListPickerTableViewController Delegate
-    
-    /**
-     Called after mailing list was chosen. Send the selected mailing to the chosen mailing list.
-     */
-    func mailingListPicker(_ picker: MailingListPickerTableViewController, didPick chosenMailingList: MailingListDTO) {
-        // Return from view
-        navigationController?.popViewController(animated:true)
-        
-        // Get email addresses of mailing list
-        guard let container = container else {
-            return
-        }
-        
-        let emailAddresses = MailingList.getEmailAddressesForMailingList(objectId: chosenMailingList.objectId!, in: container.viewContext)
-        
-        // Prepare mails to send
-        if let mailingDTO = mailingDTO {
-            let mailComposer = MailComposer(mailingDTO: mailingDTO)
-            mailsToSend = mailComposer.composeMailsToSend(emailAddresses: emailAddresses)
-            if mailsToSend.count == 1 {
-                // Show Mail view directly
-                // TODO
-                
-            } else if mailsToSend.count > 1 {
-                // The mailing needs to be send in more than one mail.
-                // Display tableview to show the different mails.
-                performSegue(withIdentifier: "showEmailsToSend", sender: nil)
-            }
-        }
     }
 }
