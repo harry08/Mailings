@@ -96,7 +96,7 @@
         <!--Neuer Kontakt-->
         <scene sceneID="kux-wq-IZI">
             <objects>
-                <tableViewController id="eyQ-WK-L6f" customClass="ContactDetailViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController hidesBottomBarWhenPushed="YES" id="eyQ-WK-L6f" customClass="ContactDetailViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="L73-b9-P5q">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
