@@ -77,8 +77,8 @@ class ImportContactsViewController: UIViewController, CNContactPickerDelegate, A
         self.present(alertController, animated: true, completion: nil)
     }
     
-    private func getAddressbookGroups() -> [CNGroup]{
-        var selectedGroups : [CNGroup] = [CNGroup]()
+    private func getAddressbookGroups() -> [ContactGroupDTO]{
+        var selectedGroups : [ContactGroupDTO] = [ContactGroupDTO]()
         
         AppDelegate.getAppDelegate().requestForAccess { (accessGranted) -> Void in
             if accessGranted {
@@ -88,7 +88,15 @@ class ImportContactsViewController: UIViewController, CNContactPickerDelegate, A
                     let groups = try contactsStore.groups(matching: nil)
                     for i in 0 ..< groups.count {
                         let group = groups[i]
-                        selectedGroups.append(group)
+                        
+                        let keys = [CNContactIdentifierKey]
+                        var contacts = [CNContact]()
+                        let predicate = CNContact.predicateForContactsInGroup(withIdentifier: group.identifier)
+                        contacts = try contactsStore.unifiedContacts(matching: predicate, keysToFetch: keys as [CNKeyDescriptor])
+                        let contactCount = contacts.count
+                        let contactGroup = ContactGroupDTO(group: group, nrOfContacts: contactCount)
+                        
+                        selectedGroups.append(contactGroup)
                     }
                 }
                 catch let error as NSError {
@@ -127,6 +135,8 @@ class ImportContactsViewController: UIViewController, CNContactPickerDelegate, A
      Imports the chosen contacts
      */
     public func contactPicker(_ picker: CNContactPickerViewController, didSelect contacts: [CNContact]) {
+        var contactCounter : Int = 0
+        
         guard let container = container else {
             return
         }
@@ -136,10 +146,14 @@ class ImportContactsViewController: UIViewController, CNContactPickerDelegate, A
                 let contact = contacts[i]
                 if try !MailingContact.contactExists(contact: contact, in: container.viewContext) {
                     try MailingContact.createContact(contact: contact, in: container.viewContext)
+                    contactCounter += 1
                 }
             }
             
             try container.viewContext.save()
+            
+            showImportResult(importedContacts: contactCounter)
+            
         } catch let error as NSError {
             os_log("Could not save addressbook contact: %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
         }
@@ -151,10 +165,10 @@ class ImportContactsViewController: UIViewController, CNContactPickerDelegate, A
      Addressbook group picker Delegate method. Called after group was picked.
      Imports all contacts of the selected group
      */
-    func groupPicker(_ picker: AddressbookGroupPickerTableViewController, didPick chosenGroup: CNGroup) {
+    func groupPicker(_ picker: AddressbookGroupPickerTableViewController, didPick chosenGroup: ContactGroupDTO) {
         navigationController?.popViewController(animated:true)
         
-        let importedContacts = importContactsOfGroup(chosenGroup)
+        let importedContacts = importContactsOfGroup(chosenGroup.group)
         showImportResult(importedContacts: importedContacts)
     }
 }

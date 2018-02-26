@@ -10,7 +10,7 @@ import Contacts
 
 protocol AddressbookGroupPickerTableViewControllerDelegate: class {
     func groupPicker(_ picker: AddressbookGroupPickerTableViewController,
-                           didPick chosenGroup: CNGroup)
+                           didPick chosenGroup: ContactGroupDTO)
 }
 
 /**
@@ -26,7 +26,7 @@ class AddressbookGroupPickerTableViewController: UITableViewController {
      */
     weak var delegate: AddressbookGroupPickerTableViewControllerDelegate?
     
-    var groups = [CNGroup]()
+    var groups = [ContactGroupDTO]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +45,8 @@ class AddressbookGroupPickerTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath)
         let group = groups[indexPath.row]
-        cell.textLabel?.text = group.name
+        cell.textLabel?.text = group.group.name
+        cell.detailTextLabel?.text = String(describing: group.nrOfContacts)
         
         return cell
     }
