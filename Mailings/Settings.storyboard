@@ -14,15 +14,15 @@
         <scene sceneID="OqB-Eb-Q79">
             <objects>
                 <tableViewController id="Ezh-Ed-sWn" userLabel="Settings" customClass="SettingsViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Oa2-RH-u7P">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="Oa2-RH-u7P">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
                             <tableViewSection id="eTL-2B-xJ7">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BasicSettingsCell" textLabel="8tS-aX-xTd" style="IBUITableViewCellStyleDefault" id="RvO-uv-I6v">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="35" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RvO-uv-I6v" id="Up1-kg-bw2">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -41,8 +41,12 @@
                                             <segue destination="81V-yS-tF4" kind="show" identifier="showInfo" id="IS4-xd-pAA"/>
                                         </connections>
                                     </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection id="UbM-xr-q9i">
+                                <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BasicSettingsCell" textLabel="ZrJ-NJ-0VM" style="IBUITableViewCellStyleDefault" id="UKP-6m-Od4">
-                                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="115" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UKP-6m-Od4" id="g2T-wv-zbj">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -61,14 +65,14 @@
                                             <segue destination="gYd-jA-vJV" kind="show" identifier="showCommonSettings" id="dIz-MQ-udW"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BasicSettingsCell" textLabel="RSc-DS-eES" style="IBUITableViewCellStyleDefault" id="aka-yG-lxT">
-                                        <rect key="frame" x="0.0" y="88" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BasicSettingsCell" textLabel="uWk-pc-Xmt" style="IBUITableViewCellStyleDefault" id="C1O-sg-4A2">
+                                        <rect key="frame" x="0.0" y="159" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aka-yG-lxT" id="lrV-ad-JhR">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="C1O-sg-4A2" id="w5j-oi-rhE">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Kontakt-Import" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RSc-DS-eES">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Kontakt-Import" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uWk-pc-Xmt">
                                                     <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -78,7 +82,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="cJL-mR-Unh" kind="show" identifier="showContactImport" id="lb8-3G-kBV"/>
+                                            <segue destination="cJL-mR-Unh" kind="show" identifier="showContactImport" id="11v-Gn-mfp"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -211,6 +215,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <pickerView key="tableFooterView" contentMode="scaleToFill" id="95X-Zn-kbb">
+                            <rect key="frame" x="0.0" y="179.5" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        </pickerView>
                         <sections>
                             <tableViewSection headerTitle="Empfänger ab einer gewissen Anzahl auf mehrere Emails aufteilen" id="GPg-0x-qXg">
                                 <cells>
@@ -275,6 +283,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="maxReceiverPerMail" destination="cSm-9o-4jq" id="i7B-Ew-2NM"/>
+                        <outlet property="picker" destination="95X-Zn-kbb" id="Y3V-12-CU1"/>
                         <outlet property="splitReceiverSwitch" destination="ouk-o1-NR6" id="Izp-to-vea"/>
                     </connections>
                 </tableViewController>
