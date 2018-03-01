@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    
     // MARK: - Core Data stack
     
     lazy var persistentContainer: NSPersistentContainer = {
@@ -94,20 +94,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     class func getAppDelegate() -> AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
-    }
-    
-    func showMessage(message: String) {
-        let alertController = UIAlertController(title: "Mailings", message: message, preferredStyle: UIAlertControllerStyle.alert)
-        
-        let dismissAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action) -> Void in
-        }
-        
-        alertController.addAction(dismissAction)
-        
-        let pushedViewControllers = (self.window?.rootViewController as! UINavigationController).viewControllers
-        let presentedViewController = pushedViewControllers[pushedViewControllers.count - 1]
-        
-        presentedViewController.present(alertController, animated: true, completion: nil)
     }
     
     func requestForAccess(completionHandler: @escaping (_ accessGranted: Bool) -> Void) {

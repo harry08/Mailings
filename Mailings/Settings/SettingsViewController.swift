@@ -27,13 +27,8 @@ class SettingsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
-    
-    /*
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Kontaktdaten"
-    }*/
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BasicSettingsCell", for: indexPath)
@@ -43,6 +38,10 @@ class SettingsViewController: UITableViewController {
             cell.accessoryType = .disclosureIndicator
             cell.selectionStyle = .default
         } else if indexPath.row == 1 {
+            cell.textLabel?.text = "Allgemeine Einstellungen"
+            cell.accessoryType = .disclosureIndicator
+            cell.selectionStyle = .default
+        } else if indexPath.row == 2 {
             cell.textLabel?.text = "Kontakte importieren"
             cell.accessoryType = .disclosureIndicator
             cell.selectionStyle = .default
@@ -62,6 +61,11 @@ class SettingsViewController: UITableViewController {
             
             self.navigationController?.pushViewController(contactImportVc, animated: true)
         } else if row == 1 {
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Settings", bundle: nil)
+            let commonSettingsVc = storyBoard.instantiateViewController(withIdentifier: "CommonSettingsVC")
+            
+            self.navigationController?.pushViewController(commonSettingsVc, animated: true)
+        } else if row == 2 {
             let storyBoard: UIStoryboard = UIStoryboard(name: "Settings", bundle: nil)
             let contactImportVc = storyBoard.instantiateViewController(withIdentifier: "ContactImportVC")
             
