@@ -11,34 +11,42 @@ class MailComposer {
     
     var mailingDTO: MailingDTO
     
+    var settingsController : CommonSettingsController
+    
     init(mailingDTO: MailingDTO) {
         self.mailingDTO = mailingDTO
+        
+        settingsController = CommonSettingsController.sharedInstance
     }
     
     func composeMailsToSend(emailAddresses: [String]) -> [MailDTO] {
         var mailsToSend = [MailDTO]()
-        let chunkSize = 4
+        let splitMails = settingsController.getSplitReceivers()
+        var chunkSize = settingsController.getMaxReceiver()
         
-            var startIndex = 0
-            var continueProcessing = true
-            while (continueProcessing) {
-                var endIndex = startIndex + chunkSize
-                if endIndex >= emailAddresses.endIndex {
-                    endIndex = emailAddresses.endIndex
-                }
-                
-                let chunk = emailAddresses[startIndex ..< endIndex]
-                let ccAddresses = convertToArray(slice: chunk)
-                
-                print("Sending mails to \(ccAddresses)")
-                let mailToSend = MailDTO(mailingDTO: mailingDTO, emailAddresses: ccAddresses, emailSent: false)
-                mailsToSend.append(mailToSend)
-                
-                startIndex = endIndex
-                if startIndex >= emailAddresses.endIndex {
-                    continueProcessing = false
-                }
+        if !splitMails {
+            chunkSize = emailAddresses.count
+        }
+        
+        var startIndex = 0
+        var continueProcessing = true
+        while (continueProcessing) {
+            var endIndex = startIndex + chunkSize
+            if endIndex >= emailAddresses.endIndex {
+                endIndex = emailAddresses.endIndex
             }
+            
+            let chunk = emailAddresses[startIndex ..< endIndex]
+            let ccAddresses = convertToArray(slice: chunk)
+            
+            let mailToSend = MailDTO(mailingDTO: mailingDTO, emailAddresses: ccAddresses, emailSent: false)
+            mailsToSend.append(mailToSend)
+            
+            startIndex = endIndex
+            if startIndex >= emailAddresses.endIndex {
+                continueProcessing = false
+            }
+        }
         
         return mailsToSend
     }
