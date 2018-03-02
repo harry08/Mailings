@@ -53,10 +53,11 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Kontakte" id="3Od-Iy-P3h">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="f4D-qm-FCF">
+                        <barButtonItem key="leftBarButtonItem" title="Item" style="plain" id="f4D-qm-FCF">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3jb-p1-TdE">
-                                <rect key="frame" x="16" y="7" width="74" height="30"/>
+                                <rect key="frame" x="16" y="5.5" width="83" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Auswählen"/>
                                 <connections>
                                     <action selector="changeMultiSelection:" destination="7ad-Bf-3Iq" eventType="touchUpInside" id="pC8-oQ-zpH"/>

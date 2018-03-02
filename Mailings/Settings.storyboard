@@ -158,7 +158,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Info" id="1B7-QE-Zm5">
-                        <barButtonItem key="backBarButtonItem" title="Zurück" id="b6k-3C-SV2"/>
+                        <barButtonItem key="backBarButtonItem" title="Einstellungen" id="b6k-3C-SV2"/>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NxK-Az-73r" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -200,7 +200,7 @@
                         <viewLayoutGuide key="safeArea" id="PP1-Gh-EJK"/>
                     </view>
                     <navigationItem key="navigationItem" title="Kontakt-Import" id="FlY-Iy-8ma">
-                        <barButtonItem key="backBarButtonItem" title="Zurück" id="lFI-6g-fvk"/>
+                        <barButtonItem key="backBarButtonItem" title="Einstellungen" id="lFI-6g-fvk"/>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="flb-xW-lvm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -275,7 +275,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Allgemeine Einstellungen" id="AYQ-hw-ikj">
-                        <barButtonItem key="backBarButtonItem" title="Zurück" id="Xua-fq-wGC"/>
+                        <barButtonItem key="backBarButtonItem" title="Einstellungen" id="Xua-fq-wGC"/>
                     </navigationItem>
                     <connections>
                         <outlet property="maxReceiverPerMail" destination="hFu-eA-vL1" id="GzD-Es-4Ja"/>
