@@ -12,18 +12,35 @@ class CommonSettingsViewController: UITableViewController, UIPickerViewDelegate,
     @IBOutlet weak var splitReceiverSwitch: UISwitch!
     @IBOutlet weak var maxReceiverPerMail: UITextField!
     
-    var pickerDataSource = ["1", "2", "3", "4", "5"];
-    var resultString = ""
+    var pickerDataSource = [String]();
+    var pickerChanged = false
     
     var settingsController : CommonSettingsController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        for i in 1 ..< 101 {
+            pickerDataSource.append(String(i))
+        }
+        
         let pickerView = UIPickerView()
         pickerView.delegate = self
         pickerView.dataSource = self
+        
+        let toolBar = UIToolbar()
+        toolBar.barStyle = UIBarStyle.default
+        toolBar.isTranslucent = true
+        toolBar.tintColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(donePicker))
+        
+        toolBar.setItems([doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        
         maxReceiverPerMail.inputView = pickerView
+        maxReceiverPerMail.inputAccessoryView = toolBar
         
         settingsController = CommonSettingsController.sharedInstance
         fillControls()        
@@ -37,11 +54,25 @@ class CommonSettingsViewController: UITableViewController, UIPickerViewDelegate,
         maxReceiverPerMail.text = String(settingsController!.getMaxReceiver())
     }
     
+    private func updateMaxReceiver() {
+        let maxReceiverText = maxReceiverPerMail.text ?? ""
+        if maxReceiverText != "" {
+            if let maxReceiver: Int = Int(maxReceiverText) {
+                settingsController!.setMaxReveiver(maxReceiver)
+            }
+        }
+    }
+    
     // MARK: - Actions
     
     @IBAction func splitReceiverSwitchChanged(_ sender: Any) {
         let splitReceiver = splitReceiverSwitch.isOn
         settingsController!.setSplitReceivers(splitReceiver)
+    }
+    
+    @objc func donePicker(sender: UIBarButtonItem) {
+        maxReceiverPerMail.resignFirstResponder()
+        updateMaxReceiver()
     }
     
     // MARK: - Picker Delegate
@@ -61,11 +92,7 @@ class CommonSettingsViewController: UITableViewController, UIPickerViewDelegate,
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
     {
         let nrOfReceiver = row + 1
-        settingsController!.setMaxReveiver(nrOfReceiver)
-        maxReceiverPerMail.text = String(settingsController!.getMaxReceiver())
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
+        maxReceiverPerMail.text = String(nrOfReceiver)
+        pickerChanged = true
     }
 }
