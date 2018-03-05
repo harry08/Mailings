@@ -18,7 +18,8 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
     let messageComposer = MessageComposer()
     
     @IBOutlet weak var multiSelectButton: UIButton!
-    @IBOutlet weak var multiSelectActionButton: UIBarButtonItem!
+    @IBOutlet weak var footerView: UIView!
+    @IBOutlet weak var footerLabel: UILabel!
     
     let searchController = UISearchController(searchResultsController: nil)
     
@@ -41,7 +42,12 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
     private func updateUI() {
         performFetch()
         
+        updateControls()
+    }
+    
+    private func updateControls() {
         updateMultiSelection()
+        updateTableFooter()
     }
     
     private func configureRightBarButtonItems() {
@@ -77,6 +83,17 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
         tableView.reloadData()
     }
     
+    private func updateTableFooter() {
+        footerView.isHidden = !shouldDisplayFooter()
+        
+        if !footerView.isHidden {
+            let count = getNrOfContacts()
+            footerLabel.text = "\(count) Kontakte"
+        } else {
+            footerLabel.text = ""
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -91,8 +108,6 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
     private func performFetch() {
         // Display TableView
         if let context = container?.viewContext {
-            // TODO: Add predicate for retired No.
-            
             let request : NSFetchRequest<MailingContact> = MailingContact.fetchRequest()
             request.sortDescriptors = [NSSortDescriptor(
                 key: "lastname",
@@ -117,6 +132,14 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
             try? fetchedResultsController?.performFetch()
             tableView.reloadData()
         }
+    }
+    
+    private func getNrOfContacts() -> Int {
+        if let sections = fetchedResultsController?.sections, sections.count > 0 {
+            return sections[0].numberOfObjects
+        }
+        
+        return 0
     }
     
     // MARK: - TableView
@@ -152,6 +175,17 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
         if multiSelection {
             tableView.cellForRow(at: indexPath)?.accessoryType = .none
         }
+    }
+    
+    /**
+     Display a TableView footer with info about contacts when there are at least 15 contacts.
+     */
+    private func shouldDisplayFooter() -> Bool {
+        if getNrOfContacts() >= 15 {
+            return true
+        }
+        
+        return false
     }
     
     // MARK: - Navigation and Actions
@@ -282,6 +316,7 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         performFetch()
+        updateControls()
     }
     
     // MARK: - MailPicker Delegate

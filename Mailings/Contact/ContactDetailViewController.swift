@@ -25,6 +25,7 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
     @IBOutlet weak var firstnameTextField: UITextField!
     @IBOutlet weak var lastnameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var notesTextView: UITextView!
     
     let messageComposer = MessageComposer()
     
@@ -110,6 +111,7 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         let firstname = firstnameTextField.text ?? ""
         let lastname = lastnameTextField.text ?? ""
         let email = emailTextField.text ?? ""
+        let notes = notesTextView.text ?? ""
         
         if mailingContactDTO == nil {
             // Create new MailingContactDTO object
@@ -118,6 +120,7 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         mailingContactDTO?.firstname = firstname
         mailingContactDTO?.lastname = lastname
         mailingContactDTO?.email = email
+        mailingContactDTO?.notes = notes
     }
     
     /**
@@ -128,6 +131,7 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             firstnameTextField.text = mailingContactDTO.firstname
             lastnameTextField.text = mailingContactDTO.lastname
             emailTextField.text = mailingContactDTO.email
+            notesTextView.text = mailingContactDTO.notes
         }
     }
     

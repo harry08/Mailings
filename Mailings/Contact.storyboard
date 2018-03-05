@@ -17,6 +17,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="l1e-a8-wCb" userLabel="Footer View">
+                            <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="28 Kontakte" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sUk-gd-tpW" userLabel="Footer Label">
+                                    <rect key="frame" x="15" y="11" width="345" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactCell" textLabel="24R-cL-LEA" detailTextLabel="3cT-dp-h28" style="IBUITableViewCellStyleSubtitle" id="Lpr-es-Kor">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -66,6 +80,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="footerLabel" destination="sUk-gd-tpW" id="jOh-cJ-KFh"/>
+                        <outlet property="footerView" destination="l1e-a8-wCb" id="tbR-Jh-xQv"/>
                         <outlet property="multiSelectButton" destination="3jb-p1-TdE" id="na5-hR-KwC"/>
                         <segue destination="lRZ-Zt-88F" kind="show" identifier="pickMailing" id="rzS-oM-PZZ"/>
                         <segue destination="eyQ-WK-L6f" kind="show" identifier="addNewContact" id="FQO-e4-nKk"/>
@@ -73,7 +89,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BnX-KU-rWT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1423" y="-365"/>
+            <point key="canvasLocation" x="1421.5999999999999" y="-365.66716641679164"/>
         </scene>
         <!--Kontakte-->
         <scene sceneID="z06-8U-Jjh">
@@ -113,11 +129,11 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Vorname" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="65i-Vh-p32" userLabel="Firstname TextField">
-                                                    <rect key="frame" x="8" y="-1" width="351" height="44"/>
+                                                    <rect key="frame" x="12" y="-1" width="343" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES" textContentType="given-name"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="eyQ-WK-L6f" id="7Hq-uB-pfu"/>
                                                     </connections>
@@ -133,11 +149,11 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nachname" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dyo-fl-5mH" userLabel="Lastname TextField">
-                                                    <rect key="frame" x="8" y="-1" width="351" height="44"/>
+                                                    <rect key="frame" x="12" y="-1" width="343" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES" textContentType="family-name"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="eyQ-WK-L6f" id="V2m-sg-Cme"/>
                                                     </connections>
@@ -156,16 +172,37 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Vorname" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NFQ-cd-0x9" userLabel="Email TextField">
-                                                    <rect key="frame" x="8" y="-1" width="351" height="44"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NFQ-cd-0x9" userLabel="Email TextField">
+                                                    <rect key="frame" x="12" y="-1" width="343" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="done" enablesReturnKeyAutomatically="YES" textContentType="email"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="eyQ-WK-L6f" id="u0i-Ol-CWq"/>
                                                     </connections>
                                                 </textField>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Notes" id="A3c-5G-NKs">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="88" id="hEP-gq-JWy">
+                                        <rect key="frame" x="0.0" y="299.5" width="375" height="88"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hEP-gq-JWy" id="m0l-gM-g1N">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="87.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cto-51-6Pb" userLabel="Notes TextView">
+                                                    <rect key="frame" x="16" y="10" width="343" height="68"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -182,11 +219,12 @@
                         <outlet property="emailTextField" destination="NFQ-cd-0x9" id="XRX-N1-VTQ"/>
                         <outlet property="firstnameTextField" destination="65i-Vh-p32" id="tpp-fE-eqc"/>
                         <outlet property="lastnameTextField" destination="dyo-fl-5mH" id="GDc-XJ-Oti"/>
+                        <outlet property="notesTextView" destination="cto-51-6Pb" id="hRt-jv-jdJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2L4-Fc-93G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2284" y="-366"/>
+            <point key="canvasLocation" x="2284" y="-366.56671664167919"/>
         </scene>
         <!--Mailing Picker-->
         <scene sceneID="51A-Xg-qXS">
