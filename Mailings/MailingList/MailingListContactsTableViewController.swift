@@ -20,6 +20,9 @@ protocol MailingListContactsTableViewControllerDelegate: class {
  */
 class MailingListContactsTableViewController: UITableViewController, ContactPickerTableViewControllerDelegate {
     
+    @IBOutlet weak var footerView: UIView!
+    @IBOutlet weak var footerLabel: UILabel!
+    
     /**
      Delegate to call after adding or removing contacts
      */
@@ -51,6 +54,41 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
     
     private func updateUI() {
         tableView.reloadData()
+        updateControls()
+    }
+    
+    private func updateControls() {
+        updateTableFooter()
+    }
+    
+    private func updateTableFooter() {
+        footerView.isHidden = !shouldDisplayFooter()
+        
+        if !footerView.isHidden {
+            let count = getNrOfAssignedContacts()
+            footerLabel.text = "\(count) Kontakte"
+        } else {
+            footerLabel.text = ""
+        }
+    }
+    
+    /**
+     Display a TableView footer with info about contacts when there are at least 15 contacts.
+     */
+    private func shouldDisplayFooter() -> Bool {
+        if getNrOfAssignedContacts() >= 10 {
+            return true
+        }
+        
+        return false
+    }
+    
+    private func getNrOfAssignedContacts() -> Int {
+        if let assingedContacts = self.assignedContacts {
+            return assingedContacts.contacts.count
+        } else {
+            return 0
+        }
     }
     
     // MARK: - Navigation and Actions
@@ -81,11 +119,7 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let assingedContacts = self.assignedContacts {
-            return assingedContacts.contacts.count
-        } else {
-            return 0
-        }
+        return getNrOfAssignedContacts()
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,        forRowAt indexPath: IndexPath) {
@@ -98,6 +132,7 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
         
             let indexPaths = [indexPath]
             tableView.deleteRows(at: indexPaths, with: .automatic)
+            updateControls()
         
             delegate?.mailingListContactsTableViewController(self, didChangeContacts: [contactAssignmentChange])
         
