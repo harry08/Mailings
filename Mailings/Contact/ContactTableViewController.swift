@@ -11,7 +11,7 @@ import UIKit
 import CoreData
 import MessageUI
 
-class ContactTableViewController: FetchedResultsTableViewController, MailingPickerTableViewControllerDelegate {
+class ContactTableViewController: FetchedResultsTableViewController, MailingPickerTableViewControllerDelegate, ContactDetailViewControllerInfoDelegate {
     
     var multiSelection = false
     
@@ -181,7 +181,7 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
      Display a TableView footer with info about contacts when there are at least 15 contacts.
      */
     private func shouldDisplayFooter() -> Bool {
-        if getNrOfContacts() >= 15 {
+        if getNrOfContacts() >= 12 {
             return true
         }
         
@@ -203,7 +203,13 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
                 destinationVC.container = container
                 destinationVC.mailingContactDTO = contactDTO
                 destinationVC.editType = true
+                destinationVC.infoDelegate = self
             }
+        } else if segue.identifier == "addNewContact",
+            let destinationVC = segue.destination as? ContactDetailViewController
+        {
+            destinationVC.container = container
+            destinationVC.infoDelegate = self
         } else if segue.identifier == "pickMailing",
             let destinationVC = segue.destination as? MailingPickerTableViewController
         {
@@ -339,6 +345,11 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
         DispatchQueue.main.asyncAfter(deadline: when) {
             self.composeMailForMailing(chosenMailing, emailAddresses: emailAddresses)
         }
+    }
+    
+    // MARK: ContactDetailViewControllerInfo Delegate
+    func contactDetailViewControllerDidChangeData(_ controller: ContactDetailViewController) {
+        updateControls()
     }
 }
 

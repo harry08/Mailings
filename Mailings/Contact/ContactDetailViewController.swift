@@ -11,13 +11,21 @@ import CoreData
 import MessageUI
 
 /**
- Delegate that is called after closing the DetailController.
- Database update can be done in the implementing classes.
+ Delegate that is called after the main actions of the DetailController
+ i.e. Editing canceled, Contact added, Contact changed.
+ Used to update the database.
  */
 protocol ContactDetailViewControllerDelegate: class {
     func contactDetailViewControllerDidCancel(_ controller: ContactDetailViewController)
     func contactDetailViewController(_ controller: ContactDetailViewController, didFinishAdding contact: MailingContactDTO)
     func contactDetailViewController(_ controller: ContactDetailViewController, didFinishEditing contact: MailingContactDTO)
+}
+
+/**
+ Delegate that is called after data has changed in the DetailController
+ */
+protocol ContactDetailViewControllerInfoDelegate: class {
+    func contactDetailViewControllerDidChangeData(_ controller: ContactDetailViewController)
 }
 
 class ContactDetailViewController: UITableViewController, ContactDetailViewControllerDelegate, UITextFieldDelegate {
@@ -40,11 +48,24 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
     var editMode = false
     
     /**
+     Flag indicates if data has been changed through this view
+     */
+    var dataChanged = false {
+        didSet {
+            if dataChanged {
+                infoDelegate?.contactDetailViewControllerDidChangeData(self)
+            }
+        }
+    }
+    
+    /**
      Delegate to call after finish editing
      Weak reference to avoid ownership cycles.
      The detailView has only a weak reference back to the owning tableView.
      */
     weak var delegate: ContactDetailViewControllerDelegate?
+    
+    weak var infoDelegate: ContactDetailViewControllerInfoDelegate?
     
     var container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     
@@ -284,6 +305,7 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             try MailingContact.createOrUpdateFromDTO(contactDTO: contact, in: container.viewContext)
             editMode = false
             viewEdited = false
+            dataChanged = true
         } catch {
             // TODO show Alert
         }
@@ -306,6 +328,7 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             try MailingContact.createOrUpdateFromDTO(contactDTO: contact, in: container.viewContext)
             editMode = false
             viewEdited = false
+            dataChanged = true
         } catch {
             // TODO show Alert
         }
