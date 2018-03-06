@@ -348,6 +348,11 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
     }
     
     // MARK: ContactDetailViewControllerInfo Delegate
+    
+    /**
+     Called after data has been changed inside the detailview.
+     Update relevent parts of the UI.
+     */
     func contactDetailViewControllerDidChangeData(_ controller: ContactDetailViewController) {
         updateControls()
     }
