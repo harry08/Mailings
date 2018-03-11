@@ -113,16 +113,6 @@ class MailsToSendTableViewController: UITableViewController, MFMailComposeViewCo
         }
     }
     
-    func convertToArray(slice: ArraySlice<String>) -> [String] {
-        var result = [String]()
-        result.reserveCapacity(slice.count)
-        slice.forEach{ element in
-            result.append(element)
-        }
-        
-        return result
-    }
-    
     func showSendMailErrorAlert() {
         let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
         

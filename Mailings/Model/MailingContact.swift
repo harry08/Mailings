@@ -163,6 +163,30 @@ class MailingContact: NSManagedObject {
         return emailAddresses
     }
     
+    /**
+     Returns an array of all assinged mailing lists of a given contact.
+     */
+    class func getAssignedMailingLists(objectId: NSManagedObjectID, in context: NSManagedObjectContext) -> [AssignedMailingList] {
+        
+        var assignedMailingLists = [AssignedMailingList]()
+        
+        do {
+            let contactEntity = try context.existingObject(with: objectId) as! MailingContact
+            
+            if let mailingLists = contactEntity.lists {
+                assignedMailingLists.reserveCapacity(mailingLists.count)
+                for case let mailingList as MailingList in mailingLists {
+                    let assignedMailingList = MailingListMapper.mapToAssignedMailingList(mailingList: mailingList)
+                    assignedMailingLists.append(assignedMailingList)
+                }
+            }
+        } catch let error as NSError {
+            print("Could not select contact. \(error)")
+        }
+        
+        return assignedMailingLists
+    }
+    
     // MARK: - statistic functions
     
     // Returns the number of non retired contacts

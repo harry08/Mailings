@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import MessageUI
 
 /**
  Delegate that is called after closing the DetailController.
@@ -18,7 +19,7 @@ protocol MailingDetailViewControllerDelegate: class {
     func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishEditing mailing: MailingDTO)
 }
 
-class MailingDetailViewController: UITableViewController, UITextFieldDelegate, MailingDetailViewControllerDelegate, MailingListPickerTableViewControllerDelegate {
+class MailingDetailViewController: UITableViewController, UITextFieldDelegate, MailingDetailViewControllerDelegate, MailingListPickerTableViewControllerDelegate, MFMailComposeViewControllerDelegate {
 
     /**
      Flag indicates whether a new mailing is shown or an existing one.
@@ -229,7 +230,6 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
         {
             // Choose mailing list to send mailing to.
             destinationVC.container = container
-            destinationVC.mailingDTO = mailingDTO
             destinationVC.delegate = self
         } else if segue.identifier == "showEmailsToSend",
             let destinationVC = segue.destination as? MailsToSendTableViewController
@@ -330,6 +330,10 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
     
     // MARK: - MailingListPickerTableViewController Delegate
     
+    func mailingListPicker(_ picker: MailingListPickerTableViewController, didPickList chosenMailingLists: [MailingListDTO]) {
+        // no implementation Only single
+    }
+    
     /**
      Called after mailing list was chosen. Send the selected mailing to the chosen mailing list.
      */
@@ -350,13 +354,48 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
             mailsToSend = mailComposer.composeMailsToSend(emailAddresses: emailAddresses)
             if mailsToSend.count == 1 {
                 // Show Mail view directly
-                // TODO
-                
+                composeMail(mailsToSend[0])
             } else if mailsToSend.count > 1 {
                 // The mailing needs to be send in more than one mail.
                 // Display tableview to show the different mails.
                 performSegue(withIdentifier: "showEmailsToSend", sender: nil)
             }
         }
+    }
+    
+    // MARK: - Send mail
+    
+    func composeMail(_ mailDTO: MailDTO) {
+        let mailComposeViewController = configuredMailComposeViewController(mailDTO: mailDTO)
+        if !MFMailComposeViewController.canSendMail() {
+            self.showSendMailErrorAlert()
+        } else {
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        }
+    }
+    
+    func showSendMailErrorAlert() {
+        let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
+        
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(defaultAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func configuredMailComposeViewController(mailDTO: MailDTO) -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Set the mailComposeDelegate property to self
+        
+        mailComposerVC.setBccRecipients(mailDTO.emailAddresses)
+        mailComposerVC.setSubject(mailDTO.mailingDTO.title!)
+        mailComposerVC.setMessageBody(mailDTO.mailingDTO.text!, isHTML: false)
+        
+        return mailComposerVC
     }
 }

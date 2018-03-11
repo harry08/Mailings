@@ -2,8 +2,7 @@
 //  ContactDetailViewController.swift
 //  Mailings
 //
-//  Created by Harry Huebner on 22.02.18.
-//  Copyright © 2018 Huebner. All rights reserved.
+//  Created on 22.02.18.
 //
 
 import UIKit
@@ -28,7 +27,7 @@ protocol ContactDetailViewControllerInfoDelegate: class {
     func contactDetailViewControllerDidChangeData(_ controller: ContactDetailViewController)
 }
 
-class ContactDetailViewController: UITableViewController, ContactDetailViewControllerDelegate, UITextFieldDelegate {
+class ContactDetailViewController: UITableViewController, ContactDetailViewControllerDelegate, ContactMailingListsTableViewControllerDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var firstnameTextField: UITextField!
     @IBOutlet weak var lastnameTextField: UITextField!
@@ -66,6 +65,17 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
     weak var delegate: ContactDetailViewControllerDelegate?
     
     weak var infoDelegate: ContactDetailViewControllerInfoDelegate?
+    
+    /**
+     List of mailing lists assinged to this contact.
+     Used for displaying assignments in the sub view.‚
+     */
+    var assignedMailingLists = AssigndMailingLists()
+    
+    /**
+     List of changes of mailing list assignments for this contact.
+     */
+    var mailingListAssignmentChanges = [MailingListAssignmentChange]()
     
     var container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
     
@@ -160,6 +170,7 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         firstnameTextField.isEnabled = editMode
         lastnameTextField.isEnabled = editMode
         emailTextField.isEnabled = editMode
+        notesTextView.isEditable = editMode
     }
     
     // MARK: - Action and Navigation
@@ -248,6 +259,32 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         configureToolbar()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showContactMailingLists",
+            let destinationVC = segue.destination as? ContactMailingListsTableViewController
+        {
+            guard let container = container else {
+                return
+            }
+            
+            destinationVC.container = container
+            destinationVC.editMode = self.editMode
+            destinationVC.delegate = self
+            
+            // Init assignedMailingLists list and pass as a reference to the sub view
+            // This list is modified by the sub view when new mailing lists a are assigned or mailing lists are removed.
+            if !assignedMailingLists.isInit() {
+                // Init list of assigned mailing lists
+                if let objectId = mailingContactDTO?.objectId {
+                    assignedMailingLists.initWithMailingList(MailingContact.getAssignedMailingLists(objectId: objectId, in: container.viewContext))
+                } else {
+                    assignedMailingLists.initWithEmptyList()
+                }
+            }
+            destinationVC.assignedMailingLists = assignedMailingLists
+        }
+    }
+    
     /**
      Triggers sending this mailing as mail. First the mailing list has to be chosen.
      */
@@ -274,7 +311,19 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         }
     }
     
-    // MARK: ContactDetailViewController Delegate
+    // MARK: - TableView Delegate
+    
+    // Do not allow cell selection
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if indexPath.section == 2 {
+            // Section 2 should be selectable to navigate to the mailinglist details.
+            return indexPath
+        } else {
+            return nil
+        }
+    }
+    
+    // MARK: - ContactDetailViewController Delegate
     
     func contactDetailViewControllerDidCancel(_ controller: ContactDetailViewController) {
         editMode = false
@@ -336,6 +385,37 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         fillControls()
         configureControls()
         configureToolbar()
+    }
+    
+    // MARK: ContactMailingListsTableViewController Delegate
+    
+    /**
+     Called after changing mailing list assignment in sub view.
+     Takes the changes into the mailingListAssignmentChanges list.
+     */
+    func contactMailingListsTableViewController(_ controller: ContactMailingListsTableViewController, didChangeMailingLists mailingListAssignmentChanges: [MailingListAssignmentChange]) {
+    
+        for i in 0 ..< mailingListAssignmentChanges.count {
+            let mailingListAssignmentChange = mailingListAssignmentChanges[i]
+            let mailingListAlreadyChanged = self.mailingListAssignmentChanges.contains {$0.objectId == mailingListAssignmentChange.objectId}
+            if !mailingListAlreadyChanged {
+                // no entry with the objectId exists in the change list -> add it
+                self.mailingListAssignmentChanges.append(mailingListAssignmentChange)
+            } else {
+                // A change entry for this contact already exists in the change list.
+                if let existing = self.mailingListAssignmentChanges.first(where: { $0.objectId == mailingListAssignmentChange.objectId }) {
+                    
+                    if existing.action != mailingListAssignmentChange.action {
+                        // The entry has a different action -> remove it from the change list.
+                        if let index = self.mailingListAssignmentChanges.index(where: { $0.objectId == existing.objectId } ) {
+                            self.mailingListAssignmentChanges.remove(at: index)
+                        }
+                    }
+                }
+            }
+        }
+        
+        viewEdited = true
     }
     
     // MARK:- UITextField Delegates

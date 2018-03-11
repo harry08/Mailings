@@ -20,4 +20,10 @@ class MailingListMapper {
         mailingList.recipientasbcc = mailingListDTO.recipientAsBcc
         mailingList.assignasdefault = mailingListDTO.assignAsDefault
     }
+    
+    class func mapToAssignedMailingList(mailingList: MailingList) -> AssignedMailingList {
+        let assignedMailingList = AssignedMailingList(objectId: mailingList.objectID, name: mailingList.name!)
+        
+        return assignedMailingList
+    }
 }

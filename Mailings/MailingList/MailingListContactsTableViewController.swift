@@ -124,7 +124,6 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,        forRowAt indexPath: IndexPath) {
         
-        
             let removedContact = assignedContacts!.contacts[indexPath.row]
             let contactAssignmentChange = ContactAssignmentChange(objectId: removedContact.objectId, action: "R")
         
