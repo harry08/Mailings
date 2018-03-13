@@ -13,13 +13,24 @@ class MailingList: NSManagedObject {
     
     // MARK: -  class functions
     
-    // Loads a contact with a given id.
+    // Loads a mailinglist with a given id.
     class func loadMailingList(objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws -> MailingListDTO {
         do {
             let mailingListEntity = try context.existingObject(with: objectId) as! MailingList
             let mailinglistDTO = MailingListMapper.mapToDTO(mailingList: mailingListEntity)
             
             return mailinglistDTO
+        } catch let error as NSError {
+            print("Could not load mailingList. \(error), \(error.userInfo)")
+            throw error
+        }
+    }
+    
+    // Loads a mailinglist with a given id.
+    class func loadMailingListEntity(objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws -> MailingList {
+        do {
+            let mailingListEntity = try context.existingObject(with: objectId) as! MailingList
+            return mailingListEntity
         } catch let error as NSError {
             print("Could not load mailingList. \(error), \(error.userInfo)")
             throw error

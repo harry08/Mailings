@@ -73,6 +73,15 @@ class MailingContact: NSManagedObject {
     // Creates a new contact or updates an already existing contact
     // Depends on the objectId in MailingContactDTO.
     class func createOrUpdateFromDTO(contactDTO: MailingContactDTO, in context: NSManagedObjectContext) throws {
+        try createOrUpdateFromDTO(contactDTO: contactDTO, assignmentChanges: nil, in: context)
+    }
+    
+    /**
+     Creates a new contact or updates an already existing contact
+     Depends on the objectId in MailingContactDTO.
+     The assignmentChanges array is optional. i.e. if not set, the default values get
+     */
+    class func createOrUpdateFromDTO(contactDTO: MailingContactDTO, assignmentChanges: [MailingListAssignmentChange]?, in context: NSManagedObjectContext) throws {
         if contactDTO.objectId == nil {
             // New contact
             os_log("Creating new contact...", log: OSLog.default, type: .debug)
@@ -81,11 +90,15 @@ class MailingContact: NSManagedObject {
             contactEntity.updatetime = Date()
             MailingContactMapper.mapToEntity(contactDTO: contactDTO, contact: &contactEntity)
             
-            // Assignment to default mailinglists
-            let defaultMailingLists = MailingList.getDefaultMailingLists(in: context)
-            for i in 0 ..< defaultMailingLists.count {
-                let mailingList = defaultMailingLists[i]
-                mailingList.addToContacts(contactEntity)
+            if assignmentChanges == nil {
+                // Assignment to default mailinglists
+                let defaultMailingLists = MailingList.getDefaultMailingLists(in: context)
+                for i in 0 ..< defaultMailingLists.count {
+                    let mailingList = defaultMailingLists[i]
+                    mailingList.addToContacts(contactEntity)
+                }
+            } else {
+                try addMailingListAssignmentChanges(assignmentChanges!, contact: contactEntity, in: context)
             }
         } else {
             // Load and update existing contact
@@ -96,6 +109,10 @@ class MailingContact: NSManagedObject {
                     var contactEntity = try context.existingObject(with: objectId) as! MailingContact
                     MailingContactMapper.mapToEntity(contactDTO: contactDTO, contact: &contactEntity)
                     contactEntity.updatetime = Date()
+                    
+                    if let assignmentChanges = assignmentChanges {
+                        try addMailingListAssignmentChanges(assignmentChanges, contact: contactEntity, in: context)
+                    }
                 } catch let error as NSError {
                     os_log("Could not load contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
                     throw error
@@ -108,6 +125,28 @@ class MailingContact: NSManagedObject {
             os_log("Contact saved", log: OSLog.default, type: .debug)
         } catch let error as NSError {
             os_log("Could not save contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            throw error
+        }
+    }
+    
+    /**
+     Saves the given list of mailinglist assignment changes.
+     */
+    private class func addMailingListAssignmentChanges(_ assignmentChanges: [MailingListAssignmentChange], contact: MailingContact, in context: NSManagedObjectContext) throws {
+        
+        do {
+            for i in 0 ..< assignmentChanges.count {
+                let assignmentChange = assignmentChanges[i]
+                
+                let mailingList = try MailingList.loadMailingListEntity(objectId: assignmentChange.objectId, in: context)
+                if assignmentChange.action == "A" {
+                    mailingList.addToContacts(contact)
+                } else if assignmentChange.action == "R" {
+                    mailingList.removeFromContacts(contact)
+                }
+            }
+        } catch let error as NSError {
+            os_log("Could not mailinglists and assign it to the mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
             throw error
         }
     }

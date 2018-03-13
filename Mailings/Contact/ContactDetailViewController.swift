@@ -351,10 +351,16 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         
         // Update database
         do {
-            try MailingContact.createOrUpdateFromDTO(contactDTO: contact, in: container.viewContext)
+            if mailingListAssignmentChanges.count > 0 {
+                try MailingContact.createOrUpdateFromDTO(contactDTO: contact, assignmentChanges: mailingListAssignmentChanges, in: container.viewContext)
+            } else {
+                // No assignments done in this view. Create contact with default assignments.
+                try MailingContact.createOrUpdateFromDTO(contactDTO: contact, in: container.viewContext)
+            }
             editMode = false
             viewEdited = false
             dataChanged = true
+            mailingListAssignmentChanges = [MailingListAssignmentChange]()
         } catch {
             // TODO show Alert
         }
@@ -374,10 +380,11 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         
         // Update database
         do {
-            try MailingContact.createOrUpdateFromDTO(contactDTO: contact, in: container.viewContext)
+            try MailingContact.createOrUpdateFromDTO(contactDTO: contact, assignmentChanges: mailingListAssignmentChanges, in: container.viewContext)
             editMode = false
             viewEdited = false
             dataChanged = true
+            mailingListAssignmentChanges = [MailingListAssignmentChange]()
         } catch {
             // TODO show Alert
         }

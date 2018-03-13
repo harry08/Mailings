@@ -20,10 +20,15 @@ protocol ContactMailingListsTableViewControllerDelegate: class {
  */
 class ContactMailingListsTableViewController: UITableViewController, MailingListPickerTableViewControllerDelegate {
     
+    @IBOutlet weak var addButton: UIBarButtonItem!
     /**
      Flag indicates whether the view is in readonly mode or edit mode.
      */
-    var editMode = false
+    var editMode = false {
+        didSet {
+            configureControls()
+        }
+    }
    
     /**
      Delegate to call after adding or removing mailingLists
@@ -59,11 +64,16 @@ class ContactMailingListsTableViewController: UITableViewController, MailingList
         
         navigationItem.largeTitleDisplayMode = .never
         
+        configureControls()
         updateUI()
     }
     
     private func updateUI() {
         tableView.reloadData()
+    }
+    
+    private func configureControls() {
+        addButton.isEnabled = editMode
     }
     
     // MARK: - Navigation and Actions
@@ -97,6 +107,10 @@ class ContactMailingListsTableViewController: UITableViewController, MailingList
         return getNrOfAssignedMailingLists()
     }
     
+    /**
+     Delete mailing list assignment.
+     When the commitEditingStyle method is present inside the view controller, the table view will automatically enable swipe-to-delete.
+     */
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         let removedMailingList = assignedMailingLists!.mailingLists[indexPath.row]
@@ -108,6 +122,15 @@ class ContactMailingListsTableViewController: UITableViewController, MailingList
         tableView.deleteRows(at: indexPaths, with: .automatic)
         
         delegate?.contactMailingListsTableViewController(self, didChangeMailingLists: [mailingListAssignmentChange])
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    
+        if editMode == true {
+            return .delete
+        } else {
+            return .none
+        }
     }
     
     // MARK: - MailingListPickerTableViewControllerDelegate
