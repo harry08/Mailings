@@ -151,6 +151,29 @@ class MailingContact: NSManagedObject {
         }
     }
     
+    class func deleteContact(contactDTO: MailingContactDTO, in context: NSManagedObjectContext) throws {
+        
+        if let objectId = contactDTO.objectId {
+            os_log("Deleting existing contact with id %s...", log: OSLog.default, type: .debug, objectId)
+            
+            do {
+                let contactEntity = try context.existingObject(with: objectId) as! MailingContact
+                context.delete(contactEntity)
+            } catch let error as NSError {
+                os_log("Could not delete contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+                throw error
+            }
+        }
+        
+        do {
+            try context.save()
+            os_log("Contact deleted", log: OSLog.default, type: .debug)
+        } catch let error as NSError {
+            os_log("Could not delete contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            throw error
+        }
+    }
+    
     // Loads a contact with a given id.
     class func loadContact(objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws -> MailingContactDTO {
         do {

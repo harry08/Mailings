@@ -18,6 +18,7 @@ protocol ContactDetailViewControllerDelegate: class {
     func contactDetailViewControllerDidCancel(_ controller: ContactDetailViewController)
     func contactDetailViewController(_ controller: ContactDetailViewController, didFinishAdding contact: MailingContactDTO)
     func contactDetailViewController(_ controller: ContactDetailViewController, didFinishEditing contact: MailingContactDTO)
+    func contactDetailViewController(_ controller: ContactDetailViewController, didFinishDeleting contact: MailingContactDTO)
 }
 
 /**
@@ -34,6 +35,7 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var notesTextView: UITextView!
     
+    @IBOutlet weak var contactDeleteCell: UITableViewCell!
     let messageComposer = MessageComposer()
     
     /**
@@ -239,6 +241,7 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         } else if isAddType() {
             delegate?.contactDetailViewControllerDidCancel(self)
         }
+        tableView.reloadData()
     }
     
     @objc func doneAction(sender: UIBarButtonItem) {
@@ -257,6 +260,14 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         configureBarButtonItems()
         configureControls()
         configureToolbar()
+        tableView.reloadData()
+    }
+    
+    /**
+     Deletes the contact
+     */
+    func deleteAction() {
+        delegate?.contactDetailViewController(self, didFinishDeleting: mailingContactDTO!)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -276,7 +287,7 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             if !assignedMailingLists.isInit() {
                 // Init list of assigned mailing lists
                 if let objectId = mailingContactDTO?.objectId {
-                    assignedMailingLists.initWithMailingList(MailingContact.getAssignedMailingLists(objectId: objectId, in: container.viewContext))
+                assignedMailingLists.initWithMailingList(MailingContact.getAssignedMailingLists(objectId: objectId, in: container.viewContext))
                 } else {
                     assignedMailingLists.initWithEmptyList()
                 }
@@ -313,13 +324,46 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
     
     // MARK: - TableView Delegate
     
-    // Do not allow cell selection
+    // Do not allow cell selection except for mailinglist details
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if indexPath.section == 2 {
             // Section 2 should be selectable to navigate to the mailinglist details.
             return indexPath
+        } else if indexPath.section == 4 {
+            // Section 4 should be selectable to delete a contact.
+            return indexPath
         } else {
             return nil
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 4 {
+            // Section for delete button.
+            if editMode && isEditType() {
+                // Only visible if view is in editMode for an existing contact
+                return super.tableView(tableView, heightForRowAt: indexPath)
+            } else {
+                return 0
+            }
+        }
+        
+        return super.tableView(tableView, heightForRowAt: indexPath)
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 4 {
+            // Delete contact
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Kontakt löschen", style: .default) { _ in
+                self.deleteAction()
+            })
+            alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
+                // Do nothing
+            })
+            // The following 2 lines are needed for iPad.
+            alert.popoverPresentationController?.sourceView = contactDeleteCell
+            present(alert, animated: true)
         }
     }
     
@@ -392,6 +436,29 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         fillControls()
         configureControls()
         configureToolbar()
+    }
+    
+    /**
+     Protocol function. Called to delete an existing MailingContact
+     Saves data to database and navigates back to caller view.
+     */
+    func contactDetailViewController(_ controller: ContactDetailViewController, didFinishDeleting contact: MailingContactDTO) {
+        guard let container = container else {
+            print("Delete not possible. No PersistentContainer.")
+            return
+        }
+        
+        // Update database
+        do {
+            try MailingContact.deleteContact(contactDTO: contact, in: container.viewContext)
+            editMode = false
+            viewEdited = false
+            dataChanged = true
+        } catch {
+            // TODO show Alert
+        }
+        
+        navigationController?.popViewController(animated:true)
     }
     
     // MARK: ContactMailingListsTableViewController Delegate

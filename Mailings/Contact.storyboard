@@ -232,6 +232,27 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="0ir-UG-kVY" userLabel="Actions">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="SaW-4j-fVz">
+                                        <rect key="frame" x="0.0" y="503.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SaW-4j-fVz" id="e9p-l4-aaO">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Kontakt löschen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="94u-bw-eiL" userLabel="Kontakt löschen">
+                                                    <rect key="frame" x="19" y="-1" width="343" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="eyQ-WK-L6f" id="Pve-vc-orQ"/>
@@ -240,6 +261,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Neuer Kontakt" id="bVe-Y5-hG2"/>
                     <connections>
+                        <outlet property="contactDeleteCell" destination="SaW-4j-fVz" id="Uvf-0p-mR7"/>
                         <outlet property="emailTextField" destination="NFQ-cd-0x9" id="XRX-N1-VTQ"/>
                         <outlet property="firstnameTextField" destination="65i-Vh-p32" id="tpp-fE-eqc"/>
                         <outlet property="lastnameTextField" destination="dyo-fl-5mH" id="GDc-XJ-Oti"/>
