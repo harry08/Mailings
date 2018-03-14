@@ -356,13 +356,16 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             // Delete contact
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Kontakt löschen", style: .default) { _ in
+                self.tableView.deselectRow(at: indexPath, animated: true)
                 self.deleteAction()
             })
             alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
                 // Do nothing
             })
             // The following 2 lines are needed for iPad.
-            alert.popoverPresentationController?.sourceView = contactDeleteCell
+            alert.popoverPresentationController?.sourceView = view
+            alert.popoverPresentationController?.sourceRect = self.contactDeleteCell.frame
+            
             present(alert, animated: true)
         }
     }
