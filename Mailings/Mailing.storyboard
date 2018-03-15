@@ -124,7 +124,7 @@
         <scene sceneID="fLe-K6-n60">
             <objects>
                 <tableViewController hidesBottomBarWhenPushed="YES" id="uZT-hg-EcR" customClass="MailingDetailViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="CZm-PY-g7H">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="CZm-PY-g7H">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -177,6 +177,27 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="o52-Ct-AZf" userLabel="Actions">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="fcC-yg-d3m">
+                                        <rect key="frame" x="0.0" y="367.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fcC-yg-d3m" id="dvA-p9-bcN">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Mailing löschen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHn-Oy-2Ht">
+                                                    <rect key="frame" x="16" y="11" width="343" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="uZT-hg-EcR" id="0HT-zK-Tud"/>
@@ -186,6 +207,7 @@
                     <navigationItem key="navigationItem" title="Neues Mailing" id="awJ-6x-194"/>
                     <connections>
                         <outlet property="contentTextView" destination="hQo-yl-Og5" id="vWu-qT-293"/>
+                        <outlet property="mailingDeleteCell" destination="fcC-yg-d3m" id="XIq-wA-e0k"/>
                         <outlet property="titleTextField" destination="nXl-GW-YOn" id="Igv-ez-AOq"/>
                         <segue destination="nfA-hz-lQ0" kind="show" identifier="pickMailingList" id="2si-sC-hQ7"/>
                         <segue destination="vZz-XU-wCA" kind="show" identifier="showEmailsToSend" id="BHS-m8-FG6"/>
@@ -193,7 +215,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aKH-54-1kk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2423" y="350"/>
+            <point key="canvasLocation" x="2421.5999999999999" y="349.47526236881561"/>
         </scene>
         <!--MailsToSend-->
         <scene sceneID="dmO-5O-0CE">

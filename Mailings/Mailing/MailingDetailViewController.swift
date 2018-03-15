@@ -17,6 +17,7 @@ protocol MailingDetailViewControllerDelegate: class {
     func mailingDetailViewControllerDidCancel(_ controller: MailingDetailViewController)
     func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishAdding mailing: MailingDTO)
     func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishEditing mailing: MailingDTO)
+    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishDeleting mailing: MailingDTO)
 }
 
 class MailingDetailViewController: UITableViewController, UITextFieldDelegate, MailingDetailViewControllerDelegate, MailingListPickerTableViewControllerDelegate, MFMailComposeViewControllerDelegate {
@@ -34,6 +35,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var contentTextView: UITextView!
     
+    @IBOutlet weak var mailingDeleteCell: UITableViewCell!
     /**
      Delegate to call after finish editing
      Weak reference to avoid ownership cycles.
@@ -215,6 +217,14 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
         configureBarButtonItems()
         configureControls()
         configureToolbar()
+        tableView.reloadData()
+    }
+    
+    /**
+     Deletes the mailing
+     */
+    func deleteAction() {
+        delegate?.mailingDetailViewController(self, didFinishDeleting: mailingDTO!)
     }
     
     /**
@@ -239,11 +249,51 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
     }
     
     // MARK: - TableView Delegate
+    
+    // Do not allow cell selection except for mailing deletion
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if indexPath.section == 2 {
+            // Section 2 should be selectable to delete a mailing.
+            return indexPath
+        } else {
+            return nil
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 2 {
+            // Section for delete button.
+            if editMode && isEditType() {
+                // Only visible if view is in editMode for an existing mailing
+                return super.tableView(tableView, heightForRowAt: indexPath)
+            } else {
+                return 0
+            }
+        }
+        
+        return super.tableView(tableView, heightForRowAt: indexPath)
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
             titleTextField.becomeFirstResponder()
         } else if indexPath.section == 1 {
             contentTextView.becomeFirstResponder()
+        } else if indexPath.section == 2 {
+            // Delete mailing
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Mailing löschen", style: .default) { _ in
+                self.tableView.deselectRow(at: indexPath, animated: true)
+                self.deleteAction()
+            })
+            alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
+                // Do nothing
+            })
+            // The following 2 lines are needed for iPad.
+            alert.popoverPresentationController?.sourceView = view
+            alert.popoverPresentationController?.sourceRect = self.mailingDeleteCell.frame
+            
+            present(alert, animated: true)
         }
     }
     
@@ -277,6 +327,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
             fillControls()
             configureControls()
             configureToolbar()
+            tableView.reloadData()
         } else {
             navigationController?.popViewController(animated:true)
         }        
@@ -326,6 +377,26 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
         fillControls()
         configureControls()
         configureToolbar()
+    }
+    
+    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishDeleting mailing: MailingDTO) {
+    
+        guard let container = container else {
+            print("Delete not possible. No PersistentContainer.")
+            return
+        }
+        
+        // Update database
+        do {
+            try Mailing.deleteMailing(mailingDTO: mailing, in: container.viewContext)
+            editMode = false
+            viewEdited = false
+           // dataChanged = true
+        } catch {
+            // TODO show Alert
+        }
+        
+        navigationController?.popViewController(animated:true)
     }
     
     // MARK: - MailingListPickerTableViewController Delegate

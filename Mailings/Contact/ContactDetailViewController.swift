@@ -241,7 +241,6 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         } else if isAddType() {
             delegate?.contactDetailViewControllerDidCancel(self)
         }
-        tableView.reloadData()
     }
     
     @objc func doneAction(sender: UIBarButtonItem) {
@@ -381,6 +380,7 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             fillControls()
             configureControls()
             configureToolbar()
+            tableView.reloadData()
         } else {
             navigationController?.popViewController(animated:true)
         }   

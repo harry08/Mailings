@@ -51,6 +51,29 @@ class Mailing: NSManagedObject {
         }
     }
     
+    class func deleteMailing(mailingDTO: MailingDTO, in context: NSManagedObjectContext) throws {
+        
+        if let objectId = mailingDTO.objectId {
+            os_log("Deleting existing mailing with id %s...", log: OSLog.default, type: .debug, objectId)
+            
+            do {
+                let mailingEntity = try context.existingObject(with: objectId) as! Mailing
+                context.delete(mailingEntity)
+            } catch let error as NSError {
+                os_log("Could not delete mailing. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+                throw error
+            }
+        }
+        
+        do {
+            try context.save()
+            os_log("Mailing deleted", log: OSLog.default, type: .debug)
+        } catch let error as NSError {
+            os_log("Could not delete mailing. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            throw error
+        }
+    }
+    
     // Loads a mailing with a given id.
     class func loadMailing(objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws -> MailingDTO {
         do {
