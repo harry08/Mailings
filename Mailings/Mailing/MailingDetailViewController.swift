@@ -20,7 +20,7 @@ protocol MailingDetailViewControllerDelegate: class {
     func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishDeleting mailing: MailingDTO)
 }
 
-class MailingDetailViewController: UITableViewController, UITextFieldDelegate, MailingDetailViewControllerDelegate, MailingListPickerTableViewControllerDelegate, MFMailComposeViewControllerDelegate {
+class MailingDetailViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate,  MailingDetailViewControllerDelegate, MailingListPickerTableViewControllerDelegate, MFMailComposeViewControllerDelegate {
 
     /**
      Flag indicates whether a new mailing is shown or an existing one.
@@ -310,8 +310,11 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
     }
     
     // MARK:- UITextView Delegates
-    
-    // TODO Set viewEdited when textview was edited.
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        viewEdited = true
+        
+        return true
+    }
     
     // MARK: MailingDetailViewController Delegate
     

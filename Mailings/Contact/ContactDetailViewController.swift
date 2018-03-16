@@ -28,7 +28,7 @@ protocol ContactDetailViewControllerInfoDelegate: class {
     func contactDetailViewControllerDidChangeData(_ controller: ContactDetailViewController)
 }
 
-class ContactDetailViewController: UITableViewController, ContactDetailViewControllerDelegate, ContactMailingListsTableViewControllerDelegate, UITextFieldDelegate {
+class ContactDetailViewController: UITableViewController, ContactDetailViewControllerDelegate, ContactMailingListsTableViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
     
     @IBOutlet weak var firstnameTextField: UITextField!
     @IBOutlet weak var lastnameTextField: UITextField!
@@ -505,6 +505,13 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         let stringRange = Range(range, in:oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         viewEdited = !newText.isEmpty
+        return true
+    }
+    
+    // MARK:- UITextView Delegates
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        viewEdited = true
+        
         return true
     }
 }
