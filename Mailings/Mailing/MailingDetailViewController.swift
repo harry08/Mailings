@@ -377,6 +377,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, M
         fillControls()
         configureControls()
         configureToolbar()
+        tableView.reloadData()
     }
     
     func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishDeleting mailing: MailingDTO) {

@@ -69,7 +69,6 @@ class MailingTableViewController: FetchedResultsTableViewController {
     
     // MARK: - Navigation and Actions
     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showMailing",
             let destinationVC = segue.destination as? MailingDetailViewController
@@ -83,7 +82,11 @@ class MailingTableViewController: FetchedResultsTableViewController {
                 destinationVC.mailingDTO = mailingDTO
                 destinationVC.editType = true
             }
-        } 
+        } else if segue.identifier == "addNewMailing",
+            let destinationVC = segue.destination as? MailingDetailViewController
+        {
+            destinationVC.container = container
+        }
     }
 }
 

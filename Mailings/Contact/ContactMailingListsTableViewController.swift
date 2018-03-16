@@ -21,6 +21,7 @@ protocol ContactMailingListsTableViewControllerDelegate: class {
 class ContactMailingListsTableViewController: UITableViewController, MailingListPickerTableViewControllerDelegate {
     
     @IBOutlet weak var addButton: UIBarButtonItem!
+    
     /**
      Flag indicates whether the view is in readonly mode or edit mode.
      */

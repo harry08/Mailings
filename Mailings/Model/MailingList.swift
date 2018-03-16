@@ -108,14 +108,14 @@ class MailingList: NSManagedObject {
      Depends on the objectId in MailingDTO.
      */
     class func createOrUpdateFromDTO(_ mailingListDTO: MailingListDTO, in context: NSManagedObjectContext) throws {
-        try createOrUpdateFromDTO(mailingListDTO, assignmentChanges: [ContactAssignmentChange](), in: context)
+        try createOrUpdateFromDTO(mailingListDTO, assignmentChanges: nil, in: context)
     }
     
     /**
      Creates a new mailing or updates an already existing mailing
      Depends on the objectId in MailingDTO.
      */
-    class func createOrUpdateFromDTO(_ mailingListDTO: MailingListDTO, assignmentChanges: [ContactAssignmentChange], in context: NSManagedObjectContext) throws {
+    class func createOrUpdateFromDTO(_ mailingListDTO: MailingListDTO, assignmentChanges: [ContactAssignmentChange]?, in context: NSManagedObjectContext) throws {
         if mailingListDTO.objectId == nil {
             // New mailing
             os_log("Creating new mailingList...", log: OSLog.default, type: .debug)
@@ -124,7 +124,7 @@ class MailingList: NSManagedObject {
             mailingListEntity.updatetime = Date()
             MailingListMapper.mapToEntity(mailingListDTO: mailingListDTO, mailingList: &mailingListEntity)
             
-            if assignmentChanges.count > 0 {
+            if let assignmentChanges = assignmentChanges {
                 try addContactAssignmentChanges(assignmentChanges, mailingList: mailingListEntity, in: context)
             }
         } else {
@@ -138,7 +138,7 @@ class MailingList: NSManagedObject {
                     MailingListMapper.mapToEntity(mailingListDTO: mailingListDTO, mailingList: &mailingListEntity)
                     mailingListEntity.updatetime = Date()
                     
-                    if assignmentChanges.count > 0 {
+                    if let assignmentChanges = assignmentChanges {
                         try addContactAssignmentChanges(assignmentChanges, mailingList: mailingListEntity, in: context)
                     }
                 } catch let error as NSError {
@@ -175,6 +175,29 @@ class MailingList: NSManagedObject {
             }
         } catch let error as NSError {
             os_log("Could not load contact and assign it to the mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            throw error
+        }
+    }
+    
+    class func deleteMailingList(_ mailingListDTO: MailingListDTO, in context: NSManagedObjectContext) throws {
+        
+        if let objectId = mailingListDTO.objectId {
+            os_log("Deleting existing mailingList with id %s...", log: OSLog.default, type: .debug, objectId)
+            
+            do {
+                let mailingListEntity = try context.existingObject(with: objectId) as! MailingList
+                context.delete(mailingListEntity)
+            } catch let error as NSError {
+                os_log("Could not delete mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+                throw error
+            }
+        }
+        
+        do {
+            try context.save()
+            os_log("MailingList deleted", log: OSLog.default, type: .debug)
+        } catch let error as NSError {
+            os_log("Could not delete mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
             throw error
         }
     }

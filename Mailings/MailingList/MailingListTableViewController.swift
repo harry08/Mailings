@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 
 
-class MailingListTableViewController: FetchedResultsTableViewController, MailingListDetailViewControllerDelegate {
+class MailingListTableViewController: FetchedResultsTableViewController {
 
     var container: NSPersistentContainer? =
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer {
@@ -80,64 +80,13 @@ class MailingListTableViewController: FetchedResultsTableViewController, Mailing
                 let mailingListDTO = MailingListMapper.mapToDTO(mailingList: selectedMailingList)
                 destinationVC.container = container
                 destinationVC.mailingListDTO = mailingListDTO
-                destinationVC.editMode = true
+                destinationVC.editType = true
             }
-            
-            destinationVC.delegate = self
         } else if segue.identifier == "addNewMailingList",
             let destinationVC = segue.destination as? MailingListDetailViewController {
-            destinationVC.delegate = self
+            
+            destinationVC.container = container
         }
-    }
-    
-    // MARK:- MailingListDetailViewController Delegate
-    
-    /**
-     Protocol function. Called after canceled the detail view
-     Removes the edit view.
-     */
-    func mailingListDetailViewControllerDidCancel(_ controller: MailingListDetailViewController) {
-        navigationController?.popViewController(animated:true)
-    }
-    
-    /**
-     Protocol function. Called after finish adding a new MailingList
-     Saves data to database and removes the edit view.
-     */
-    func mailingListDetailViewController(_ controller: MailingListDetailViewController, didFinishAdding mailingList: MailingListDTO, assignmentChanges: [ContactAssignmentChange]) {
-        
-        guard let container = container else {
-            print("Save not possible. No PersistentContainer.")
-            return
-        }
-        
-        // Update database
-        do {
-            try MailingList.createOrUpdateFromDTO(mailingList, assignmentChanges: assignmentChanges, in: container.viewContext)
-        } catch {
-            // TODO show Alert
-        }
-        navigationController?.popViewController(animated:true)
-    }
-    
-    /**
-     Protocol function. Called after finish editing an existing MailingList
-     Saves data to database and removes the edit view.
-     */
-    func mailingListDetailViewController(_ controller: MailingListDetailViewController, didFinishEditing mailingList: MailingListDTO, assignmentChanges: [ContactAssignmentChange]) {
-        
-        guard let container = container else {
-            print("Save not possible. No PersistentContainer.")
-            return
-        }
-        
-        // Update database
-        do {
-            try MailingList.createOrUpdateFromDTO(mailingList, assignmentChanges: assignmentChanges, in: container.viewContext)
-        } catch {
-            // TODO show Alert
-        }
-        navigationController?.popViewController(animated:true)
     }
 }
 

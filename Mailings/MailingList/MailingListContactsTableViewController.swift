@@ -23,6 +23,7 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var footerLabel: UILabel!
     
+    @IBOutlet weak var addButton: UIBarButtonItem!
     /**
      Delegate to call after adding or removing contacts
      */
@@ -32,6 +33,15 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer {
         didSet {
             updateUI()
+        }
+    }
+    
+    /**
+     Flag indicates whether the view is in readonly mode or edit mode.
+     */
+    var editMode = false {
+        didSet {
+            configureControls()
         }
     }
     
@@ -49,12 +59,17 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
 
         navigationItem.largeTitleDisplayMode = .never
         
+        configureControls()
         updateUI()
     }
     
     private func updateUI() {
         tableView.reloadData()
         updateControls()
+    }
+    
+    private func configureControls() {
+        addButton.isEnabled = editMode
     }
     
     private func updateControls() {
@@ -122,6 +137,10 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
         return getNrOfAssignedContacts()
     }
     
+    /**
+     Delete contact assignment.
+     When the commitEditingStyle method is present inside the view controller, the table view will automatically enable swipe-to-delete.
+     */
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,        forRowAt indexPath: IndexPath) {
         
             let removedContact = assignedContacts!.contacts[indexPath.row]
@@ -135,6 +154,15 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
         
             delegate?.mailingListContactsTableViewController(self, didChangeContacts: [contactAssignmentChange])
         
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        
+        if editMode == true {
+            return .delete
+        } else {
+            return .none
+        }
     }
     
     // MARK: - ContactPickerTableViewControllerDelegate

@@ -178,27 +178,37 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="Dtt-u4-ZNw">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="nYX-zf-NKp">
+                                        <rect key="frame" x="0.0" y="359.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nYX-zf-NKp" id="ZcY-n4-FbA">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Verteiler löschen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NLX-2r-wws">
+                                                    <rect key="frame" x="16" y="12" width="343" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="nM6-1e-zfm" id="QDJ-PL-CFK"/>
                             <outlet property="delegate" destination="nM6-1e-zfm" id="wGj-Q3-79C"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Neuer Verteiler" id="OKW-MJ-lXQ">
-                        <barButtonItem key="leftBarButtonItem" title="Abbrechen" id="tlU-QO-G5k">
-                            <connections>
-                                <action selector="cancel:" destination="nM6-1e-zfm" id="1ne-te-kNw"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Fertig" id="gVo-zW-gPz">
-                            <connections>
-                                <action selector="doneEditing:" destination="nM6-1e-zfm" id="0gq-Lh-Hs3"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Neuer Verteiler" id="OKW-MJ-lXQ"/>
                     <connections>
                         <outlet property="defaultAssignmentSwitch" destination="WgC-pi-gCg" id="eH1-r7-Gcu"/>
-                        <outlet property="doneButton" destination="gVo-zW-gPz" id="CaI-jr-plc"/>
+                        <outlet property="mailingListDeleteCell" destination="nYX-zf-NKp" id="qRd-O6-do3"/>
                         <outlet property="nameTextField" destination="R0r-Iy-KDR" id="Od7-lo-mmJ"/>
                         <outlet property="recipientAsBccSwitch" destination="k4j-yv-qNf" id="VXh-Pa-Aeu"/>
                     </connections>
@@ -211,7 +221,7 @@
         <scene sceneID="69m-tt-fSH">
             <objects>
                 <tableViewController id="9Fn-3A-8Fq" userLabel="MailingListContacts" customClass="MailingListContactsTableViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Spl-l7-joo">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Spl-l7-joo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -268,6 +278,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addButton" destination="lSc-hS-r3b" id="chg-gt-rgb"/>
                         <outlet property="footerLabel" destination="oXs-Eq-Y8W" id="Cxw-ex-Hvg"/>
                         <outlet property="footerView" destination="X7D-LL-Usg" id="yb5-Fc-7QX"/>
                     </connections>

@@ -439,6 +439,7 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         fillControls()
         configureControls()
         configureToolbar()
+        tableView.reloadData()
     }
     
     /**
