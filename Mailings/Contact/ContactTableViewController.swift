@@ -11,13 +11,11 @@ import UIKit
 import CoreData
 import MessageUI
 
-class ContactTableViewController: FetchedResultsTableViewController, MailingPickerTableViewControllerDelegate, ContactDetailViewControllerInfoDelegate {
-    
-    var multiSelection = false
+class ContactTableViewController: FetchedResultsTableViewController, ContactDetailViewControllerInfoDelegate {
     
     let messageComposer = MessageComposer()
     
-    @IBOutlet weak var multiSelectButton: UIButton!
+    @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var footerLabel: UILabel!
     
@@ -32,13 +30,6 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
     
     fileprivate var fetchedResultsController: NSFetchedResultsController<MailingContact>?
     
-    @IBAction func changeMultiSelection(_ sender: Any) {
-        multiSelection = !multiSelection
-        updateMultiSelection()
-        
-        configureRightBarButtonItems()
-    }
-    
     private func updateUI() {
         performFetch()
         
@@ -46,22 +37,14 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
     }
     
     private func updateControls() {
-        updateMultiSelection()
         updateTableFooter()
     }
     
     private func configureRightBarButtonItems() {
-        if self.multiSelection {
-            // Display action button
-            let item1 = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(multiSelectShareAction))
-            let items = [item1]
-            navigationItem.setRightBarButtonItems(items, animated: true)
-        } else {
-            // Display add button
-            let item1 = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addAction))
-            let items = [item1]
-            navigationItem.setRightBarButtonItems(items, animated: true)
-        }
+        // Display add button
+        let item1 = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addAction))
+        let items = [item1]
+        navigationItem.setRightBarButtonItems(items, animated: true)
     }
     
     // Setup the Search Controller
@@ -71,16 +54,6 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
         searchController.searchBar.placeholder = "Kontakte durchsuchen"
         navigationItem.searchController = searchController
         definesPresentationContext = true
-    }
-    
-    private func updateMultiSelection() {
-        if !multiSelection {
-            multiSelectButton.setTitle("Auswählen", for: .normal)
-        } else {
-            multiSelectButton.setTitle("Abbrechen", for: .normal)
-        }
-        tableView.allowsMultipleSelection = multiSelection
-        tableView.reloadData()
     }
     
     private func updateTableFooter() {
@@ -151,30 +124,7 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
             cell.detailTextLabel?.text = contact.firstname
         }
         
-        if multiSelection {
-            cell.accessoryType = cell.isSelected ? .checkmark : .none
-            cell.selectionStyle = .none // to prevent cells from being "highlighted"
-        } else {
-            cell.accessoryType = .none
-            cell.selectionStyle = .default
-        }
-        
         return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if multiSelection {
-            tableView.cellForRow(at: indexPath)?.selectionStyle = .none
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        } else {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if multiSelection {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        }
     }
     
     /**
@@ -210,22 +160,7 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
         {
             destinationVC.container = container
             destinationVC.infoDelegate = self
-        } else if segue.identifier == "pickMailing",
-            let destinationVC = segue.destination as? MailingPickerTableViewController
-        {
-            destinationVC.container = container
-            destinationVC.delegate = self
         }
-    }
-    
-    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        if identifier == "showContact",
-            self.multiSelection {
-            // Prohibit selecting the row when in multiselect mode.
-            return false
-        }
-        
-        return true
     }
    
     /**
@@ -235,82 +170,9 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
         self.performSegue(withIdentifier: "addNewContact", sender: self)
     }
     
-    /**
-     Displays a menu to choose several actions for the selected contacts.
-     */
-    @objc func multiSelectShareAction(sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Sende Email", style: .default) { _ in
-            print("Action Sende Email called")
-            self.composeMail(emailAddresses: self.getSelectedEmailAddresses())
-        })
-        alert.addAction(UIAlertAction(title: "Sende Mailing...", style: .default) { _ in
-            print("Action Sende Mailing")
-            self.performSegue(withIdentifier: "pickMailing", sender: self)
-        })
-        alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
-            print("Cancel called")
-        })
-        // The following 2 lines are needed for iPad.
-        alert.popoverPresentationController?.sourceView = view
-        alert.popoverPresentationController?.barButtonItem = sender
-        present(alert, animated: true)
-    }
-    
-    // MARK: - Send Email
-    
-    @IBAction func sendEmail(_ sender: Any) {
-        self.composeMail(emailAddresses: getSelectedEmailAddresses())
-    }
-    
-    /**
-     Presents the iOS screen to write an email to the given email addresses
-     */
-    func composeMail(emailAddresses: [String]) {
-        if messageComposer.canSendText() {
-            let messageComposeVc = messageComposer.configuredMailComposeViewController(emailAddresses: emailAddresses)
-            self.present(messageComposeVc, animated: true, completion: nil)
-        } else {
-            let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
-            
-            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(defaultAction)
-            
-            self.present(alertController, animated: true, completion: nil)
-        }
-    }
-    
-    /**
-     Presents the iOS screen to write an email with the contents of the provided mailing to the given email addresses
-     */
-    func composeMailForMailing(_ mailingDTO: MailingDTO, emailAddresses: [String]) {
-        if messageComposer.canSendText() {
-            let messageComposeVc = messageComposer.configuredMailComposeViewController(mailing: mailingDTO, emailAddresses: emailAddresses)
-            self.present(messageComposeVc, animated: true, completion: nil)
-        } else {
-            let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
-            
-            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(defaultAction)
-            
-            self.present(alertController, animated: true, completion: nil)
-        }
-    }
-    
-    private func getSelectedEmailAddresses() -> [String] {
-        var emailAddresses = [String]()
-        if let selectedRows = tableView.indexPathsForSelectedRows {
-            print("Nr of selections: \(selectedRows.count)")
-            for i in 0 ..< selectedRows.count {
-                let indexPath = selectedRows[i]
-                if let contact = fetchedResultsController?.object(at: indexPath),
-                    let email = contact.email {
-                    emailAddresses.append(email)
-                }
-            }
-        }
-        
-        return emailAddresses
+    @IBAction func filterAction(_ sender: Any) {
+        // TODO implement
+        print("Filter called")
     }
     
     // MARK: - Searching
@@ -325,33 +187,11 @@ class ContactTableViewController: FetchedResultsTableViewController, MailingPick
         updateControls()
     }
     
-    // MARK: - MailPicker Delegate
-    
-    /**
-     Called after mailing was chosen. Send mailing to selected email addresses.
-     */
-    func mailingPicker(_ picker: MailingPickerTableViewController, didPick chosenMailing: MailingDTO) {
-        navigationController?.popViewController(animated:true)
-        
-        let emailAddresses = getSelectedEmailAddresses()
-        
-        self.multiSelection = false
-        updateMultiSelection()
-        updateUI()
-        
-        // Wait for 2 seconds in order to wait for the other
-        // view to be finished before displaying the mail view.
-        let when = DispatchTime.now() + 2 // wait 2 seconds
-        DispatchQueue.main.asyncAfter(deadline: when) {
-            self.composeMailForMailing(chosenMailing, emailAddresses: emailAddresses)
-        }
-    }
-    
     // MARK: ContactDetailViewControllerInfo Delegate
     
     /**
      Called after data has been changed inside the detailview.
-     Update relevent parts of the UI.
+     Update relevent parts of the UI like table footer.
      */
     func contactDetailViewControllerDidChangeData(_ controller: ContactDetailViewController) {
         updateControls()

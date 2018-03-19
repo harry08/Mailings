@@ -137,22 +137,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Mailings/Util/MessageComposer.swift"
-            timestampString = "537917967.142449"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "mailComposeController(_:didFinishWith:error:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Mailings/Settings/ImportContactsViewController.swift"
             timestampString = "541669830.757272"
             startingColumnNumber = "9223372036854775807"
@@ -282,13 +266,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Mailing/MailingDetailViewController.swift"
-            timestampString = "542914711.981252"
+            timestampString = "543133670.742466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "137"
             endingLineNumber = "137"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "MailingDetailViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -298,13 +282,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Mailing/MailingDetailViewController.swift"
-            timestampString = "542914711.988556"
+            timestampString = "543133670.749346"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "213"
             endingLineNumber = "213"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "MailingDetailViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -314,13 +298,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Mailing/MailingDetailViewController.swift"
-            timestampString = "542914711.988933"
+            timestampString = "543133670.749667"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "153"
             endingLineNumber = "153"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "configureBarButtonItems()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -330,13 +314,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Mailing/MailingDetailViewController.swift"
-            timestampString = "542914711.989234"
+            timestampString = "543133670.7498159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "338"
             endingLineNumber = "338"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "MailingDetailViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -346,13 +330,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Mailing/MailingDetailViewController.swift"
-            timestampString = "542914711.989526"
+            timestampString = "543133670.749936"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "108"
             endingLineNumber = "108"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "MailingDetailViewController"
+            landmarkType = "3">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -394,13 +378,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Mailing/MailingDetailViewController.swift"
-            timestampString = "542914711.989827"
+            timestampString = "543133670.750097"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "177"
             endingLineNumber = "177"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "MailingDetailViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -473,22 +457,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Mailings/Contact/ContactTableViewController.swift"
-            timestampString = "542652391.180763"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "184"
-            endingLineNumber = "184"
-            landmarkName = "shouldDisplayFooter()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Mailings/MailingList/MailingListPickerTableViewController.swift"
             timestampString = "542306529.855487"
             startingColumnNumber = "9223372036854775807"
@@ -506,13 +474,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Mailing/MailingDetailViewController.swift"
-            timestampString = "542914711.99026"
+            timestampString = "543133670.750501"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "379"
             endingLineNumber = "379"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "mailingDetailViewController(_:didFinishEditing:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -618,11 +586,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Contact/ContactDetailViewController.swift"
-            timestampString = "542910014.853712"
+            timestampString = "543170427.20066"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "423"
-            endingLineNumber = "423"
+            startingLineNumber = "454"
+            endingLineNumber = "454"
             landmarkName = "contactDetailViewController(_:didFinishEditing:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -682,13 +650,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Mailing/MailingDetailViewController.swift"
-            timestampString = "542914711.990765"
+            timestampString = "543133670.751106"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "284"
             endingLineNumber = "284"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -698,13 +666,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Mailing/MailingDetailViewController.swift"
-            timestampString = "542914711.991063"
+            timestampString = "543133670.751223"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "278"
             endingLineNumber = "278"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -714,13 +682,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Mailing/MailingDetailViewController.swift"
-            timestampString = "542914711.9913729"
+            timestampString = "543133670.751334"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "264"
             endingLineNumber = "264"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "tableView(_:heightForRowAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -730,11 +698,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Contact/ContactDetailViewController.swift"
-            timestampString = "542910014.858687"
+            timestampString = "543170427.202755"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "513"
-            endingLineNumber = "513"
+            startingLineNumber = "562"
+            endingLineNumber = "562"
             landmarkName = "textView(_:shouldChangeTextIn:replacementText:)"
             landmarkType = "7">
          </BreakpointContent>

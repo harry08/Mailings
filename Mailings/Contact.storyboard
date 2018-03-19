@@ -68,22 +68,21 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Kontakte" id="3Od-Iy-P3h">
                         <barButtonItem key="leftBarButtonItem" title="Item" style="plain" id="f4D-qm-FCF">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3jb-p1-TdE">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3jb-p1-TdE" userLabel="Filter Button">
                                 <rect key="frame" x="16" y="5.5" width="83" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="Auswählen"/>
+                                <state key="normal" title="Filter"/>
                                 <connections>
-                                    <action selector="changeMultiSelection:" destination="7ad-Bf-3Iq" eventType="touchUpInside" id="pC8-oQ-zpH"/>
+                                    <action selector="filterAction:" destination="7ad-Bf-3Iq" eventType="touchUpInside" id="5r2-tc-Rul"/>
                                 </connections>
                             </button>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="filterButton" destination="3jb-p1-TdE" id="L0f-57-Gvx"/>
                         <outlet property="footerLabel" destination="sUk-gd-tpW" id="jOh-cJ-KFh"/>
                         <outlet property="footerView" destination="l1e-a8-wCb" id="tbR-Jh-xQv"/>
-                        <outlet property="multiSelectButton" destination="3jb-p1-TdE" id="na5-hR-KwC"/>
-                        <segue destination="lRZ-Zt-88F" kind="show" identifier="pickMailing" id="rzS-oM-PZZ"/>
                         <segue destination="eyQ-WK-L6f" kind="show" identifier="addNewContact" id="FQO-e4-nKk"/>
                     </connections>
                 </tableViewController>
@@ -269,11 +268,12 @@
                         <outlet property="firstnameTextField" destination="65i-Vh-p32" id="tpp-fE-eqc"/>
                         <outlet property="lastnameTextField" destination="dyo-fl-5mH" id="GDc-XJ-Oti"/>
                         <outlet property="notesTextView" destination="cto-51-6Pb" id="hRt-jv-jdJ"/>
+                        <segue destination="lRZ-Zt-88F" kind="show" identifier="pickMailing" id="vWq-zw-NCw"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2L4-Fc-93G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2284" y="-366.56671664167919"/>
+            <point key="canvasLocation" x="2284" y="-365"/>
         </scene>
         <!--Mailing Picker-->
         <scene sceneID="51A-Xg-qXS">
@@ -317,7 +317,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mal-1B-xku" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1422" y="504"/>
+            <point key="canvasLocation" x="2284" y="463"/>
         </scene>
         <!--ContactMailingLists-->
         <scene sceneID="UKb-Fm-kEy">

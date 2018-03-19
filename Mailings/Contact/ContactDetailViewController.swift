@@ -28,7 +28,7 @@ protocol ContactDetailViewControllerInfoDelegate: class {
     func contactDetailViewControllerDidChangeData(_ controller: ContactDetailViewController)
 }
 
-class ContactDetailViewController: UITableViewController, ContactDetailViewControllerDelegate, ContactMailingListsTableViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
+class ContactDetailViewController: UITableViewController, ContactDetailViewControllerDelegate, ContactMailingListsTableViewControllerDelegate, MailingPickerTableViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
     
     @IBOutlet weak var firstnameTextField: UITextField!
     @IBOutlet weak var lastnameTextField: UITextField!
@@ -231,6 +231,9 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             items.append(
                 UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(sendEmailAction))
             )
+            items.append(
+                UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(sendMailingAction))
+            )
             self.toolbarItems = items
         }
     }
@@ -292,6 +295,11 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
                 }
             }
             destinationVC.assignedMailingLists = assignedMailingLists
+        } else if segue.identifier == "pickMailing",
+            let destinationVC = segue.destination as? MailingPickerTableViewController
+        {
+            destinationVC.container = container
+            destinationVC.delegate = self
         }
     }
     
@@ -304,12 +312,35 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         }
     }
     
+    @objc func sendMailingAction(sender: UIBarButtonItem) {
+        if let _ = mailingContactDTO?.email {
+            self.performSegue(withIdentifier: "pickMailing", sender: self)
+        }
+    }
+    
     /**
      Presents the iOS screen to write an email to the given email addresses
      */
     func composeMail(emailAddress: String) {
         if messageComposer.canSendText() {
             let messageComposeVc = messageComposer.configuredMailComposeViewController(emailAddress: emailAddress)
+            self.present(messageComposeVc, animated: true, completion: nil)
+        } else {
+            let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    /**
+     Presents the iOS screen to write an email with the contents of the provided mailing to the given email address
+     */
+    func composeMailForMailing(_ mailingDTO: MailingDTO, emailAddress: String) {
+        if messageComposer.canSendText() {
+            let messageComposeVc = messageComposer.configuredMailComposeViewController(mailing: mailingDTO, emailAddress: emailAddress)
             self.present(messageComposeVc, animated: true, completion: nil)
         } else {
             let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
@@ -494,6 +525,24 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         }
         
         viewEdited = true
+    }
+    
+    // MARK:- MailingPickerTableViewController Delegates
+    
+    /**
+     Called after mailing was chosen. Send mailing to email address of contact.
+     */
+    func mailingPicker(_ picker: MailingPickerTableViewController, didPick chosenMailing: MailingDTO) {
+        navigationController?.popViewController(animated:true)
+        
+        let emailAddress = mailingContactDTO?.email
+        
+        // Wait for 2 seconds in order to wait for the other
+        // view to be finished before displaying the mail view.
+        let when = DispatchTime.now() + 1 // wait 1 second
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.composeMailForMailing(chosenMailing, emailAddress: emailAddress!)
+        }
     }
     
     // MARK:- UITextField Delegates
