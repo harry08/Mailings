@@ -296,7 +296,7 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
     }
     
     /**
-     Triggers sending this mailing as mail. First the mailing list has to be chosen.
+     Sends an email to this contact
      */
     @objc func sendEmailAction(sender: UIBarButtonItem) {
         if let email = mailingContactDTO?.email {
