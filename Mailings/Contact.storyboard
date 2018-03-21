@@ -77,6 +77,9 @@
                                     <action selector="filterAction:" destination="7ad-Bf-3Iq" eventType="touchUpInside" id="5r2-tc-Rul"/>
                                 </connections>
                             </button>
+                            <connections>
+                                <segue destination="J96-cP-tpb" kind="show" identifier="pickContactFilter" id="ug6-iQ-onq"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -274,6 +277,44 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2L4-Fc-93G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2284" y="-365"/>
+        </scene>
+        <!--Contact Filter-->
+        <scene sceneID="kYU-5o-3ej">
+            <objects>
+                <tableViewController id="J96-cP-tpb" userLabel="Contact Filter" customClass="ContactFilterPickerTableViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cb8-Rh-Wx4">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="FilterCell" textLabel="R0s-q5-dNs" style="IBUITableViewCellStyleDefault" id="Zkv-as-QyB">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Zkv-as-QyB" id="mZ2-lM-8eM">
+                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="R0s-q5-dNs">
+                                            <rect key="frame" x="16" y="0.0" width="319" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="J96-cP-tpb" id="v8T-mx-DXV"/>
+                            <outlet property="delegate" destination="J96-cP-tpb" id="POD-vu-v7r"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Kontaktliste filtern" id="Wag-HT-REL"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5i8-C1-k6B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1422" y="463"/>
         </scene>
         <!--Mailing Picker-->
         <scene sceneID="51A-Xg-qXS">

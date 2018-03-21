@@ -19,6 +19,7 @@ class MailingContact: NSManagedObject {
     class func contactExists(contact: CNContact, in context: NSManagedObjectContext) throws -> Bool {
         var existing : Bool = false
         
+        // TODO Check also email
         let request : NSFetchRequest<MailingContact> = MailingContact.fetchRequest()
         request.predicate = NSPredicate(format: "lastname = %@ and firstname = %@", contact.familyName, contact.givenName)
         do {
@@ -66,6 +67,7 @@ class MailingContact: NSManagedObject {
                 mailingList.addToContacts(mailingContact)
             }
         } else {
+            print("Contact \(contactInfo) already exists.")
             os_log("Contact %s already exists...", log: OSLog.default, type: .info, contactInfo)
         }
     }

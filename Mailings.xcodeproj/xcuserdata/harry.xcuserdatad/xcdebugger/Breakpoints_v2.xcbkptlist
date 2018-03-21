@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Settings/ImportContactsViewController.swift"
-            timestampString = "541669830.757272"
+            timestampString = "543311957.2418391"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
             landmarkName = "prepare(for:sender:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -239,7 +239,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "130"
             endingLineNumber = "130"
-            landmarkName = "configuredMailComposeViewController(mailDTO:)"
+            landmarkName = "mailComposeController(_:didFinishWith:error:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -490,7 +490,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Contact/ContactMailingListsTableViewController.swift"
-            timestampString = "542701387.8964649"
+            timestampString = "543255800.261852"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "112"
@@ -506,7 +506,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Contact/ContactMailingListsTableViewController.swift"
-            timestampString = "542701387.900372"
+            timestampString = "543255800.266659"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "76"
@@ -522,7 +522,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Contact/ContactMailingListsTableViewController.swift"
-            timestampString = "542701387.900474"
+            timestampString = "543255800.266821"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "67"
@@ -538,11 +538,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Model/MailingContact.swift"
-            timestampString = "542841249.295121"
+            timestampString = "543311957.284744"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
             landmarkName = "createOrUpdateFromDTO(contactDTO:assignmentChanges:in:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -554,11 +554,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Model/MailingContact.swift"
-            timestampString = "542841249.296615"
+            timestampString = "543311957.284842"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
             landmarkName = "addMailingListAssignmentChanges(_:contact:in:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -570,11 +570,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Model/MailingContact.swift"
-            timestampString = "542841249.296746"
+            timestampString = "543311957.284906"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
             landmarkName = "createOrUpdateFromDTO(contactDTO:assignmentChanges:in:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -591,8 +591,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "454"
             endingLineNumber = "454"
-            landmarkName = "contactDetailViewController(_:didFinishEditing:)"
-            landmarkType = "7">
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -602,11 +602,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Model/MailingContact.swift"
-            timestampString = "542841249.296976"
+            timestampString = "543311957.284991"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
             landmarkName = "createOrUpdateFromDTO(contactDTO:assignmentChanges:in:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -618,11 +618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Model/MailingContact.swift"
-            timestampString = "542841249.297084"
+            timestampString = "543311957.285051"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
             landmarkName = "createOrUpdateFromDTO(contactDTO:assignmentChanges:in:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -634,11 +634,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Model/MailingContact.swift"
-            timestampString = "542841249.297237"
+            timestampString = "543311957.28511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
             landmarkName = "createOrUpdateFromDTO(contactDTO:assignmentChanges:in:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -703,8 +703,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "562"
             endingLineNumber = "562"
-            landmarkName = "textView(_:shouldChangeTextIn:replacementText:)"
-            landmarkType = "7">
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

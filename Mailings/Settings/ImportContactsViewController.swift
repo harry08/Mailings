@@ -43,6 +43,8 @@ class ImportContactsViewController: UIViewController, CNContactPickerDelegate, A
                         if try !MailingContact.contactExists(contact: contact, in: context) {
                             try MailingContact.createContact(contact: contact, in: context)
                             contactCounter += 1
+                        } else {
+                            print("Contact \(contact.givenName) \(contact.familyName) not imported.")
                         }
                     }
                     

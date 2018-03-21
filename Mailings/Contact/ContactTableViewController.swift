@@ -160,6 +160,10 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
         {
             destinationVC.container = container
             destinationVC.infoDelegate = self
+        } else if segue.identifier == "pickContactFilter",
+            let destinationVC = segue.destination as? ContactFilterPickerTableViewController
+        {
+            // destinationVC.filter = ...
         }
     }
    
@@ -171,8 +175,7 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
     }
     
     @IBAction func filterAction(_ sender: Any) {
-        // TODO implement
-        print("Filter called")
+        self.performSegue(withIdentifier: "pickContactFilter", sender: self)
     }
     
     // MARK: - Searching
