@@ -104,6 +104,21 @@ class MailingList: NSManagedObject {
     }
     
     /**
+     Returns all mailingLists
+     */
+    class func getAllMailingLists(in context: NSManagedObjectContext) -> [MailingList] {
+        let request : NSFetchRequest<MailingList> = MailingList.fetchRequest()
+        do {
+            let matches = try context.fetch(request)
+            return matches
+        } catch let error as NSError {
+            print("Could not select mailingLists. \(error)")
+        }
+        
+        return []
+    }
+    
+    /**
      Creates a new mailing or updates an already existing mailing
      Depends on the objectId in MailingDTO.
      */

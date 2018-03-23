@@ -30,6 +30,8 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
     
     fileprivate var fetchedResultsController: NSFetchedResultsController<MailingContact>?
     
+    var contactFilter : ContactFilter?
+    
     private func updateUI() {
         performFetch()
         
@@ -115,6 +117,30 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
         return 0
     }
     
+    private func createContactFilter() -> ContactFilter {
+        let newContactFilter = ContactFilter()
+        
+        newContactFilter.addFilter(FilterElement(title: "Alle", filterType: .all), to: .general)
+        newContactFilter.addFilter(FilterElement(title: "Zuletzt hinzugefügt", filterType: .mostRecentAdded), to: .general)
+        newContactFilter.addFilter(FilterElement(title: "Zuletzt geändert", filterType: .mostRecentEdited), to: .general)
+        
+        newContactFilter.addFilter(FilterElement(title: "Nicht zugeordnet", filterType: .notAssignedToMailingList), to: .mailingList)
+        // For every available mailing list create a filter entry
+        if let container = container {
+            let mailingLists = MailingList.getAllMailingLists(in: container.viewContext)
+            for mailingList in mailingLists {
+                if let name = mailingList.name {
+                    let filterElement = FilterElement(title: "Zugeordnet zu " + name, filterType: .assignedToMailingList(mailingList: name))
+                    newContactFilter.addFilter(filterElement, to: .mailingList)
+                }
+            }
+        }
+        
+        newContactFilter.addFilter(FilterElement(title: "Filter zurücksetzen", filterType: .resetFilter), to: .reset)
+        
+        return newContactFilter
+    }
+    
     // MARK: - TableView
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -163,7 +189,11 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
         } else if segue.identifier == "pickContactFilter",
             let destinationVC = segue.destination as? ContactFilterPickerTableViewController
         {
-            // destinationVC.filter = ...
+            if contactFilter == nil {
+                // Lazy init of filter list. It is needed upon opening the filter view.
+                contactFilter = createContactFilter()
+            }
+            destinationVC.contactFilter = contactFilter
         }
     }
    

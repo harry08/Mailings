@@ -7,11 +7,24 @@
 
 import Foundation
 
+enum FilterType {
+    case all
+    case mostRecentAdded
+    case mostRecentEdited
+    
+    case notAssignedToMailingList
+    case assignedToMailingList (mailingList: String)
+    
+    case resetFilter
+}
+
 struct FilterElement {
     
     let title: String
+    let filterType: FilterType
     
-    init(title: String) {
+    init(title: String, filterType: FilterType) {
         self.title = title
+        self.filterType = filterType
     }
 }

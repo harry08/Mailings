@@ -68,7 +68,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Kontakte" id="3Od-Iy-P3h">
                         <barButtonItem key="leftBarButtonItem" title="Item" style="plain" id="f4D-qm-FCF">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3jb-p1-TdE" userLabel="Filter Button">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3jb-p1-TdE" userLabel="Filter Button">
                                 <rect key="frame" x="16" y="5.5" width="83" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -282,13 +282,13 @@
         <scene sceneID="kYU-5o-3ej">
             <objects>
                 <tableViewController id="J96-cP-tpb" userLabel="Contact Filter" customClass="ContactFilterPickerTableViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cb8-Rh-Wx4">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="cb8-Rh-Wx4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="FilterCell" textLabel="R0s-q5-dNs" style="IBUITableViewCellStyleDefault" id="Zkv-as-QyB">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Zkv-as-QyB" id="mZ2-lM-8eM">
                                     <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
@@ -310,7 +310,7 @@
                             <outlet property="delegate" destination="J96-cP-tpb" id="POD-vu-v7r"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Kontaktliste filtern" id="Wag-HT-REL"/>
+                    <navigationItem key="navigationItem" title="Kontakte filtern" id="Wag-HT-REL"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5i8-C1-k6B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
