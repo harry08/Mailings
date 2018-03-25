@@ -120,11 +120,11 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
     private func createContactFilter() -> ContactFilter {
         let newContactFilter = ContactFilter()
         
-        newContactFilter.addFilter(FilterElement(title: "Alle", filterType: .all), to: .general)
+        newContactFilter.addFilter(FilterElement(title: "Alle", filterType: .all), to: .general, isSelected: true)
         newContactFilter.addFilter(FilterElement(title: "Zuletzt hinzugefügt", filterType: .mostRecentAdded), to: .general)
         newContactFilter.addFilter(FilterElement(title: "Zuletzt geändert", filterType: .mostRecentEdited), to: .general)
         
-        newContactFilter.addFilter(FilterElement(title: "Nicht zugeordnet", filterType: .notAssignedToMailingList), to: .mailingList)
+        newContactFilter.addFilter(FilterElement(title: "Zu keiner Liste zugeordnet", filterType: .notAssignedToMailingList), to: .mailingList)
         // For every available mailing list create a filter entry
         if let container = container {
             let mailingLists = MailingList.getAllMailingLists(in: container.viewContext)

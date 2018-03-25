@@ -20,25 +20,28 @@ enum FilterSection: Int {
  */
 class ContactFilter {
     
-    var currentFilterSection: FilterSection?
-    var currentFilterIndex: Int?
+    var filters = [FilterSection: SectionInfo]()
     
-    var filters = [FilterSection: [FilterElement]]()
-    
-    func addFilter(_ filter: FilterElement, to section: FilterSection) {
-        var filterList = filters[section]
-        if filterList == nil {
-            filterList = [FilterElement]()
+    /**
+     Adds a filterElement to a section.
+     Set isSelected to true if this filter should be the one which is selected in this section.
+     */
+    func addFilter(_ filter: FilterElement, to section: FilterSection, isSelected : Bool = false) {
+        var sectionInfo = filters[section]
+        if sectionInfo == nil {
+            sectionInfo = SectionInfo()
         }
-        filterList!.append(filter)
+        sectionInfo!.addFilter(filter, isSelected: isSelected)
         
-        filters[section] = filterList
+        filters[section] = sectionInfo
     }
     
     func getFilterList(forSection section: FilterSection) -> [FilterElement]? {
-        let filterList = filters[section]
+        if let sectionInfo = filters[section] {
+            return sectionInfo.filters
+        }
         
-        return filterList
+        return nil
     }
     
     func getFilterElement(forSection section: FilterSection, index: Int) -> FilterElement? {
@@ -61,47 +64,21 @@ class ContactFilter {
         return filters.count
     }
     
-    func setFilter(_ filterIndex: Int, filterSection: FilterSection) {
-        if isValidIndex(filterIndex, section: filterSection) {
-            currentFilterSection = filterSection
-            currentFilterIndex = filterIndex
-        } else {
-            print("filterIndex not valid")
-            // TODO Errorhandling. Should throw erro
-        }
-    }
-    
-    func clearFilter() {
-        currentFilterIndex = nil
-        currentFilterSection = nil
-    }
-    
-    func isFiltered() -> Bool {
-        return currentFilterIndex != nil && currentFilterSection != nil
-    }
-    
-    func getCurrentFilter() -> FilterElement? {
-        if let index = currentFilterIndex,
-            let section = currentFilterSection,
-            let filterList = getFilterList(forSection: section) {
-            
-            return filterList[index]
+    func isSelectedIndex(_ index: Int, forSection section: FilterSection) -> Bool {
+        if let sectionInfo = filters[section] {
+            if sectionInfo.hasSelection() {
+                if sectionInfo.selectionIndex! == index {
+                    return true
+                }
+            }
         }
         
-        return nil
+        return false
     }
     
-    func isValidIndex(_ index: Int, section: FilterSection) -> Bool {
-        if let filterList = getFilterList(forSection: section) {
-            if index >= filterList.count {
-                return false
-            }
-            if index < 0 {
-                return false
-            }
-            return true
-        } else {
-            return false
+    func setSelectedIndex(_ index: Int, forSection section: FilterSection) {
+        if let sectionInfo = filters[section] {
+            sectionInfo.setSelectionIndex(index)
         }
     }
 }
