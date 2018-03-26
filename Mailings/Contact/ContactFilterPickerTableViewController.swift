@@ -75,20 +75,21 @@ class ContactFilterPickerTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FilterCell", for: indexPath)
+        var cell = tableView.dequeueReusableCell(withIdentifier: "FilterCell", for: indexPath)
         
         if let contactFilter = contactFilter,
             let filterSection = FilterSection(rawValue: indexPath.section),
             let filter = contactFilter.getFilterElement(forSection: filterSection, index: indexPath.row) {
             
-            cell.textLabel?.text = filter.title
-            
-            cell.accessoryType = contactFilter.isSelectedIndex(indexPath.row, forSection: filterSection) ? .checkmark : .none
-            
             if case .reset = filterSection {
-                // The row with the reset entry should be normally selectable
+                // The row with the reset entry has a separate prototype cell and should be selectable normally
+                cell = tableView.dequeueReusableCell(withIdentifier: "ResetCell", for: indexPath)
                 cell.selectionStyle = .default
             } else {
+                cell.textLabel?.text = filter.title
+                
+                cell.accessoryType = contactFilter.isSelectedIndex(indexPath.row, forSection: filterSection) ? .checkmark : .none
+                
                 // The others should not be selectable, i.e. not being "highlighted"
                 cell.selectionStyle = .none
             }
