@@ -11,7 +11,7 @@ import UIKit
 import CoreData
 import MessageUI
 
-class ContactTableViewController: FetchedResultsTableViewController, ContactDetailViewControllerInfoDelegate {
+class ContactTableViewController: FetchedResultsTableViewController, ContactDetailViewControllerInfoDelegate, ContactFilterPickerTableViewControllerDelegate {
     
     let messageComposer = MessageComposer()
     
@@ -36,10 +36,24 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
         performFetch()
         
         updateControls()
+        updateFilterLabel()
     }
     
     private func updateControls() {
         updateTableFooter()
+    }
+    
+    private func updateFilterLabel() {
+        var filtered = false
+        if let contactFilter = contactFilter {
+            filtered = contactFilter.isFiltered()
+        }
+
+        if filtered {
+            filterButton.setTitle("Filter (An)", for: .normal)
+        } else {
+            filterButton.setTitle("Filter", for: .normal)
+        }
     }
     
     private func configureRightBarButtonItems() {
@@ -189,11 +203,14 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
         } else if segue.identifier == "pickContactFilter",
             let destinationVC = segue.destination as? ContactFilterPickerTableViewController
         {
+            // Lazy init of filter list. It is needed upon opening the filter view.
             if contactFilter == nil {
-                // Lazy init of filter list. It is needed upon opening the filter view.
+                contactFilter = createContactFilter()
+            } else if contactFilter!.isEmpty() {
                 contactFilter = createContactFilter()
             }
             destinationVC.contactFilter = contactFilter
+            destinationVC.delegate = self
         }
     }
    
@@ -220,7 +237,7 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
         updateControls()
     }
     
-    // MARK: ContactDetailViewControllerInfo Delegate
+    // MARK: - ContactDetailViewControllerInfo Delegate
     
     /**
      Called after data has been changed inside the detailview.
@@ -229,9 +246,18 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
     func contactDetailViewControllerDidChangeData(_ controller: ContactDetailViewController) {
         updateControls()
     }
+    
+    // MARK: - ContactFilterPickerTableViewController Delegate
+    
+    func contactFilterPicker(_ picker: ContactFilterPickerTableViewController, didPick chosenFilter: [FilterElement]) {
+        navigationController?.popViewController(animated:true)
+        
+        //performFetch()
+        updateFilterLabel()
+    }
 }
 
-// MARK: extension UITableViewDataSource
+// MARK: - extension UITableViewDataSource
 
 extension ContactTableViewController {
     
@@ -266,7 +292,7 @@ extension ContactTableViewController {
     }
 }
 
-// MARK: extension UISearchResultsUpdating Delegate
+// MARK: - extension UISearchResultsUpdating Delegate
 
 extension ContactTableViewController: UISearchResultsUpdating {
     

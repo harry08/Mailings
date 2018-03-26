@@ -81,4 +81,44 @@ class ContactFilter {
             sectionInfo.setSelectionIndex(index)
         }
     }
+    
+    func clearFilter() {
+        filters.removeAll()
+    }
+    
+    func isEmpty() -> Bool {
+        return filters.isEmpty
+    }
+    
+    func getSelectedFilters() -> [FilterElement] {
+        var filterElements = [FilterElement]()
+        
+        for sectionIndex in 0 ... 1 {
+            if let section = FilterSection(rawValue: sectionIndex),
+                let sectionInfo = filters[section] {
+                if sectionInfo.hasSelection() {
+                    let filterElement = sectionInfo.getSelection()
+                    filterElements.append(filterElement!)
+                }
+            }
+        }
+        
+        return filterElements
+    }
+    
+    /**
+     Returns true, if at least one filter is set.
+     */
+    func isFiltered() -> Bool {
+        let filterElements = getSelectedFilters()
+        if filterElements.count == 0 {
+            return false
+        } else if filterElements.count == 1 {
+            if case.all = filterElements[0].filterType {
+                return false
+            }
+        }
+        
+        return true
+    }
 }

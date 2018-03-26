@@ -8,13 +8,16 @@
 import Foundation
 
 enum FilterType {
+    // General
     case all
     case mostRecentAdded
     case mostRecentEdited
     
+    // Mailinglists
     case notAssignedToMailingList
     case assignedToMailingList (mailingList: String)
     
+    // Reset
     case resetFilter
 }
 
@@ -48,11 +51,20 @@ class SectionInfo {
         return nil
     }
     
+    func clearSelection() {
+        selectionIndex = nil
+    }
+    
     func setSelectionIndex(_ index: Int) {
         if isValidIndex(index) {
             selectionIndex = index
         }
         // TODO throw
+    }
+    
+    func getIndexForFilterType(_ filterType: FilterType) -> Int {
+        return -1
+        // TODO
     }
     
     func addFilter(_ filter: FilterElement, isSelected: Bool) {

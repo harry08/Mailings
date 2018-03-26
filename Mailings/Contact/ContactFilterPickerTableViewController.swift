@@ -8,7 +8,19 @@
 import UIKit
 import CoreData
 
+protocol ContactFilterPickerTableViewControllerDelegate: class {
+    func contactFilterPicker(_ picker: ContactFilterPickerTableViewController,
+                       didPick chosenFilter: [FilterElement])
+}
+
+/**
+ Shows a list of filters to filter the contact tableView.
+ The list contains static filters like "least recent added" and dynamic filters like added to mailinglist xy.
+ Once a filter is chosen the delegate ContactFilterPickerTableViewControllerDelegate is called.
+ */
 class ContactFilterPickerTableViewController: UITableViewController {
+    
+    weak var delegate: ContactFilterPickerTableViewControllerDelegate?
     
     var contactFilter: ContactFilter? {
         didSet {
@@ -100,8 +112,10 @@ class ContactFilterPickerTableViewController: UITableViewController {
                 tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
                 removeCheckmarksFromSection(indexPath.section, except: indexPath.row, count: nrOfItemsInSection)
             } else if case .reset = filterSection {
-                // Perform reset
+                contactFilter.clearFilter()
             }
+            
+            delegate?.contactFilterPicker(self, didPick: contactFilter.getSelectedFilters())
         }
     }
     
