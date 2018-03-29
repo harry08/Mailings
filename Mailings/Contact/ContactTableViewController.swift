@@ -104,10 +104,56 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
                 selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
                 )]
             
+            var predicates = [NSPredicate]()
+            
             if !searchBarIsEmpty() {
                 let searchString = searchController.searchBar.text!
                 let predicate = NSPredicate(format: "lastname contains[c] %@ or firstname contains[c] %@", searchString, searchString)
-                request.predicate = predicate
+                predicates.append(predicate)
+            }
+            
+            // Apply general filter
+            
+            // Apply contactFilter filters
+            if let contactFilter = contactFilter {
+                if contactFilter.isFiltered() {
+                    let filters = contactFilter.getSelectedFilters()
+                    for filterElement in filters {
+                        switch filterElement.filterType {
+                        case .mostRecentAdded:
+                            print("Filter mostRecentAdded")
+                            request.fetchLimit = 10
+                            request.sortDescriptors = [NSSortDescriptor(
+                                key: "createtime",
+                                ascending: false
+                                )]
+                        case .mostRecentEdited:
+                            print("Filter mostRecentEdited")
+                            request.fetchLimit = 10
+                            request.sortDescriptors = [NSSortDescriptor(
+                                key: "updatetime",
+                                ascending: false
+                                )]
+                        case .notAssignedToMailingList:
+                            print("Filter notAssignedToMailingList")
+                            let predicate = NSPredicate(format: "lists.@count == 0")
+                            predicates.append(predicate)
+                        case .assignedToMailingList(let mailingList):
+                            print("Filter assignedToMailingList \(mailingList)")
+                            let predicate = NSPredicate(format: "ANY lists.name = %@", mailingList)
+                            predicates.append(predicate)
+                        default:
+                            print("No filter to apply")
+                        }
+                    }
+                }
+            }
+            
+            if predicates.count > 1 {
+                let compoundPredicate = NSCompoundPredicate.init(andPredicateWithSubpredicates: predicates)
+                request.predicate = compoundPredicate
+            } else if predicates.count == 1 {
+                request.predicate = predicates[0]
             }
             
             fetchedResultsController = NSFetchedResultsController<MailingContact>(
@@ -252,7 +298,7 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
     func contactFilterPicker(_ picker: ContactFilterPickerTableViewController, didPick chosenFilter: [FilterElement]) {
         navigationController?.popViewController(animated:true)
         
-        //performFetch()
+        performFetch()
         updateFilterLabel()
     }
 }
