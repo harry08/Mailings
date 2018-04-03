@@ -121,28 +121,29 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
                     for filterElement in filters {
                         switch filterElement.filterType {
                         case .mostRecentAdded:
-                            print("Filter mostRecentAdded")
+                            // Filter to show the 10 last added contacts
                             request.fetchLimit = 10
                             request.sortDescriptors = [NSSortDescriptor(
                                 key: "createtime",
                                 ascending: false
                                 )]
                         case .mostRecentEdited:
-                            print("Filter mostRecentEdited")
+                            // Filter to show the 10 last edited contacts
                             request.fetchLimit = 10
                             request.sortDescriptors = [NSSortDescriptor(
                                 key: "updatetime",
                                 ascending: false
                                 )]
                         case .notAssignedToMailingList:
-                            print("Filter notAssignedToMailingList")
+                            // Filter to show only contacts not assigned to any mailing list
                             let predicate = NSPredicate(format: "lists.@count == 0")
                             predicates.append(predicate)
                         case .assignedToMailingList(let mailingList):
-                            print("Filter assignedToMailingList \(mailingList)")
+                            // Filter to show only contacts assigned to a specific mailing list
                             let predicate = NSPredicate(format: "ANY lists.name = %@", mailingList)
                             predicates.append(predicate)
                         default:
+                            // Should not occur.
                             print("No filter to apply")
                         }
                     }
