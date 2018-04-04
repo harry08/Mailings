@@ -15,6 +15,10 @@ class CommonSettingsViewController: UITableViewController, UIPickerViewDelegate,
     var pickerDataSource = [String]();
     var pickerChanged = false
     
+    var pickerView : UIPickerView?
+    
+    var changedMaxReceiver : Int?
+    
     var settingsController : CommonSettingsController?
     
     override func viewDidLoad() {
@@ -24,9 +28,9 @@ class CommonSettingsViewController: UITableViewController, UIPickerViewDelegate,
             pickerDataSource.append(String(i))
         }
         
-        let pickerView = UIPickerView()
-        pickerView.delegate = self
-        pickerView.dataSource = self
+        pickerView = UIPickerView()
+        pickerView!.delegate = self
+        pickerView!.dataSource = self
         
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
@@ -51,15 +55,16 @@ class CommonSettingsViewController: UITableViewController, UIPickerViewDelegate,
      */
     private func fillControls() {
         splitReceiverSwitch.isOn = settingsController!.getSplitReceivers()
-        maxReceiverPerMail.text = String(settingsController!.getMaxReceiver())
+        maxReceiverPerMail.text = "\(String(settingsController!.getMaxReceiver())) Empfänger"
     }
     
     private func updateMaxReceiver() {
-        let maxReceiverText = maxReceiverPerMail.text ?? ""
-        if maxReceiverText != "" {
-            if let maxReceiver: Int = Int(maxReceiverText) {
-                settingsController!.setMaxReveiver(maxReceiver)
+        if pickerChanged {
+            if let changedMaxReceiver = changedMaxReceiver {
+                settingsController!.setMaxReveiver(changedMaxReceiver)
+                maxReceiverPerMail.text = "\(String(settingsController!.getMaxReceiver())) Empfänger"
             }
+            pickerChanged = false
         }
     }
     
@@ -91,8 +96,7 @@ class CommonSettingsViewController: UITableViewController, UIPickerViewDelegate,
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
     {
-        let nrOfReceiver = row + 1
-        maxReceiverPerMail.text = String(nrOfReceiver)
+        changedMaxReceiver = row + 1
         pickerChanged = true
     }
 }
