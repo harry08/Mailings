@@ -301,6 +301,7 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
         
         performFetch()
         updateFilterLabel()
+        updateControls()
     }
 }
 
