@@ -227,12 +227,13 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             self.navigationController?.toolbar.isTranslucent = true
             self.navigationController?.toolbar.barTintColor = UIColor.white
             
+            let msgImage = UIImage(named: "message.png")
             var items = [UIBarButtonItem]()
             items.append(
                 UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(sendEmailAction))
             )
             items.append(
-                UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(sendMailingAction))
+                UIBarButtonItem(image: msgImage, style: .plain, target: self, action: #selector(sendMailingAction))
             )
             self.toolbarItems = items
         }

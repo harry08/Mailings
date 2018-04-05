@@ -185,10 +185,12 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             self.navigationController?.toolbar.isTranslucent = true
             self.navigationController?.toolbar.barTintColor = UIColor.white
             
+            let image = UIImage(named: "paper_plane.png")
             var items = [UIBarButtonItem]()
             items.append(
-                UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(sendMailingAction))
+                UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(sendMailingAction))
             )
+            
             self.toolbarItems = items
         }
     }

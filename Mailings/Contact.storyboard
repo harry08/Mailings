@@ -372,6 +372,7 @@
                             <outlet property="delegate" destination="lRZ-Zt-88F" id="R76-iJ-ton"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Mailing wählen" id="pDX-Yp-Ms2"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mal-1B-xku" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
