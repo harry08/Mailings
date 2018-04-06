@@ -21,6 +21,7 @@
 		4A63556D203B307B00140F2B /* MailComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A63556C203B307B00140F2B /* MailComposer.swift */; };
 		4A64E1A42005467000BA851F /* user_male.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A64E1A32005467000BA851F /* user_male.png */; };
 		4A65A209202CB084009A73FF /* ContactAssignmentChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A65A208202CB084009A73FF /* ContactAssignmentChange.swift */; };
+		4A67C4BB207738530016428A /* paper-plane.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A67C4BA207738530016428A /* paper-plane.png */; };
 		4A69F32B2060DF620051E49F /* ContactFilterPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A69F32A2060DF620051E49F /* ContactFilterPickerTableViewController.swift */; };
 		4A6CF6ED202D774000F791D1 /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A6CF6EC202D774000F791D1 /* Contact.storyboard */; };
 		4A6DE0761FFE0319009BEFA1 /* MailingListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6DE0751FFE0319009BEFA1 /* MailingListDTO.swift */; };
@@ -30,7 +31,6 @@
 		4A7FF5C41FFCAC2D00685105 /* MailingContactDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7FF5C31FFCAC2D00685105 /* MailingContactDTO.swift */; };
 		4A7FF5C61FFCAC7500685105 /* MailingContactMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7FF5C51FFCAC7500685105 /* MailingContactMapper.swift */; };
 		4A7FF5C81FFCB2F500685105 /* MailingListMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7FF5C71FFCB2F500685105 /* MailingListMapper.swift */; };
-		4A822BB82075D4DB00A628F2 /* paper_plane.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A822BB72075D4DB00A628F2 /* paper_plane.png */; };
 		4A82CF80203228A1002F7A61 /* MailsToSendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A82CF7F203228A1002F7A61 /* MailsToSendTableViewController.swift */; };
 		4A8845C720316A88001E307F /* MailingListPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8845C620316A88001E307F /* MailingListPickerTableViewController.swift */; };
 		4A985E441FF14BD80055F6BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A985E431FF14BD80055F6BA /* AppDelegate.swift */; };
@@ -83,6 +83,7 @@
 		4A63556C203B307B00140F2B /* MailComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposer.swift; sourceTree = "<group>"; };
 		4A64E1A32005467000BA851F /* user_male.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_male.png; sourceTree = "<group>"; };
 		4A65A208202CB084009A73FF /* ContactAssignmentChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAssignmentChange.swift; sourceTree = "<group>"; };
+		4A67C4BA207738530016428A /* paper-plane.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paper-plane.png"; sourceTree = "<group>"; };
 		4A69F32A2060DF620051E49F /* ContactFilterPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFilterPickerTableViewController.swift; sourceTree = "<group>"; };
 		4A6CF6EC202D774000F791D1 /* Contact.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Contact.storyboard; sourceTree = "<group>"; };
 		4A6DE0751FFE0319009BEFA1 /* MailingListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingListDTO.swift; sourceTree = "<group>"; };
@@ -92,7 +93,6 @@
 		4A7FF5C31FFCAC2D00685105 /* MailingContactDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingContactDTO.swift; sourceTree = "<group>"; };
 		4A7FF5C51FFCAC7500685105 /* MailingContactMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingContactMapper.swift; sourceTree = "<group>"; };
 		4A7FF5C71FFCB2F500685105 /* MailingListMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingListMapper.swift; sourceTree = "<group>"; };
-		4A822BB72075D4DB00A628F2 /* paper_plane.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paper_plane.png; sourceTree = "<group>"; };
 		4A82CF7F203228A1002F7A61 /* MailsToSendTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailsToSendTableViewController.swift; sourceTree = "<group>"; };
 		4A8845C620316A88001E307F /* MailingListPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingListPickerTableViewController.swift; sourceTree = "<group>"; };
 		4A985E401FF14BD80055F6BA /* Mailings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mailings.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -234,7 +234,7 @@
 		4A9F23911FF45A5F00B48349 /* icons */ = {
 			isa = PBXGroup;
 			children = (
-				4A822BB72075D4DB00A628F2 /* paper_plane.png */,
+				4A67C4BA207738530016428A /* paper-plane.png */,
 				4A9F23941FF45BDB00B48349 /* settings.png */,
 				4A9F23921FF45B5500B48349 /* link.png */,
 				4A9F238B1FF459EF00B48349 /* message.png */,
@@ -353,7 +353,6 @@
 				4A9F23951FF45BDC00B48349 /* settings.png in Resources */,
 				4AAF9F4B202F8F6D00F395E3 /* Mailing.storyboard in Resources */,
 				4AC40312202E0396001A14C5 /* Settings.storyboard in Resources */,
-				4A822BB82075D4DB00A628F2 /* paper_plane.png in Resources */,
 				4A985E501FF14BD80055F6BA /* LaunchScreen.storyboard in Resources */,
 				4A9F23931FF45B5600B48349 /* link.png in Resources */,
 				4A985E4D1FF14BD80055F6BA /* Assets.xcassets in Resources */,
@@ -361,6 +360,7 @@
 				4A985E4B1FF14BD80055F6BA /* Main.storyboard in Resources */,
 				4AD999C8201BCC3600C0CE6D /* MailingList.storyboard in Resources */,
 				4A9F238C1FF459EF00B48349 /* message.png in Resources */,
+				4A67C4BB207738530016428A /* paper-plane.png in Resources */,
 				4A6CF6ED202D774000F791D1 /* Contact.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
