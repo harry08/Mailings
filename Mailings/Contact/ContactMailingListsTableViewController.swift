@@ -60,6 +60,22 @@ class ContactMailingListsTableViewController: UITableViewController, MailingList
         }
     }
     
+    private func getAssignedMailingLists() -> [MailingListDTO] {
+        var mailingLists =  [MailingListDTO]()
+        
+        if let assignedMailingLists = self.assignedMailingLists {
+            if assignedMailingLists.mailingLists.count > 0 {
+                for case let assignedMailingList in assignedMailingLists.mailingLists {
+                    var mailingList = MailingListDTO()
+                    mailingList.objectId = assignedMailingList.objectId
+                    mailingList.name = assignedMailingList.name
+                    mailingLists.append(mailingList)
+                }
+            }
+        }
+        return mailingLists
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -85,6 +101,7 @@ class ContactMailingListsTableViewController: UITableViewController, MailingList
         {
             destinationVC.delegate = self
             destinationVC.selectionType = "multiple"
+            destinationVC.excludedMailingLists = getAssignedMailingLists()
             destinationVC.container = container
         }
     }

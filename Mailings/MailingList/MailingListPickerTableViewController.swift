@@ -44,6 +44,11 @@ class MailingListPickerTableViewController: FetchedResultsTableViewController {
         }
     }
     
+    /**
+     MailingLists which should not be shown in the picker
+     */
+    var excludedMailingLists = [MailingListDTO]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -67,14 +72,29 @@ class MailingListPickerTableViewController: FetchedResultsTableViewController {
                 mailingLists.reserveCapacity(fetchedMailingLists.count)
                 for case let fetchedMailingList in fetchedMailingLists {
                     let mailingListDTO = MailingListMapper.mapToDTO(mailingList: fetchedMailingList)
-                    mailingLists.append(mailingListDTO)
+                    if !shouldExcludeMailingList(mailingListDTO) {
+                        mailingLists.append(mailingListDTO)
+                    }
                 }
-            } catch {
-                
+            } catch let error as NSError {
+                print("Error retrieving mailing lists: \(error)")
             }
             
             tableView.reloadData()
         }
+    }
+    
+    private func shouldExcludeMailingList(_ mailingList: MailingListDTO) -> Bool {
+        if excludedMailingLists.count > 0 {
+            for case let mailingListToExclude in excludedMailingLists {
+                if mailingList.objectId == mailingListToExclude.objectId {
+                    return true
+                }
+                
+            }
+        }
+        
+        return false
     }
     
     private func updateDoneButtonState() {
