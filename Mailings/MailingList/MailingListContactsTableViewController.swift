@@ -17,6 +17,7 @@ protocol MailingListContactsTableViewControllerDelegate: class {
 
 /**
  Shows the assigned contacts of a MailingList.
+ In editMode assignments can be removed and new assignments can be added.
  */
 class MailingListContactsTableViewController: UITableViewController, ContactPickerTableViewControllerDelegate {
     
@@ -46,12 +47,32 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
     }
     
     /**
-     List of contacts to display
+     List of assigned contacts to display
      */
     var assignedContacts : AssigndContacts? {
         didSet {
             updateUI()
         }
+    }
+    
+    /**
+     Returns all assigned contacts of this mailing list as an array of MailingContactDTO
+     */
+    private func getAssignedContacts() -> [MailingContactDTO] {
+        var contacts =  [MailingContactDTO]()
+        
+        if let assignedContacts = self.assignedContacts {
+            if assignedContacts.contacts.count > 0 {
+                for assignedContact in assignedContacts.contacts {
+                    var mailingContact = MailingContactDTO()
+                    mailingContact.objectId = assignedContact.objectId
+                    mailingContact.lastname = assignedContact.lastname
+                    mailingContact.firstname = assignedContact.firstname
+                    contacts.append(mailingContact)
+                }
+            }
+        }
+        return contacts
     }
     
     override func viewDidLoad() {
@@ -113,6 +134,7 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
             let destinationVC = segue.destination as? ContactPickerTableViewController
         {
             destinationVC.delegate = self
+            destinationVC.excludedContacts = getAssignedContacts()
             destinationVC.container = container
         }
     }

@@ -35,6 +35,11 @@ class ContactPickerTableViewController: UITableViewController {
             loadData()
         }
     }
+    
+    /**
+     Contacts which should not be shown in the picker
+     */
+    var excludedContacts = [MailingContactDTO]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +64,9 @@ class ContactPickerTableViewController: UITableViewController {
                 contacts.reserveCapacity(fetchedContacts.count)
                 for case let fetchedContact in fetchedContacts {
                     let contactDTO = MailingContactMapper.mapToDTO(contact: fetchedContact)
-                    contacts.append(contactDTO)
+                    if !shouldExcludeContact(contactDTO) {
+                        contacts.append(contactDTO)
+                    }
                 }                
             } catch {
                 
@@ -67,6 +74,21 @@ class ContactPickerTableViewController: UITableViewController {
             
             tableView.reloadData()
         }
+    }
+    
+    /**
+     Returns true if the given contact should not be shown in the contact picker. Otherwhise false.
+     */
+    private func shouldExcludeContact(_ mailingContact: MailingContactDTO) -> Bool {
+        if excludedContacts.count > 0 {
+            for contactToExclude in excludedContacts {
+                if mailingContact.objectId == contactToExclude.objectId {
+                    return true
+                }
+            }
+        }
+        
+        return false
     }
     
     private func updateDoneButtonState() {

@@ -90,7 +90,6 @@ class MailingListPickerTableViewController: FetchedResultsTableViewController {
                 if mailingList.objectId == mailingListToExclude.objectId {
                     return true
                 }
-                
             }
         }
         
