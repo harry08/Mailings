@@ -188,6 +188,9 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             let image = UIImage(named: "paper-plane.png")
             var items = [UIBarButtonItem]()
             items.append(
+                UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareMailingTextAction))
+            )
+            items.append(
                 UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(sendMailingAction))
             )
             
@@ -227,6 +230,13 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
      */
     func deleteAction() {
         delegate?.mailingDetailViewController(self, didFinishDeleting: mailingDTO!)
+    }
+    
+    @objc func shareMailingTextAction(sender: UIBarButtonItem) {
+        if let shareContent = mailingDTO?.text {
+            let activityViewController = UIActivityViewController(activityItems: [shareContent as NSString], applicationActivities: nil)
+            self.present(activityViewController, animated: true, completion: {})
+        }
     }
     
     /**
