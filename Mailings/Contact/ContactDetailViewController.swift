@@ -230,9 +230,6 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             let msgImage = UIImage(named: "message.png")
             var items = [UIBarButtonItem]()
             items.append(
-                UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareContactEmailAction))
-            )
-            items.append(
                 UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(sendEmailAction))
             )
             items.append(
@@ -304,13 +301,6 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         {
             destinationVC.container = container
             destinationVC.delegate = self
-        }
-    }
-    
-    @objc func shareContactEmailAction(sender: UIBarButtonItem) {
-        if let shareContent = mailingContactDTO?.email {
-            let activityViewController = UIActivityViewController(activityItems: [shareContent as NSString], applicationActivities: nil)
-            self.present(activityViewController, animated: true, completion: {})
         }
     }
     
