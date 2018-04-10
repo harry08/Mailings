@@ -32,6 +32,16 @@ class MailsToSendTableViewController: UITableViewController, MFMailComposeViewCo
         mail.emailSent = true
         mailsToSend![index] = mail
     }
+    
+    func getNrOfRecipients() -> Int {
+        var count = 0
+        if let mailsToSend = mailsToSend {
+            for mailToSend in mailsToSend {
+                count += mailToSend.emailAddresses.count
+            }
+        }
+        return count
+    }
    
     // MARK: - Table view data source
 
@@ -46,6 +56,17 @@ class MailsToSendTableViewController: UITableViewController, MFMailComposeViewCo
         return 0
     }
 
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if let mailsToSend = mailsToSend {
+            let nrOfMails = mailsToSend.count
+            let nrOfRecipients = getNrOfRecipients()
+            let title = "Das Mailing an \(nrOfRecipients) Empfänger wird auf \(nrOfMails) Emails aufgeteilt. Zum Senden der Email die jeweilige Zeile nach links ziehen und Email wählen."
+            return title
+        }
+        
+        return ""
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MailToSendCell", for: indexPath)
 
