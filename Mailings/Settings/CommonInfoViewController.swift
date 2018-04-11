@@ -29,8 +29,17 @@ class CommonInfoViewController: UITableViewController {
     
     private func loadInfoData() {
         if let context = self.container?.viewContext {
+            // All contacts
             let contacts = MailingContact.getNrOfContacts(in: context)
             infoElements.append(InfoElement(title: "Kontakte", info: String(contacts)))
+            
+            // All mailing lists with nr of assigned contacts
+            let mailingLists = MailingList.getAllMailingLists(in: context)
+            for mailingList in mailingLists {
+                let contacts = MailingList.getAssignedContacts(objectId: mailingList.objectID, in: context)
+                let contactCount = contacts.count
+                infoElements.append(InfoElement(title: "Kontakte - \(mailingList.name!)", info: String(contactCount)))
+            }
         }
     }
 

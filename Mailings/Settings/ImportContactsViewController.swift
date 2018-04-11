@@ -16,8 +16,12 @@ class ImportContactsViewController: UIViewController, CNContactPickerDelegate, A
     var container: NSPersistentContainer? =
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
 
+    @IBOutlet weak var infoLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        infoLabel.isHidden = true
     }
     
     /**
@@ -72,11 +76,9 @@ class ImportContactsViewController: UIViewController, CNContactPickerDelegate, A
         }
         print(message)
         
-        let alertController = UIAlertController(title: "Kontaktimport abeschlossen", message: message, preferredStyle: .alert)
-        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(defaultAction)
-        
-        self.present(alertController, animated: true, completion: nil)
+        let imporResultMessage = "Kontaktimport abgeschlossen\n\(message)"
+        infoLabel.text = imporResultMessage
+        infoLabel.isHidden = false
     }
     
     private func getAddressbookGroups() -> [ContactGroupDTO]{

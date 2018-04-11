@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Settings/ImportContactsViewController.swift"
-            timestampString = "543311957.2418391"
+            timestampString = "545153480.131761"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
             landmarkName = "prepare(for:sender:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -872,7 +872,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Contact/ContactTableViewController.swift"
-            timestampString = "545117139.4263771"
+            timestampString = "545153480.13307"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "315"
@@ -888,7 +888,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Contact/ContactTableViewController.swift"
-            timestampString = "545117139.429157"
+            timestampString = "545153480.133198"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "122"
@@ -904,7 +904,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Contact/ContactTableViewController.swift"
-            timestampString = "545117139.429516"
+            timestampString = "545153480.133291"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "155"
@@ -920,7 +920,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mailings/Contact/ContactTableViewController.swift"
-            timestampString = "545117139.429889"
+            timestampString = "545153480.1333849"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "158"
@@ -941,8 +941,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "61"
             endingLineNumber = "61"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "updateMaxReceiver()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -990,6 +990,22 @@
             startingLineNumber = "74"
             endingLineNumber = "74"
             landmarkName = "loadData()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Mailings/Settings/ImportContactsViewController.swift"
+            timestampString = "545153480.133626"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
+            landmarkName = "contactPicker(_:didSelect:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -195,6 +195,13 @@
                                     <action selector="importSelectedContacts:" destination="cJL-mR-Unh" eventType="touchUpInside" id="BNp-hO-GMc"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gr5-fq-n8D" userLabel="InfoLabel">
+                                <rect key="frame" x="16" y="193" width="343" height="75"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="PP1-Gh-EJK"/>
@@ -202,10 +209,13 @@
                     <navigationItem key="navigationItem" title="Kontakt-Import" id="FlY-Iy-8ma">
                         <barButtonItem key="backBarButtonItem" title="Einstellungen" id="lFI-6g-fvk"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="infoLabel" destination="Gr5-fq-n8D" id="1IS-mm-1NI"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="flb-xW-lvm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2236" y="2441"/>
+            <point key="canvasLocation" x="2236" y="2440.9295352323838"/>
         </scene>
         <!--Common Settings-->
         <scene sceneID="acZ-fp-dFH">
