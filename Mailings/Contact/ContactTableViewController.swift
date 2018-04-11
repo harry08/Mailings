@@ -32,6 +32,12 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
     
     var contactFilter : ContactFilter?
     
+    /**
+     # of contacts when not filtered to show in the footer
+     when the list is filtered.
+     */
+    var nrOfUnfilteredContacts : Int?
+    
     private func updateUI() {
         performFetch()
         
@@ -76,8 +82,16 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
         footerView.isHidden = !shouldDisplayFooter()
         
         if !footerView.isHidden {
-            let count = getNrOfContacts()
-            footerLabel.text = "\(count) Kontakte"
+            if let contactFilter = contactFilter,
+                let nrOfUnfilteredContacts = nrOfUnfilteredContacts,
+                contactFilter.isFiltered() {
+                // Show information for filtered list
+                let count = getNrOfContacts()
+                footerLabel.text = "\(count) von \(nrOfUnfilteredContacts) Kontakten"
+            } else {
+                let count = getNrOfContacts()
+                footerLabel.text = "\(count) Kontakte"
+            }
         } else {
             footerLabel.text = ""
         }
@@ -166,7 +180,18 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
             
             fetchedResultsController?.delegate = self
             try? fetchedResultsController?.performFetch()
+            saveNrOfUnfiltereedContacts()
             tableView.reloadData()
+        }
+    }
+    
+    /**
+     Save nr of unfiltered contacts for displaying in tableView footer
+     */
+    private func saveNrOfUnfiltereedContacts() {
+        if contactFilter == nil || !contactFilter!.isFiltered() {
+            // Only set value if no filter is set. Otherwise leave value as is.
+            nrOfUnfilteredContacts = getNrOfContacts()
         }
     }
     
@@ -220,6 +245,8 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
     private func shouldDisplayFooter() -> Bool {
         if getNrOfContacts() >= 12 {
             return true
+        } else if let contactFilter = contactFilter {
+            return contactFilter.isFiltered()
         }
         
         return false
@@ -291,6 +318,10 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
      Update relevent parts of the UI like table footer.
      */
     func contactDetailViewControllerDidChangeData(_ controller: ContactDetailViewController) {
+        if let context = container?.viewContext {
+            // After a change newly set the nr of unfiltered contacts since it could have been changed.
+            nrOfUnfilteredContacts = MailingContact.getNrOfContacts(in: context)
+        }
         updateControls()
     }
     
