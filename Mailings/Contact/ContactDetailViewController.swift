@@ -287,12 +287,22 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             
             // Init assignedMailingLists list and pass as a reference to the sub view
             // This list is modified by the sub view when new mailing lists a are assigned or mailing lists are removed.
-            if !assignedMailingLists.isInit() {
-                // Init list of assigned mailing lists
-                if let objectId = mailingContactDTO?.objectId {
-                assignedMailingLists.initWithMailingList(MailingContact.getAssignedMailingLists(objectId: objectId, in: container.viewContext))
-                } else {
-                    assignedMailingLists.initWithEmptyList()
+            if isAddType() {
+                // Preinit mailing lists with default assignable lists
+                let defaultMailingLists = MailingList.getDefaultMailingListsAsDTO(in: container.viewContext)
+                assignedMailingLists.initWithMailingList(defaultMailingLists)
+                for assignedMailingList in assignedMailingLists.mailingLists {
+                    let assignmentChange = MailingListAssignmentChange(objectId: assignedMailingList.objectId, action: "A")
+                    mailingListAssignmentChanges.append(assignmentChange)
+                }
+            } else {
+                if !assignedMailingLists.isInit() {
+                    // Init list of assigned mailing lists
+                    if let objectId = mailingContactDTO?.objectId {
+                    assignedMailingLists.initWithMailingList(MailingContact.getAssignedMailingLists(objectId: objectId, in: container.viewContext))
+                    } else {
+                        assignedMailingLists.initWithEmptyList()
+                    }
                 }
             }
             destinationVC.assignedMailingLists = assignedMailingLists

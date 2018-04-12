@@ -20,6 +20,13 @@ class AssigndMailingLists {
         mailingListInit = true
     }
     
+    func initWithMailingList(_ mailingLists: [MailingListDTO]) {
+        for mailingList in mailingLists {
+            let assignedMailingList = AssignedMailingList(objectId: mailingList.objectId!, name: mailingList.name!)
+            self.mailingLists.append(assignedMailingList)
+        }
+    }
+    
     func initWithEmptyList() {
         mailingListInit = true
     }

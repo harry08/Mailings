@@ -104,6 +104,21 @@ class MailingList: NSManagedObject {
     }
     
     /**
+     Returns the mailingLists that are marked as default.
+     */
+    class func getDefaultMailingListsAsDTO(in context: NSManagedObjectContext) -> [MailingListDTO] {
+        var mailingLists = [MailingListDTO]()
+        
+        let defaultMailingLists = getDefaultMailingLists(in: context)
+        for mailingList in defaultMailingLists {
+            let mailingListDTO = MailingListMapper.mapToDTO(mailingList: mailingList)
+            mailingLists.append(mailingListDTO)
+        }
+        
+        return mailingLists
+    }
+    
+    /**
      Returns all mailingLists
      */
     class func getAllMailingLists(in context: NSManagedObjectContext) -> [MailingList] {
