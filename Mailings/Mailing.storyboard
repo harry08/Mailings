@@ -196,7 +196,27 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="YQH-n4-ymv" userLabel="Mailing Send Cell">
+                                        <rect key="frame" x="0.0" y="411.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="YQH-n4-ymv" id="rca-se-abB">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Mailing senden" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ifE-bW-ZvB">
+                                                    <rect key="frame" x="16" y="11" width="343" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
+                            </tableViewSection>
+                            <tableViewSection id="jki-Cw-xTn" userLabel="Actions">
+                                <cells/>
                             </tableViewSection>
                         </sections>
                         <connections>
@@ -208,6 +228,7 @@
                     <connections>
                         <outlet property="contentTextView" destination="hQo-yl-Og5" id="vWu-qT-293"/>
                         <outlet property="mailingDeleteCell" destination="fcC-yg-d3m" id="XIq-wA-e0k"/>
+                        <outlet property="mailingSendCell" destination="YQH-n4-ymv" id="W2M-Hy-WpB"/>
                         <outlet property="titleTextField" destination="nXl-GW-YOn" id="Igv-ez-AOq"/>
                         <segue destination="nfA-hz-lQ0" kind="show" identifier="pickMailingList" id="2si-sC-hQ7"/>
                         <segue destination="vZz-XU-wCA" kind="show" identifier="showEmailsToSend" id="BHS-m8-FG6"/>

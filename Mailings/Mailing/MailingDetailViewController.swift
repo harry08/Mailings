@@ -35,6 +35,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var contentTextView: UITextView!
     
+    @IBOutlet weak var mailingSendCell: UITableViewCell!
     @IBOutlet weak var mailingDeleteCell: UITableViewCell!
     /**
      Delegate to call after finish editing
@@ -185,13 +186,9 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             self.navigationController?.toolbar.isTranslucent = true
             self.navigationController?.toolbar.barTintColor = UIColor.white
             
-            let image = UIImage(named: "paper-plane.png")
             var items = [UIBarButtonItem]()
             items.append(
                 UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareMailingTextAction))
-            )
-            items.append(
-                UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(sendMailingAction))
             )
             
             self.toolbarItems = items
@@ -232,18 +229,19 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         delegate?.mailingDetailViewController(self, didFinishDeleting: mailingDTO!)
     }
     
+    /**
+     Shares the content of this mailing as simple text.
+     */
     @objc func shareMailingTextAction(sender: UIBarButtonItem) {
         if let shareContent = mailingDTO?.text {
             let activityViewController = UIActivityViewController(activityItems: [shareContent as NSString], applicationActivities: nil)
+            
+            // Relevant for iPad to adhere the popover to the share button.
+            activityViewController.popoverPresentationController?.sourceView = view
+            activityViewController.popoverPresentationController?.barButtonItem = sender
+            
             self.present(activityViewController, animated: true, completion: {})
         }
-    }
-    
-    /**
-     Triggers sending this mailing as mail. First the mailing list has to be chosen.
-     */
-    @objc func sendMailingAction(sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "pickMailingList", sender: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -262,10 +260,12 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     
     // MARK: - TableView Delegate
     
-    // Do not allow cell selection except for mailing deletion
+    /**
+     Do not allow cell selection except for mailing deletion and sending
+     */
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if indexPath.section == 2 {
-            // Section 2 should be selectable to delete a mailing.
+            // Section 2 should be selectable to delete a mailing or send a mailing
             return indexPath
         } else {
             return nil
@@ -274,12 +274,23 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 2 {
-            // Section for delete button.
-            if editMode && isEditType() {
-                // Only visible if view is in editMode for an existing mailing
-                return super.tableView(tableView, heightForRowAt: indexPath)
-            } else {
-                return 0
+            // Section for send and delete button.
+            if indexPath.row == 0 {
+                // Delete button
+                if editMode && isEditType() {
+                    // Only visible if view is in editMode for an existing mailing
+                    return super.tableView(tableView, heightForRowAt: indexPath)
+                } else {
+                    return 0
+                }
+            } else if indexPath.row == 1 {
+                // Send button
+                if !editMode {
+                    // Only visible if view is in readonly mode
+                    return super.tableView(tableView, heightForRowAt: indexPath)
+                } else {
+                    return 0
+                }
             }
         }
         
@@ -292,20 +303,25 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         } else if indexPath.section == 1 {
             contentTextView.becomeFirstResponder()
         } else if indexPath.section == 2 {
-            // Delete mailing
-            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "Mailing löschen", style: .default) { _ in
-                self.tableView.deselectRow(at: indexPath, animated: true)
-                self.deleteAction()
-            })
-            alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
-                // Do nothing
-            })
-            // The following 2 lines are needed for iPad.
-            alert.popoverPresentationController?.sourceView = view
-            alert.popoverPresentationController?.sourceRect = self.mailingDeleteCell.frame
-            
-            present(alert, animated: true)
+            if indexPath.row == 0 {
+                // Delete mailing
+                let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                alert.addAction(UIAlertAction(title: "Mailing löschen", style: .default) { _ in
+                    self.tableView.deselectRow(at: indexPath, animated: true)
+                    self.deleteAction()
+                })
+                alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
+                    // Do nothing
+                })
+                // The following 2 lines are needed for iPad.
+                alert.popoverPresentationController?.sourceView = view
+                alert.popoverPresentationController?.sourceRect = self.mailingDeleteCell.frame
+                
+                present(alert, animated: true)
+            } else if indexPath.row == 1 {
+                // Triggers sending this mailing as mail. First the mailing list has to be chosen.
+                performSegue(withIdentifier: "pickMailingList", sender: nil)
+            }
         }
     }
     
