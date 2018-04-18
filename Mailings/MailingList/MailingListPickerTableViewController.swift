@@ -111,7 +111,7 @@ class MailingListPickerTableViewController: FetchedResultsTableViewController {
     // MARK: - Actions and Navigation
     
     /**
-     Called after mailiong lists are chosen and done button is pressed.
+     Called after mailing lists are chosen and done button is pressed.
      The delegate is called with the list of chosen mailing lists
      */
     @IBAction func pickMailingLists(_ sender: Any) {

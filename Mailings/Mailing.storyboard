@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -237,6 +238,39 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aKH-54-1kk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2421.5999999999999" y="349.47526236881561"/>
+        </scene>
+        <!--Mailing Text View Controller-->
+        <scene sceneID="xZH-cW-kEk">
+            <objects>
+                <viewController id="nqe-nz-8mk" customClass="MailingTextViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PVm-Dg-vb9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ehw-ER-8qY">
+                                <rect key="frame" x="8" y="20" width="359" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ehw-ER-8qY" firstAttribute="top" secondItem="nrI-Em-Yzh" secondAttribute="top" id="4JM-ok-baB"/>
+                            <constraint firstItem="ehw-ER-8qY" firstAttribute="leading" secondItem="nrI-Em-Yzh" secondAttribute="leading" constant="8" id="D8c-v2-sTj"/>
+                            <constraint firstItem="nrI-Em-Yzh" firstAttribute="bottom" secondItem="ehw-ER-8qY" secondAttribute="bottom" id="HIl-gt-poU"/>
+                            <constraint firstItem="nrI-Em-Yzh" firstAttribute="trailing" secondItem="ehw-ER-8qY" secondAttribute="trailing" constant="8" id="q6l-Oz-a5T"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="nrI-Em-Yzh"/>
+                    </view>
+                    <connections>
+                        <outlet property="textView" destination="ehw-ER-8qY" id="fSB-Lt-hDU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lMP-ci-jSU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2422" y="1065"/>
         </scene>
         <!--MailsToSend-->
         <scene sceneID="dmO-5O-0CE">
