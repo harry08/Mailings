@@ -23,6 +23,13 @@ class MailingTextViewController: UIViewController, UITextViewDelegate {
     var mailing: MailingDTO?
     
     /**
+     Flag indicates whether the parent view is in readonly mode or edit mode.
+     */
+    var parentEditMode = false 
+    
+    @IBOutlet weak var doneButton: UIBarButtonItem!
+    
+    /**
      Controls the doneButton
      */
     var viewEdited = false {
@@ -32,15 +39,29 @@ class MailingTextViewController: UIViewController, UITextViewDelegate {
     }
     
     private func configureBarButtonItems() {
-       // doneButton.isEnabled = viewEdited
+       doneButton.isEnabled = viewEdited
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        textView.delegate = self
+        
+        if let mailing = mailing {
+            textView.text = mailing.text
+        }
+        
+        configureBarButtonItems()
+        
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: Notification.Name.UIKeyboardWillHide, object: nil)
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: Notification.Name.UIKeyboardWillChangeFrame, object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        textView.becomeFirstResponder()
     }
 
     @objc func adjustForKeyboard(notification: Notification) {
@@ -61,9 +82,20 @@ class MailingTextViewController: UIViewController, UITextViewDelegate {
         textView.scrollRangeToVisible(selectedRange)
     }
     
-    // TODO Richtige Action
-    func doneEditingAction() {
-        if let mailing = mailing {
+    // MARK:- Navigation and Actions
+    
+    @IBAction func cancelAction(_ sender: Any) {
+        viewEdited = false
+        navigationController?.popViewController(animated:true)
+    }
+    
+    /**
+     Take value from textView and inform delegate about finishing editing
+     */
+    @IBAction func doneAction(_ sender: Any) {
+        if var mailing = mailing {
+            mailing.text = textView.text
+            
             mailingTextViewControllerDelegate?.mailingTextViewController(self, didFinishEditing: mailing)
             
             navigationController?.popViewController(animated:true)

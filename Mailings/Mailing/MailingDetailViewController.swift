@@ -20,6 +20,11 @@ protocol MailingDetailViewControllerDelegate: class {
     func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishDeleting mailing: MailingDTO)
 }
 
+/**
+ Detail View for mailings.
+ This View uses a dynamic tableView layout since it is needed for dynamic row heights.
+ The row height of the content cell is dependent on the text.
+ */
 class MailingDetailViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate,  MailingDetailViewControllerDelegate, MailingListPickerTableViewControllerDelegate, MailingTextViewControllerDelegate, MFMailComposeViewControllerDelegate {
 
     /**
@@ -31,9 +36,6 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
      Flag indicates whether the view is in readonly mode or edit mode.
      */
     var editMode = false
-    
-    @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var contentTextView: UITextView!
     
     @IBOutlet weak var mailingSendCell: UITableViewCell!
     @IBOutlet weak var mailingDeleteCell: UITableViewCell!
@@ -49,6 +51,9 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     // In case of editing an existing mailing this variable is filled on startup.
     // In case of a new one this will be created in the prepare method.
     var mailingDTO : MailingDTO?
+    
+    var changedMailingTitle : String?
+    var changedMailingText : String?
     
     /**
      Controls the doneButton
@@ -72,20 +77,22 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 140
+        
         navigationItem.largeTitleDisplayMode = .never
         
         // Put this class as delegate to receive events
         delegate = self
         
         if isEditType() {
-            fillControls()
-            
-            title = "Mailing"
+           title = "Mailing"
         } else {
+            // Add mode. Create new empty MailingDTO object
+            mailingDTO = MailingDTO()
             editMode = true
         }
         configureBarButtonItems()
-        configureControls()
         configureToolbar()
     }
     
@@ -93,7 +100,10 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         super.viewWillAppear(animated)
         if isAddType() {
             // Only in add mode directly put the focus inside the title field.
-           titleTextField.becomeFirstResponder()
+            // The event didSelectRow needs to be called programmatically.
+            let indexPath = IndexPath(row: 0, section: 0)
+            self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+            self.tableView.delegate?.tableView!(self.tableView, didSelectRowAt: indexPath)
         }
         configureToolbar()
     }
@@ -105,33 +115,16 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     }
     
     /**
-     Fills the values from UI fields into the MailingListDTO.
+     Fills the changed values into the MailingListDTO.
      */
     private func fillMailingDTO() {
-        let title = titleTextField.text ?? ""
-        let content = contentTextView.text ?? ""
+        if let mailingTitle = changedMailingTitle {
+            mailingDTO?.title = mailingTitle
+        }
         
-        if mailingDTO == nil {
-            // Create new MailingDTO object
-            mailingDTO = MailingDTO()
+        if let mailingText = changedMailingText {
+            mailingDTO?.text = mailingText
         }
-        mailingDTO?.title = title
-        mailingDTO?.text = content
-    }
-    
-    /**
-     Fills the values from the DTO to the controls.
-     */
-    private func fillControls() {
-        if let mailingDTO = self.mailingDTO {
-            titleTextField.text = mailingDTO.title
-            contentTextView.text = mailingDTO.text
-        }
-    }
-    
-    private func configureControls() {
-        titleTextField.isEnabled = editMode
-        contentTextView.isEditable = editMode
     }
     
     // MARK: - Action and Navigation
@@ -217,7 +210,6 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         editMode = true
         viewEdited = false
         configureBarButtonItems()
-        configureControls()
         configureToolbar()
         tableView.reloadData()
     }
@@ -255,25 +247,44 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             let destinationVC = segue.destination as? MailsToSendTableViewController
         {
             destinationVC.mailsToSend = mailsToSend
+        } else if segue.identifier == "editMailContent",
+            let destinationVC = segue.destination as? MailingTextViewController
+        {
+            destinationVC.parentEditMode = editMode
+            destinationVC.mailingTextViewControllerDelegate = self
+            destinationVC.mailing = mailingDTO
         }
     }
     
     // MARK: - TableView Delegate
     
-    /**
-     Do not allow cell selection except for mailing deletion and sending
-     */
-    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if indexPath.section == 2 {
-            // Section 2 should be selectable to delete a mailing or send a mailing
-            return indexPath
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 2 {
+            // Section with actions
+            return 2
         } else {
-            return nil
+            return 1
         }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 2 {
+        if indexPath.section == 1 {
+            // Section for content
+            var containsText = false
+            
+            if let mailingDTO = mailingDTO,
+                let text = mailingDTO.text {
+                containsText = text.count > 0
+            }
+            
+            if !containsText {
+                return 176
+            }
+        } else if indexPath.section == 2 {
             // Section for send and delete button.
             if indexPath.row == 0 {
                 // Delete button
@@ -297,11 +308,81 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         return super.tableView(tableView, heightForRowAt: indexPath)
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return "Titel"
+        } else if section == 1 {
+            return "Inhalt"
+        }
+        
+        return ""
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 && indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TitleCell", for: indexPath) as! MailingTitleTableViewCell
+            
+            if let changedMailingTitle = changedMailingTitle {
+                cell.mailingTitleTextField.text = changedMailingTitle
+            } else {
+                if let mailingDTO = mailingDTO {
+                    cell.mailingTitleTextField.text = mailingDTO.title
+                }
+            }
+            
+            cell.mailingTitleTextField.isEnabled = editMode
+            cell.mailingTitleTextField.delegate = self
+            
+            return cell
+        } else if indexPath.section == 1 && indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ContentCell", for: indexPath) as! MailingContentTableViewCell
+            
+            if let mailingDTO = mailingDTO {
+                cell.contentLabel.text = mailingDTO.text
+            } else {
+                cell.contentLabel.text = ""
+            }
+            
+            cell.contentLabel.textColor = UIColor(white: 114/255, alpha: 1)
+            cell.contentLabel.font = UIFont.preferredFont(forTextStyle: .body)
+            
+            return cell
+        } else if indexPath.section == 2 && indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionDeleteCell", for: indexPath)
+            
+            return cell
+        } else {
+            // Section 2, row 1
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionSendCell", for: indexPath)
+            
+            return cell
+        }
+    }
+    
+    /**
+     Do not allow cell selection except for mailing deletion and sending
+     */
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if indexPath.section == 2 {
+            // Section 2 should be selectable to delete a mailing or send a mailing
+            return indexPath
+        } else if indexPath.section == 1 {
+            // Section 2 should be selectable to edit the mailing text
+            return indexPath
+        } else {
+            return nil
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            titleTextField.becomeFirstResponder()
+            if editMode {
+                let cell = tableView.cellForRow(at: indexPath) as! MailingTitleTableViewCell
+                cell.mailingTitleTextField.becomeFirstResponder()
+            }
         } else if indexPath.section == 1 {
-            contentTextView.becomeFirstResponder()
+            // Opens the edit view fot the mailing content
+            performSegue(withIdentifier: "editMailContent", sender: nil)
         } else if indexPath.section == 2 {
             if indexPath.row == 0 {
                 // Delete mailing
@@ -334,6 +415,11 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         let stringRange = Range(range, in:oldText)!
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
         viewEdited = !newText.isEmpty
+        
+        if textField.tag == 1 {
+            changedMailingTitle = newText
+        }
+        
         return true
     }
     
@@ -344,7 +430,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         return true
     }
     
-    // MARK: MailingDetailViewController Delegate
+    // MARK: - MailingDetailViewController Delegate
     
     /**
      Protocol function. Called after canceled editing of an existing mailing.
@@ -353,10 +439,10 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         editMode = false
         viewEdited = false
         
+        changedMailingTitle = nil
+        
         if isEditType() {
             configureBarButtonItems()
-            fillControls()
-            configureControls()
             configureToolbar()
             tableView.reloadData()
         } else {
@@ -405,8 +491,6 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             // TODO show Alert
         }
         configureBarButtonItems()
-        fillControls()
-        configureControls()
         configureToolbar()
         tableView.reloadData()
     }
@@ -468,6 +552,31 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     
     // MARK: - MailingTextViewController Delegate
     func mailingTextViewController(_ controller: MailingTextViewController, didFinishEditing mailing: MailingDTO) {
+        if editMode {
+            // This view is in edit mode. Take value and stay in edit mode
+            // TODO do not take value directly into DTO.
+            self.mailingDTO?.text = mailing.text
+            viewEdited = true
+            tableView.reloadData()
+        } else {
+            // This view is not in edit mode. Take value and save directly
+            self.mailingDTO?.text = mailing.text
+            
+            guard let container = container else {
+                print("Save not possible. No PersistentContainer.")
+                return
+            }
+            
+            // Update database
+            do {
+                try Mailing.createOrUpdateFromDTO(mailingDTO: mailing, in: container.viewContext)
+                editMode = false
+                viewEdited = false
+                tableView.reloadData()
+            } catch {
+                // TODO show Alert
+            }
+        }
         print("Finished editing the mailing text. Save changes.")
     }
     
