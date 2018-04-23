@@ -37,8 +37,6 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
      */
     var editMode = false
     
-    @IBOutlet weak var mailingSendCell: UITableViewCell!
-    @IBOutlet weak var mailingDeleteCell: UITableViewCell!
     /**
      Delegate to call after finish editing
      Weak reference to avoid ownership cycles.
@@ -252,7 +250,12 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         {
             destinationVC.parentEditMode = editMode
             destinationVC.mailingTextViewControllerDelegate = self
-            destinationVC.mailing = mailingDTO
+            
+            var editMailingDTO = MailingDTO(objectId: mailingDTO?.objectId, title: mailingDTO?.title, text: mailingDTO?.text)
+            if let changedMailingText = changedMailingText {
+                editMailingDTO.text = changedMailingText
+            }
+            destinationVC.mailing = editMailingDTO
         }
     }
     
@@ -337,10 +340,14 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         } else if indexPath.section == 1 && indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContentCell", for: indexPath) as! MailingContentTableViewCell
             
-            if let mailingDTO = mailingDTO {
-                cell.contentLabel.text = mailingDTO.text
+            if let changedMailingText = changedMailingText {
+                cell.contentLabel.text = changedMailingText
             } else {
-                cell.contentLabel.text = ""
+                if let mailingDTO = mailingDTO {
+                    cell.contentLabel.text = mailingDTO.text
+                } else {
+                    cell.contentLabel.text = ""
+                }
             }
             
             cell.contentLabel.textColor = UIColor(white: 114/255, alpha: 1)
@@ -396,7 +403,10 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
                 })
                 // The following 2 lines are needed for iPad.
                 alert.popoverPresentationController?.sourceView = view
-                alert.popoverPresentationController?.sourceRect = self.mailingDeleteCell.frame
+                if let cell = tableView.cellForRow(at: indexPath) {
+                    alert.popoverPresentationController?.sourceRect = cell.frame
+                }
+                
                 
                 present(alert, animated: true)
             } else if indexPath.row == 1 {
@@ -440,6 +450,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         viewEdited = false
         
         changedMailingTitle = nil
+        changedMailingText = nil
         
         if isEditType() {
             configureBarButtonItems()
@@ -465,6 +476,8 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             try Mailing.createOrUpdateFromDTO(mailingDTO: mailing, in: container.viewContext)
             editMode = false
             viewEdited = false
+            changedMailingText = nil
+            changedMailingTitle = nil
         } catch {
             // TODO show Alert
         }
@@ -487,6 +500,8 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             try Mailing.createOrUpdateFromDTO(mailingDTO: mailing, in: container.viewContext)
             editMode = false
             viewEdited = false
+            changedMailingText = nil
+            changedMailingTitle = nil
         } catch {
             // TODO show Alert
         }
@@ -507,7 +522,8 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             try Mailing.deleteMailing(mailingDTO: mailing, in: container.viewContext)
             editMode = false
             viewEdited = false
-           // dataChanged = true
+            changedMailingText = nil
+            changedMailingTitle = nil
         } catch {
             // TODO show Alert
         }
@@ -554,8 +570,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     func mailingTextViewController(_ controller: MailingTextViewController, didFinishEditing mailing: MailingDTO) {
         if editMode {
             // This view is in edit mode. Take value and stay in edit mode
-            // TODO do not take value directly into DTO.
-            self.mailingDTO?.text = mailing.text
+            self.changedMailingText = mailing.text
             viewEdited = true
             tableView.reloadData()
         } else {
@@ -572,6 +587,8 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
                 try Mailing.createOrUpdateFromDTO(mailingDTO: mailing, in: container.viewContext)
                 editMode = false
                 viewEdited = false
+                changedMailingText = nil
+                changedMailingTitle = nil
                 tableView.reloadData()
             } catch {
                 // TODO show Alert
