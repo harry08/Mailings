@@ -122,7 +122,7 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
             
             if !searchBarIsEmpty() {
                 let searchString = searchController.searchBar.text!
-                let predicate = NSPredicate(format: "lastname contains[c] %@ or firstname contains[c] %@", searchString, searchString)
+                let predicate = NSPredicate(format: "lastname contains[c] %@ or firstname contains[c] %@ or email contains[c] %@", searchString, searchString, searchString)
                 predicates.append(predicate)
             }
             
