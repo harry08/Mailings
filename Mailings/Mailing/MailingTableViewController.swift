@@ -67,6 +67,20 @@ class MailingTableViewController: FetchedResultsTableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let duplicateAction = UITableViewRowAction(style: .default, title: "Duplizieren", handler:{action, indexpath in
+            self.duplicateMailing(indexPath: indexPath)
+        });
+        duplicateAction.backgroundColor = UIColor.lightGray
+        
+        return [duplicateAction];
+    }
+    
     // MARK: - Navigation and Actions
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -87,6 +101,39 @@ class MailingTableViewController: FetchedResultsTableViewController {
         {
             destinationVC.container = container
         }
+    }
+    
+    func duplicateMailing(indexPath: IndexPath) {
+        guard let container = container else {
+            print("Duplicate not possible. No PersistentContainer.")
+            return
+        }
+        
+        if let mailingToDuplicate = fetchedResultsController?.object(at: indexPath) {
+            var newMailing = MailingDTO()
+            if let title = mailingToDuplicate.title {
+                newMailing.title = title + " Kopie"
+            } else {
+                newMailing.title = "Duplikat"
+            }
+            
+            if let text = mailingToDuplicate.text {
+                newMailing.text = text
+            }
+            
+            do {
+                try Mailing.createOrUpdateFromDTO(mailingDTO: newMailing, in: container.viewContext)
+            } catch {
+                // TODO show Alert
+            }
+        }
+        
+        /* TODO - Create name for duplicate
+         Get all mailings with a title starting with the mailing to duplicate (with added suffix Kopie)
+         if no mailing exist name the new mailing "oldtitle Kopie"
+         if at least one mailing exist name the new mailing "oldtitle Kopie 1".
+         If multiple exists take the next free number.
+        */
     }
 }
 
@@ -114,13 +161,11 @@ extension MailingTableViewController {
         }
     }
     
-    override func sectionIndexTitles(for tableView: UITableView) -> [String]?
-    {
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return fetchedResultsController?.sectionIndexTitles
     }
     
-    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int
-    {
+    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         return fetchedResultsController?.section(forSectionIndexTitle: title, at: index) ?? 0
     }
 }
