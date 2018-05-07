@@ -42,6 +42,22 @@ class MailsToSendTableViewController: UITableViewController, MFMailComposeViewCo
         }
         return count
     }
+    
+    func getEmailsAsString(index: Int) -> String {
+        var emailString = ""
+        
+        let mailToSend = self.mailsToSend![index]
+        for email in mailToSend.emailAddresses {
+            if emailString.count == 0 {
+                emailString = email
+            } else {
+                emailString.append(",")
+                emailString.append(email)
+            }
+        }
+        
+        return emailString
+    }
    
     // MARK: - Table view data source
 
@@ -97,8 +113,12 @@ class MailsToSendTableViewController: UITableViewController, MFMailComposeViewCo
             self.composeMail(index: index.row)
         }
         sendMail.backgroundColor = UIColor.orange
+        let moreAction = UITableViewRowAction(style: .normal, title: "...") { action, index in
+            self.showActionMenu(indexPath: index)
+        }
+        moreAction.backgroundColor = UIColor.lightGray
        
-        return [sendMail]
+        return [sendMail, moreAction]
     }
     
     func configureCheckmark(for cell: UITableViewCell,
@@ -112,7 +132,27 @@ class MailsToSendTableViewController: UITableViewController, MFMailComposeViewCo
         }
     }
     
-    // MARK: - Navigation
+    // MARK: - Actions and Navigation
+    func showActionMenu(indexPath: IndexPath) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Email-Adressen kopieren", style: .default) { _ in
+            let emailString = self.getEmailsAsString(index: indexPath.row)
+            
+            // Set emailString into pasteboard
+            let pasteboard = UIPasteboard.general
+            pasteboard.string = emailString
+        })
+        alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
+            // Do nothing
+        })
+        // The following 2 lines are needed for iPad.
+        alert.popoverPresentationController?.sourceView = view
+        if let cell = tableView.cellForRow(at: indexPath) {
+            alert.popoverPresentationController?.sourceRect = cell.frame
+        }
+        
+        self.present(alert, animated: true)
+    }
     
     @IBAction func done(_ sender: Any) {
         if let owningNavigationController = navigationController {
