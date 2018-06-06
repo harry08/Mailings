@@ -10,6 +10,13 @@ import CoreData
 import MessageUI
 
 /**
+ Sections of static table inside MailingDetailView
+ */
+enum MailingDetailViewSection: Int {
+    case title = 0, content, attachement, action
+}
+
+/**
  Delegate that is called after closing the DetailController.
  Database update can be done in the implementing classes.
  */
@@ -262,49 +269,57 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     // MARK: - TableView Delegate
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 2 {
-            // Section with actions
-            return 2
-        } else {
-            return 1
+        if let section = MailingDetailViewSection(rawValue: section) {
+            switch section {
+            case .action:
+                return 2
+            default:
+                return 1
+            }
         }
+        
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 1 {
-            // Section for content
-            var containsText = false
-            
-            if let mailingDTO = mailingDTO,
-                let text = mailingDTO.text {
-                containsText = text.count > 0
-            }
-            
-            if !containsText {
-                return 176
-            }
-        } else if indexPath.section == 2 {
-            // Section for send and delete button.
-            if indexPath.row == 0 {
-                // Delete button
-                if editMode && isEditType() {
-                    // Only visible if view is in editMode for an existing mailing
-                    return super.tableView(tableView, heightForRowAt: indexPath)
-                } else {
-                    return 0
+        if let section = MailingDetailViewSection(rawValue: indexPath.section) {
+            switch section {
+            case .content:
+                var containsText = false
+                
+                if let mailingDTO = mailingDTO,
+                    let text = mailingDTO.text {
+                    containsText = text.count > 0
                 }
-            } else if indexPath.row == 1 {
-                // Send button
-                if !editMode {
-                    // Only visible if view is in readonly mode
-                    return super.tableView(tableView, heightForRowAt: indexPath)
-                } else {
-                    return 0
+                
+                if !containsText {
+                    return 176
                 }
+            case .action:
+                // Section for send and delete button.
+                if indexPath.row == 0 {
+                    // Delete button
+                    if editMode && isEditType() {
+                        // Only visible if view is in editMode for an existing mailing
+                        return super.tableView(tableView, heightForRowAt: indexPath)
+                    } else {
+                        return 0
+                    }
+                } else if indexPath.row == 1 {
+                    // Send button
+                    if !editMode {
+                        // Only visible if view is in readonly mode
+                        return super.tableView(tableView, heightForRowAt: indexPath)
+                    } else {
+                        return 0
+                    }
+                }
+            default:
+                return super.tableView(tableView, heightForRowAt: indexPath)
             }
         }
         
@@ -312,17 +327,22 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "Titel"
-        } else if section == 1 {
-            return "Inhalt"
+        if let section = MailingDetailViewSection(rawValue: section) {
+            switch section {
+            case .title:
+                return "Titel"
+            case .content:
+                return "Inhalt"
+            default:
+                return ""
+            }
         }
         
         return ""
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 && indexPath.row == 0 {
+        if indexPath.section == MailingDetailViewSection.title.rawValue {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TitleCell", for: indexPath) as! MailingTitleTableViewCell
             
             if let changedMailingTitle = changedMailingTitle {
@@ -337,7 +357,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             cell.mailingTitleTextField.delegate = self
             
             return cell
-        } else if indexPath.section == 1 && indexPath.row == 0 {
+        } else if indexPath.section == MailingDetailViewSection.content.rawValue {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContentCell", for: indexPath) as! MailingContentTableViewCell
             
             if let changedMailingText = changedMailingText {
@@ -354,12 +374,16 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             cell.contentLabel.font = UIFont.preferredFont(forTextStyle: .body)
             
             return cell
-        } else if indexPath.section == 2 && indexPath.row == 0 {
+        } else if indexPath.section == MailingDetailViewSection.attachement.rawValue {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionFilesCell", for: indexPath)
+            
+            return cell
+        } else if indexPath.section == MailingDetailViewSection.action.rawValue && indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActionDeleteCell", for: indexPath)
             
             return cell
         } else {
-            // Section 2, row 1
+            // Section action, row 1
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActionSendCell", for: indexPath)
             
             return cell
@@ -367,51 +391,64 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     }
     
     /**
-     Do not allow cell selection except for mailing deletion and sending
+     Only allow selection for a few cells
      */
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if indexPath.section == 2 {
-            // Section 2 should be selectable to delete a mailing or send a mailing
-            return indexPath
-        } else if indexPath.section == 1 {
-            // Section 2 should be selectable to edit the mailing text
-            return indexPath
-        } else {
-            return nil
+        if let section = MailingDetailViewSection(rawValue: indexPath.section) {
+            switch section {
+            case .content:
+                // Should be selectable to edit the mailing text
+                return indexPath
+            case .attachement:
+                // Should be selectable to attach files
+                return indexPath
+            case .action:
+                // Should be selectable to delete a mailing or send a mailing
+                return indexPath
+            default:
+                return nil
+            }
         }
+        
+        return nil
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            if editMode {
-                let cell = tableView.cellForRow(at: indexPath) as! MailingTitleTableViewCell
-                cell.mailingTitleTextField.becomeFirstResponder()
-            }
-        } else if indexPath.section == 1 {
-            // Opens the edit view fot the mailing content
-            performSegue(withIdentifier: "editMailContent", sender: nil)
-        } else if indexPath.section == 2 {
-            if indexPath.row == 0 {
-                // Delete mailing
-                let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                alert.addAction(UIAlertAction(title: "Mailing löschen", style: .default) { _ in
-                    self.tableView.deselectRow(at: indexPath, animated: true)
-                    self.deleteAction()
-                })
-                alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
-                    // Do nothing
-                })
-                // The following 2 lines are needed for iPad.
-                alert.popoverPresentationController?.sourceView = view
-                if let cell = tableView.cellForRow(at: indexPath) {
-                    alert.popoverPresentationController?.sourceRect = cell.frame
+        if let section = MailingDetailViewSection(rawValue: indexPath.section) {
+            switch section {
+            case .title:
+                if editMode {
+                    let cell = tableView.cellForRow(at: indexPath) as! MailingTitleTableViewCell
+                    cell.mailingTitleTextField.becomeFirstResponder()
                 }
-                
-                
-                present(alert, animated: true)
-            } else if indexPath.row == 1 {
-                // Triggers sending this mailing as mail. First the mailing list has to be chosen.
-                performSegue(withIdentifier: "pickMailingList", sender: nil)
+            case .content:
+                // Opens the edit view fot the mailing content
+                performSegue(withIdentifier: "editMailContent", sender: nil)
+            case .attachement:
+                // Show attached files in separate view
+                performSegue(withIdentifier: "showMailingAttachements", sender: nil)
+            case .action:
+                if indexPath.row == 0 {
+                    // Delete mailing
+                    let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                    alert.addAction(UIAlertAction(title: "Mailing löschen", style: .default) { _ in
+                        self.tableView.deselectRow(at: indexPath, animated: true)
+                        self.deleteAction()
+                    })
+                    alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
+                        // Do nothing
+                    })
+                    // The following 2 lines are needed for iPad.
+                    alert.popoverPresentationController?.sourceView = view
+                    if let cell = tableView.cellForRow(at: indexPath) {
+                        alert.popoverPresentationController?.sourceRect = cell.frame
+                    }
+                    
+                    present(alert, animated: true)
+                } else if indexPath.row == 1 {
+                    // Triggers sending this mailing as mail. First the mailing list has to be chosen.
+                    performSegue(withIdentifier: "pickMailingList", sender: nil)
+                }
             }
         }
     }
