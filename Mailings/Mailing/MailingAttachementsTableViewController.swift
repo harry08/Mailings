@@ -1,5 +1,5 @@
 //
-//  MailingFilesTableViewController.swift
+//  MailingAttachementsTableViewController.swift
 //  Mailings
 //
 //  Created on 18.05.18.
@@ -7,18 +7,19 @@
 
 import UIKit
 import MobileCoreServices
+import QuickLook
 
 /**
  Delegate that is called after adding a new file to the mailing or removing a file from the mailing..
  */
 protocol MailingAttachementsTableViewControllerDelegate: class {
-    func mailingFilesTableViewControllerDelegate(_ controller: MailingAttachementsTableViewControllerDelegate, didChangeAttachements attachedChanges: [MailingAttachementChange])
+    func mailingFilesTableViewControllerDelegate(_ controller: MailingAttachementsTableViewController, didChangeAttachements attachedChanges: [MailingAttachementChange])
 }
 
 /**
  Shows the attached files of a mailing in a TableView.
  */
-class MailingAttachementsTableViewController: UITableViewController, UIDocumentMenuDelegate, UIDocumentPickerDelegate, UINavigationControllerDelegate {
+class MailingAttachementsTableViewController: UITableViewController, UIDocumentMenuDelegate, UIDocumentPickerDelegate, UINavigationControllerDelegate, QLPreviewControllerDataSource, QLPreviewControllerDelegate {
     
     /**
      List of attached files
@@ -29,8 +30,24 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
         }
     }
     
+    let quickLookController = QLPreviewController()
+    
+    /**
+     Urls used as datasource for the QuickLook view.
+     Filled when a row in this table gets selected before the QuickLook view is shown.
+     */
+    var selectedUrls:[URL] = []
+    
+    /**
+     Delegate to call after adding or removing file attachements
+     */
+    weak var delegate: MailingAttachementsTableViewControllerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        quickLookController.dataSource = self
+        quickLookController.delegate = self
     }
     
     private func updateUI() {
@@ -44,17 +61,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
             return 0
         }
     }
-
-    // MARK: - Table view
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return getNrOfAttachedFiles()
-    }
-
+    
     /**
      Shows the menu to open a DocumentPicker to choose a file to add to the mailing.
      */
@@ -63,6 +70,40 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
         importMenu.delegate = self
         importMenu.modalPresentationStyle = .formSheet
         self.present(importMenu, animated: true, completion: nil)
+    }
+
+    // MARK: - Table view
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AttachementCell", for: indexPath)
+        
+        let attachedFile = attachedFiles!.files[indexPath.row]
+        cell.textLabel?.text = attachedFile.name
+        
+        return cell
+    }
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return getNrOfAttachedFiles()
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Prepare Urls for QuickLook dataSource
+        var filerUrls:[URL] = []
+        filerUrls = attachedFiles!.files.map { file in
+            let fileUrl = getUrlForFile(fileName: file.name)
+            return fileUrl
+        }
+        self.selectedUrls = filerUrls
+        
+        if QLPreviewController.canPreview(self.selectedUrls[indexPath.row] as QLPreviewItem) {
+            quickLookController.currentPreviewItemIndex = indexPath.row
+            self.navigationController?.pushViewController(quickLookController, animated: true)
+        }
     }
     
     // MARK: - Document Picker
@@ -73,8 +114,40 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         
         print("import result : \(urls.count)")
+        
+        // Add chosen file
         if urls.count >= 1 {
-            print("import result : \(urls[0].absoluteURL)")
+            let url = urls[0]
+            let filemgr = FileManager.default
+            
+            if filemgr.fileExists(atPath: url.path) {
+                print("File at path \(url.path) exists")
+                
+                // TODO How to make filename unique? Think about own directory per mailing.
+                // Check if already added before copying.
+                
+                copyFileToAttachementsDir(urlToCopy: url)
+                //
+                
+                let fileName = url.lastPathComponent
+                var mailingAttachementChanges = [MailingAttachementChange]()
+                
+                let attachementAlreadyAdded = attachedFiles!.files.contains {$0.name == fileName}
+                if !attachementAlreadyAdded {
+                    let attachedFile = AttachedFile(name: fileName)
+                    attachedFiles?.files.append(attachedFile)
+                    
+                    mailingAttachementChanges.append(MailingAttachementChange(fileName: fileName, action: .added))
+                }
+                
+                if mailingAttachementChanges.count > 0 {
+                    delegate?.mailingFilesTableViewControllerDelegate(self, didChangeAttachements: mailingAttachementChanges)
+                }
+                
+                updateUI()
+            } else {
+                print("Error. Imported file not found at path \(url.path)")
+            }
         }
     }
     
@@ -90,5 +163,89 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
     
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: - QuickLook DataSource and Delegate
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return self.selectedUrls.count
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return selectedUrls[index] as QLPreviewItem
+    }
+    
+    func previewControllerDidDismiss(_ controller: QLPreviewController) {
+       // self.tableView.deselectRow(at: self.tableView.indexPathForSelectedRow!, animated: true)
+    }
+    
+    /**
+     Don´t allow other urls to be called inside the preview view.
+     */
+    func previewController(_ controller: QLPreviewController, shouldOpen url: URL, for item: QLPreviewItem) -> Bool {
+        
+        return false
+    }
+    
+    //MARK: - Filehandling
+    /**
+     Create the attachements subdirectory in the app documents directory if not yet exists.
+     */
+    private func createAttachementsDirectory() {
+        let attachementDir = getAttachementsUrl().path
+        
+        let filemgr = FileManager.default
+        if !filemgr.fileExists(atPath: attachementDir) {
+            do {
+                try filemgr.createDirectory(atPath: attachementDir, withIntermediateDirectories: true, attributes: nil)
+            } catch let error as NSError {
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    /**
+     Copies the given file to the attachments directory so that it is locally available.
+     */
+    private func copyFileToAttachementsDir(urlToCopy: URL) {
+        createAttachementsDirectory()
+        
+        let filemgr = FileManager.default
+        if filemgr.fileExists(atPath: urlToCopy.path) {
+            let attachementURL = getAttachementsUrl()
+            let destinationFile = attachementURL.appendingPathComponent(urlToCopy.lastPathComponent, isDirectory: false)
+            
+            do {
+                try filemgr.copyItem(atPath: urlToCopy.path, toPath: destinationFile.path)
+                print("Successfully copied file to \(destinationFile.path)")
+            } catch let error as NSError {
+                print("Error: \(error.localizedDescription)")
+            }
+        } else {
+            print("Error. No file found to copy at location \(urlToCopy.path)")
+        }
+    }
+    
+    /**
+     Returns the url for the directory to store attachement files.
+     */
+    private func getAttachementsUrl() -> URL {
+        let filemgr = FileManager.default
+        
+        let dirPaths = filemgr.urls(for: .documentDirectory, in: .userDomainMask)
+        let docsURL = dirPaths[0]
+        
+        let attachementDir = docsURL.appendingPathComponent("attachements")
+        
+        return attachementDir
+    }
+    
+    /**
+     Returns the url for the given file.
+     */
+    private func getUrlForFile(fileName: String) -> URL {
+        let attachementUrl = getAttachementsUrl()
+        
+        let destinationFile = attachementUrl.appendingPathComponent(fileName, isDirectory: false)
+        return destinationFile
     }
 }

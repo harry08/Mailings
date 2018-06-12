@@ -243,7 +243,6 @@
 				4A4A2D2C20452D9A00CB3457 /* SettingDTO.swift */,
 				4A5F4F35202A461F00ED10D7 /* AssignedContact.swift */,
 				4ADEFA47204EEB650074FFA5 /* AssignedMailingList.swift */,
-				4A8B306820C4F1CE00DB9617 /* AttachedFile.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -300,6 +299,7 @@
 				4A1D690A20AF45B60037B331 /* MailingAttachementsTableViewController.swift */,
 				4A8B306A20C4F2C700DB9617 /* MailingAttachements.swift */,
 				4AC061F620C5812100FA90CE /* MailingAttachementChange.swift */,
+				4A8B306820C4F1CE00DB9617 /* AttachedFile.swift */,
 			);
 			path = Mailing;
 			sourceTree = "<group>";

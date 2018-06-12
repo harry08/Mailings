@@ -246,7 +246,7 @@
             </objects>
             <point key="canvasLocation" x="2444" y="350"/>
         </scene>
-        <!--Title-->
+        <!--Anhänge-->
         <scene sceneID="9Gd-RI-JyE">
             <objects>
                 <tableViewController id="xeS-4K-rMY" customClass="MailingAttachementsTableViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
@@ -255,12 +255,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="rqq-is-A7D">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AttachementCell" textLabel="Nua-wr-IYq" style="IBUITableViewCellStyleDefault" id="rqq-is-A7D">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rqq-is-A7D" id="wZF-eq-uiG">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Nua-wr-IYq">
+                                            <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -269,7 +278,7 @@
                             <outlet property="delegate" destination="xeS-4K-rMY" id="7de-Zh-vMX"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="0bM-Ri-AIi">
+                    <navigationItem key="navigationItem" title="Anhänge" id="0bM-Ri-AIi">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="JNp-kx-Uaz">
                             <connections>
                                 <action selector="addNewFile:" destination="xeS-4K-rMY" id="RxZ-CY-Pyk"/>

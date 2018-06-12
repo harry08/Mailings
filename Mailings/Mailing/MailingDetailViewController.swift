@@ -32,8 +32,8 @@ protocol MailingDetailViewControllerDelegate: class {
  This View uses a dynamic tableView layout since it is needed for dynamic row heights.
  The row height of the content cell is dependent on the text.
  */
-class MailingDetailViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate,  MailingDetailViewControllerDelegate, MailingListPickerTableViewControllerDelegate, MailingTextViewControllerDelegate, MFMailComposeViewControllerDelegate {
-
+class MailingDetailViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate,  MailingDetailViewControllerDelegate, MailingListPickerTableViewControllerDelegate, MailingAttachementsTableViewControllerDelegate, MailingTextViewControllerDelegate, MFMailComposeViewControllerDelegate {
+    
     /**
      Flag indicates whether a new mailing is shown or an existing one.
      */
@@ -59,6 +59,16 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     
     var changedMailingTitle : String?
     var changedMailingText : String?
+    
+    /**
+     List of attached files
+     */
+    var attachedFiles = MailingAttachements()
+    
+    /**
+     List of changes of attachements of this mailing
+     */
+    var mailingAttachementChanges = [MailingAttachementChange]()
     
     /**
      Controls the doneButton
@@ -263,6 +273,19 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
                 editMailingDTO.text = changedMailingText
             }
             destinationVC.mailing = editMailingDTO
+        } else if segue.identifier == "showMailingAttachements",
+            let destinationVC = segue.destination as? MailingAttachementsTableViewController
+        {
+            //destinationVC.container = container
+            //destinationVC.editMode = self.editMode
+            destinationVC.delegate = self
+            
+            if !attachedFiles.isInit() {
+                // Init list of attachements
+                attachedFiles.initWithEmptyList()                
+            }
+            
+            destinationVC.attachedFiles = attachedFiles
         }
     }
     
@@ -601,6 +624,39 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
                 performSegue(withIdentifier: "showEmailsToSend", sender: nil)
             }
         }
+    }
+    
+    // MARK: - mailingFilesTableViewController Delegate
+    /**
+     Called after changing file attachements in sub view.
+     Takes the changes into the fileAttachementChanges list.
+     */
+    func mailingFilesTableViewControllerDelegate(_ controller: MailingAttachementsTableViewController, didChangeAttachements attachedChanges: [MailingAttachementChange]) {
+        
+        print("File attachements changed: \(attachedChanges)")
+        
+        for i in 0 ..< attachedChanges.count {
+            let mailingAttachementChange = attachedChanges[i]
+            let mailingAttachementAlreadyChanged = self.mailingAttachementChanges.contains {$0.fileName == mailingAttachementChange.fileName}
+            
+            if !mailingAttachementAlreadyChanged {
+                // no entry with the fileName exists in the change list -> add it
+                self.mailingAttachementChanges.append(mailingAttachementChange)
+            } else {
+                // A change entry for this contact already exists in the change list.
+                if let existing = self.mailingAttachementChanges.first(where: { $0.fileName == mailingAttachementChange.fileName }) {
+                    
+                    if existing.action != mailingAttachementChange.action {
+                        // The entry has a different action -> remove it from the change list.
+                        if let index = self.mailingAttachementChanges.index(where: { $0.fileName == existing.fileName } ) {
+                            self.mailingAttachementChanges.remove(at: index)
+                        }
+                    }
+                }
+            }
+        }
+        
+        viewEdited = true
     }
     
     // MARK: - MailingTextViewController Delegate

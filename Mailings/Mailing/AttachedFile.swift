@@ -8,11 +8,9 @@
 import Foundation
 
 class AttachedFile {
-    var name: String?
-    var url: URL
+    var name: String
     
-    init(name: String, url: URL) {
+    init(name: String) {
         self.name = name
-        self.url = url
     }
 }
