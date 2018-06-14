@@ -30,6 +30,11 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
         }
     }
     
+    /**
+     Flag indicates whether the parent view is in readonly mode or edit mode.
+     */
+    var parentEditMode = false 
+    
     let quickLookController = QLPreviewController()
     
     /**
@@ -95,7 +100,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
         // Prepare Urls for QuickLook dataSource
         var filerUrls:[URL] = []
         filerUrls = attachedFiles!.files.map { file in
-            let fileUrl = getUrlForFile(fileName: file.name)
+            let fileUrl = FileAttachmentHandler.getUrlForFile(fileName: file.name)
             return fileUrl
         }
         self.selectedUrls = filerUrls
@@ -113,9 +118,6 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
      */
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         
-        print("import result : \(urls.count)")
-        
-        // Add chosen file
         if urls.count >= 1 {
             let url = urls[0]
             let filemgr = FileManager.default
@@ -126,8 +128,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
                 // TODO How to make filename unique? Think about own directory per mailing.
                 // Check if already added before copying.
                 
-                copyFileToAttachementsDir(urlToCopy: url)
-                //
+                FileAttachmentHandler.copyFileToAttachementsDir(urlToCopy: url)
                 
                 let fileName = url.lastPathComponent
                 var mailingAttachementChanges = [MailingAttachementChange]()
@@ -184,68 +185,5 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
     func previewController(_ controller: QLPreviewController, shouldOpen url: URL, for item: QLPreviewItem) -> Bool {
         
         return false
-    }
-    
-    //MARK: - Filehandling
-    /**
-     Create the attachements subdirectory in the app documents directory if not yet exists.
-     */
-    private func createAttachementsDirectory() {
-        let attachementDir = getAttachementsUrl().path
-        
-        let filemgr = FileManager.default
-        if !filemgr.fileExists(atPath: attachementDir) {
-            do {
-                try filemgr.createDirectory(atPath: attachementDir, withIntermediateDirectories: true, attributes: nil)
-            } catch let error as NSError {
-                print("Error: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    /**
-     Copies the given file to the attachments directory so that it is locally available.
-     */
-    private func copyFileToAttachementsDir(urlToCopy: URL) {
-        createAttachementsDirectory()
-        
-        let filemgr = FileManager.default
-        if filemgr.fileExists(atPath: urlToCopy.path) {
-            let attachementURL = getAttachementsUrl()
-            let destinationFile = attachementURL.appendingPathComponent(urlToCopy.lastPathComponent, isDirectory: false)
-            
-            do {
-                try filemgr.copyItem(atPath: urlToCopy.path, toPath: destinationFile.path)
-                print("Successfully copied file to \(destinationFile.path)")
-            } catch let error as NSError {
-                print("Error: \(error.localizedDescription)")
-            }
-        } else {
-            print("Error. No file found to copy at location \(urlToCopy.path)")
-        }
-    }
-    
-    /**
-     Returns the url for the directory to store attachement files.
-     */
-    private func getAttachementsUrl() -> URL {
-        let filemgr = FileManager.default
-        
-        let dirPaths = filemgr.urls(for: .documentDirectory, in: .userDomainMask)
-        let docsURL = dirPaths[0]
-        
-        let attachementDir = docsURL.appendingPathComponent("attachements")
-        
-        return attachementDir
-    }
-    
-    /**
-     Returns the url for the given file.
-     */
-    private func getUrlForFile(fileName: String) -> URL {
-        let attachementUrl = getAttachementsUrl()
-        
-        let destinationFile = attachementUrl.appendingPathComponent(fileName, isDirectory: false)
-        return destinationFile
     }
 }

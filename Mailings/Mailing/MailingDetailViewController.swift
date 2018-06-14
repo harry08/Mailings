@@ -22,8 +22,8 @@ enum MailingDetailViewSection: Int {
  */
 protocol MailingDetailViewControllerDelegate: class {
     func mailingDetailViewControllerDidCancel(_ controller: MailingDetailViewController)
-    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishAdding mailing: MailingDTO)
-    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishEditing mailing: MailingDTO)
+    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishAdding mailing: MailingDTO, attachementChanges: [MailingAttachementChange])
+    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishEditing mailing: MailingDTO, attachementChanges: [MailingAttachementChange])
     func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishDeleting mailing: MailingDTO)
 }
 
@@ -214,10 +214,10 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     @objc func doneAction(sender: UIBarButtonItem) {
         if isEditType(){
             fillMailingDTO()
-            delegate?.mailingDetailViewController(self, didFinishEditing: mailingDTO!)
+            delegate?.mailingDetailViewController(self, didFinishEditing: mailingDTO!, attachementChanges: mailingAttachementChanges)
         } else if isAddType() {
             fillMailingDTO()
-            delegate?.mailingDetailViewController(self, didFinishAdding: mailingDTO!)
+            delegate?.mailingDetailViewController(self, didFinishAdding: mailingDTO!, attachementChanges: mailingAttachementChanges)
         }
     }
     
@@ -265,7 +265,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         } else if segue.identifier == "editMailContent",
             let destinationVC = segue.destination as? MailingTextViewController
         {
-            destinationVC.parentEditMode = editMode
+            destinationVC.parentEditMode = self.editMode
             destinationVC.mailingTextViewControllerDelegate = self
             
             var editMailingDTO = MailingDTO(objectId: mailingDTO?.objectId, title: mailingDTO?.title, text: mailingDTO?.text)
@@ -276,13 +276,21 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         } else if segue.identifier == "showMailingAttachements",
             let destinationVC = segue.destination as? MailingAttachementsTableViewController
         {
-            //destinationVC.container = container
-            //destinationVC.editMode = self.editMode
+            guard let container = container else {
+                return
+            }
+            
+            destinationVC.parentEditMode = self.editMode
             destinationVC.delegate = self
             
             if !attachedFiles.isInit() {
-                // Init list of attachements
-                attachedFiles.initWithEmptyList()                
+                // Init with list of attached files
+                if let objectId = mailingDTO?.objectId {
+                    attachedFiles.initWithFileList(Mailing.getAttachedFiles(objectId: objectId, in: container.viewContext))
+                } else {
+                    // Init list of attachements
+                    attachedFiles.initWithEmptyList()
+                }
             }
             
             destinationVC.attachedFiles = attachedFiles
@@ -525,7 +533,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
      Protocol function. Called after finish editing a new Mailing
      Saves data to database and navigates back to caller view.
      */
-    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishAdding mailing: MailingDTO) {
+    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishAdding mailing: MailingDTO, attachementChanges: [MailingAttachementChange]) {
         guard let container = container else {
             print("Save not possible. No PersistentContainer.")
             return
@@ -533,7 +541,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         
         // Update database
         do {
-            try Mailing.createOrUpdateFromDTO(mailingDTO: mailing, in: container.viewContext)
+            try Mailing.createOrUpdateFromDTO(mailingDTO: mailing, attachmentChanges: attachementChanges, in: container.viewContext)
             editMode = false
             viewEdited = false
             changedMailingText = nil
@@ -549,7 +557,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
      Protocol function. Called after finish editing an existing Mailing
      Saves data to database and stays in this view.
      */
-    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishEditing mailing: MailingDTO) {
+    func mailingDetailViewController(_ controller: MailingDetailViewController, didFinishEditing mailing: MailingDTO, attachementChanges: [MailingAttachementChange]) {
         guard let container = container else {
             print("Save not possible. No PersistentContainer.")
             return
@@ -557,7 +565,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         
         // Update database
         do {
-            try Mailing.createOrUpdateFromDTO(mailingDTO: mailing, in: container.viewContext)
+            try Mailing.createOrUpdateFromDTO(mailingDTO: mailing, attachmentChanges: attachementChanges, in: container.viewContext)
             editMode = false
             viewEdited = false
             changedMailingText = nil
@@ -626,14 +634,12 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         }
     }
     
-    // MARK: - mailingFilesTableViewController Delegate
+    // MARK: - MailingAttachementsTableViewController Delegate
     /**
      Called after changing file attachements in sub view.
      Takes the changes into the fileAttachementChanges list.
      */
     func mailingFilesTableViewControllerDelegate(_ controller: MailingAttachementsTableViewController, didChangeAttachements attachedChanges: [MailingAttachementChange]) {
-        
-        print("File attachements changed: \(attachedChanges)")
         
         for i in 0 ..< attachedChanges.count {
             let mailingAttachementChange = attachedChanges[i]
