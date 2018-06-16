@@ -12,13 +12,13 @@ class FileAttachmentHandler {
     /**
      Create the attachements subdirectory in the app documents directory if not yet exists.
      */
-    class func createAttachementsDirectory() {
-        let attachementDir = getAttachementsUrl().path
+    class func createAttachementsDirectoryWithSubfolder(_ folderName: String) {
+        let subfolderDir = getSubfolderUrl(folderName).path
         
         let filemgr = FileManager.default
-        if !filemgr.fileExists(atPath: attachementDir) {
+        if !filemgr.fileExists(atPath: subfolderDir) {
             do {
-                try filemgr.createDirectory(atPath: attachementDir, withIntermediateDirectories: true, attributes: nil)
+                try filemgr.createDirectory(atPath: subfolderDir, withIntermediateDirectories: true, attributes: nil)
             } catch let error as NSError {
                 print("Error: \(error.localizedDescription)")
             }
@@ -28,13 +28,13 @@ class FileAttachmentHandler {
     /**
      Copies the given file to the attachments directory so that it is locally available.
      */
-    class func copyFileToAttachementsDir(urlToCopy: URL) {
-        createAttachementsDirectory()
+    class func copyFileToAttachementsDir(urlToCopy: URL, folderName: String) {
+        createAttachementsDirectoryWithSubfolder(folderName)
         
         let filemgr = FileManager.default
         if filemgr.fileExists(atPath: urlToCopy.path) {
-            let attachementURL = getAttachementsUrl()
-            let destinationFile = attachementURL.appendingPathComponent(urlToCopy.lastPathComponent, isDirectory: false)
+            let subfolderURL = getSubfolderUrl(folderName)
+            let destinationFile = subfolderURL.appendingPathComponent(urlToCopy.lastPathComponent, isDirectory: false)
             
             do {
                 try filemgr.copyItem(atPath: urlToCopy.path, toPath: destinationFile.path)
@@ -44,6 +44,36 @@ class FileAttachmentHandler {
             }
         } else {
             print("Error. No file found to copy at location \(urlToCopy.path)")
+        }
+    }
+    
+    class func fileExistsInAttachmentsDir(url: URL, folderName: String) -> Bool {
+        let subfolderUrl = getSubfolderUrl(folderName)
+        let fileToCheck = subfolderUrl.appendingPathComponent(url.lastPathComponent, isDirectory: false)
+        
+        let filemgr = FileManager.default
+        if filemgr.fileExists(atPath: fileToCheck.path) {
+            return true
+        }
+        
+        return false
+    }
+    
+    /**
+     Deletes the given file
+     */
+    class func removeFile(fileName: String) {
+        let filemgr = FileManager.default
+        let attachementURL = getAttachementsUrl()
+        let fileToDelete = attachementURL.appendingPathComponent(fileName)
+        
+        do {
+            if filemgr.fileExists(atPath: fileToDelete.path) {
+                try filemgr.removeItem(at: fileToDelete)
+                print("Successfully deleted file to \(fileName)")
+            }
+        } catch let error as NSError {
+            print("Error: \(error.localizedDescription)")
         }
     }
     
@@ -62,12 +92,22 @@ class FileAttachmentHandler {
     }
     
     /**
+     Returns the url for a subfolder of the attachement directory.
+     */
+    class func getSubfolderUrl(_ folderName : String) -> URL {
+        let attachmentsUrl = getAttachementsUrl()
+        let subfolderDir = attachmentsUrl.appendingPathComponent(folderName)
+        
+        return subfolderDir
+    }
+    
+    /**
      Returns the url for the given file.
      */
-    class func getUrlForFile(fileName: String) -> URL {
-        let attachementUrl = getAttachementsUrl()
+    class func getUrlForFile(fileName: String, folderName: String) -> URL {
+        let subfolderDir = getSubfolderUrl(folderName)
         
-        let destinationFile = attachementUrl.appendingPathComponent(fileName, isDirectory: false)
+        let destinationFile = subfolderDir.appendingPathComponent(fileName, isDirectory: false)
         return destinationFile
     }
 }

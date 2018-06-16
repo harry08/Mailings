@@ -10,7 +10,7 @@ import Foundation
 class MailingMapper {
     
     class func mapToDTO(mailing: Mailing) -> MailingDTO {
-        let mailingDTO = MailingDTO(objectId: mailing.objectID, title: mailing.title, text: mailing.text)
+        let mailingDTO = MailingDTO(objectId: mailing.objectID, title: mailing.title, text: mailing.text, folder: mailing.folder)
         
         return mailingDTO
     }
@@ -18,5 +18,6 @@ class MailingMapper {
     class func mapToEntity(mailingDTO: MailingDTO, mailing: inout Mailing) {
         mailing.title = mailingDTO.title
         mailing.text = mailingDTO.text
+        mailing.folder = mailingDTO.folder
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17B1003" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17F77" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CommonSetting" representedClassName=".CommonSetting" syncable="YES" codeGenerationType="category">
         <attribute name="boolvalue" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="createtime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -9,11 +9,17 @@
         <attribute name="updatetime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="valuetype" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="File" representedClassName=".File" syncable="YES" codeGenerationType="category">
+        <attribute name="createtime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="filename" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Mailing" representedClassName=".Mailing" syncable="YES" codeGenerationType="category">
         <attribute name="createtime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="folder" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updatetime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="File" syncable="YES"/>
     </entity>
     <entity name="MailingContact" representedClassName=".MailingContact" syncable="YES" codeGenerationType="category">
         <attribute name="cnidentifier" optional="YES" attributeType="String" syncable="YES"/>
@@ -36,7 +42,8 @@
     </entity>
     <elements>
         <element name="CommonSetting" positionX="-405" positionY="-7" width="128" height="150"/>
-        <element name="Mailing" positionX="-54" positionY="-69" width="128" height="103"/>
+        <element name="File" positionX="-54" positionY="-207" width="128" height="73"/>
+        <element name="Mailing" positionX="-54" positionY="-69" width="128" height="133"/>
         <element name="MailingContact" positionX="-234" positionY="-9" width="128" height="178"/>
         <element name="MailingList" positionX="-27" positionY="108" width="128" height="133"/>
     </elements>

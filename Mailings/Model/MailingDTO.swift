@@ -12,4 +12,6 @@ struct MailingDTO {
     var objectId: NSManagedObjectID?
     var title: String?
     var text: String?
+    // folder for attachments
+    var folder: String?
 }

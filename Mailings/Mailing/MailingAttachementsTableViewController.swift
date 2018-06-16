@@ -24,6 +24,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
     /**
      List of attached files
      */
+    // TODO rename to mailingAttachments
     var attachedFiles : MailingAttachements? {
         didSet {
             updateUI()
@@ -97,10 +98,14 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let attachedFiles = attachedFiles else {
+            return
+        }
+        
         // Prepare Urls for QuickLook dataSource
         var filerUrls:[URL] = []
-        filerUrls = attachedFiles!.files.map { file in
-            let fileUrl = FileAttachmentHandler.getUrlForFile(fileName: file.name)
+        filerUrls = attachedFiles.files.map { file in
+            let fileUrl = FileAttachmentHandler.getUrlForFile(fileName: file.name, folderName: attachedFiles.subfolderName!)
             return fileUrl
         }
         self.selectedUrls = filerUrls
@@ -111,12 +116,49 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
         }
     }
     
+    /**
+     Delete file attachment.
+     When the commitEditingStyle method is present inside the view controller, the table view will automatically enable swipe-to-delete.
+     */
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,        forRowAt indexPath: IndexPath) {
+        
+        guard let attachedFiles = attachedFiles else {
+            return
+        }
+        
+        let removedFile = attachedFiles.files[indexPath.row]
+        var mailingAttachmentChange : MailingAttachementChange
+        if let objectId = removedFile.objectId {
+            mailingAttachmentChange = MailingAttachementChange(objectId: objectId, fileName: removedFile.name, action: .removed)
+        } else {
+            mailingAttachmentChange = MailingAttachementChange(fileName: removedFile.name, action: .removed)
+        }
+        
+        attachedFiles.files.remove(at: indexPath.row)
+        
+        let indexPaths = [indexPath]
+        tableView.deleteRows(at: indexPaths, with: .automatic)
+        
+        delegate?.mailingFilesTableViewControllerDelegate(self, didChangeAttachements: [mailingAttachmentChange])
+        
+        // TODO Delete file directly if attachedFile was not saved before.
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        
+        return .delete
+    }
+    
     // MARK: - Document Picker
     /**
      Document picked.
      Copies it to local directory and attaches it to the mailing.
      */
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        
+        guard let attachedFiles = attachedFiles else {
+            return
+        }
         
         if urls.count >= 1 {
             let url = urls[0]
@@ -125,27 +167,29 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
             if filemgr.fileExists(atPath: url.path) {
                 print("File at path \(url.path) exists")
                 
-                // TODO How to make filename unique? Think about own directory per mailing.
-                // Check if already added before copying.
-                
-                FileAttachmentHandler.copyFileToAttachementsDir(urlToCopy: url)
-                
-                let fileName = url.lastPathComponent
-                var mailingAttachementChanges = [MailingAttachementChange]()
-                
-                let attachementAlreadyAdded = attachedFiles!.files.contains {$0.name == fileName}
-                if !attachementAlreadyAdded {
-                    let attachedFile = AttachedFile(name: fileName)
-                    attachedFiles?.files.append(attachedFile)
+                if FileAttachmentHandler.fileExistsInAttachmentsDir(url: url, folderName: attachedFiles.subfolderName!) {
+                    // TODO Show error
                     
-                    mailingAttachementChanges.append(MailingAttachementChange(fileName: fileName, action: .added))
+                } else {
+                    FileAttachmentHandler.copyFileToAttachementsDir(urlToCopy: url, folderName: attachedFiles.subfolderName!)
+                    
+                    let fileName = url.lastPathComponent
+                    var mailingAttachementChanges = [MailingAttachementChange]()
+                    
+                    let attachementAlreadyAdded = attachedFiles.files.contains {$0.name == fileName}
+                    if !attachementAlreadyAdded {
+                        let attachedFile = AttachedFile(name: fileName)
+                        attachedFiles.files.append(attachedFile)
+                        
+                        mailingAttachementChanges.append(MailingAttachementChange(fileName: fileName, action: .added))
+                    }
+                    
+                    if mailingAttachementChanges.count > 0 {
+                        delegate?.mailingFilesTableViewControllerDelegate(self, didChangeAttachements: mailingAttachementChanges)
+                    }
+                    
+                    updateUI()
                 }
-                
-                if mailingAttachementChanges.count > 0 {
-                    delegate?.mailingFilesTableViewControllerDelegate(self, didChangeAttachements: mailingAttachementChanges)
-                }
-                
-                updateUI()
             } else {
                 print("Error. Imported file not found at path \(url.path)")
             }

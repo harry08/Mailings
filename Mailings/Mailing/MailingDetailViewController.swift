@@ -268,7 +268,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             destinationVC.parentEditMode = self.editMode
             destinationVC.mailingTextViewControllerDelegate = self
             
-            var editMailingDTO = MailingDTO(objectId: mailingDTO?.objectId, title: mailingDTO?.title, text: mailingDTO?.text)
+            var editMailingDTO = MailingDTO(objectId: mailingDTO?.objectId, title: mailingDTO?.title, text: mailingDTO?.text, folder: mailingDTO?.folder)
             if let changedMailingText = changedMailingText {
                 editMailingDTO.text = changedMailingText
             }
@@ -276,24 +276,34 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         } else if segue.identifier == "showMailingAttachements",
             let destinationVC = segue.destination as? MailingAttachementsTableViewController
         {
-            guard let container = container else {
-                return
-            }
-            
-            destinationVC.parentEditMode = self.editMode
             destinationVC.delegate = self
             
             if !attachedFiles.isInit() {
-                // Init with list of attached files
-                if let objectId = mailingDTO?.objectId {
-                    attachedFiles.initWithFileList(Mailing.getAttachedFiles(objectId: objectId, in: container.viewContext))
-                } else {
-                    // Init list of attachements
-                    attachedFiles.initWithEmptyList()
-                }
+                initAttachedFiles()
             }
-            
             destinationVC.attachedFiles = attachedFiles
+        }
+    }
+    
+    private func initAttachedFiles() {
+        guard let container = container else {
+            return
+        }
+        guard var mailingDTO = mailingDTO else {
+            return
+        }
+        
+        if mailingDTO.folder == nil {
+            let subfolderName = Mailing.generateSubFolderName()
+            mailingDTO.folder = subfolderName
+        }
+        
+        // Init with list of attached files
+        if let objectId = mailingDTO.objectId {
+            attachedFiles.initWithFileList(Mailing.getAttachedFiles(objectId: objectId, in: container.viewContext), subfolderName: mailingDTO.folder!)
+        } else {
+            // Init list of attachements
+            attachedFiles.initWithEmptyList(subfolderName: mailingDTO.folder!)
         }
     }
     
@@ -662,7 +672,13 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             }
         }
         
-        viewEdited = true
+        if editMode {
+            viewEdited = true
+        } else {
+            // View was not in edit mode. Save changes directly
+            delegate?.mailingDetailViewController(self, didFinishEditing: mailingDTO!, attachementChanges: mailingAttachementChanges)
+            initAttachedFiles()
+        }
     }
     
     // MARK: - MailingTextViewController Delegate

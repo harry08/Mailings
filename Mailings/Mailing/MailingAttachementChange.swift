@@ -19,9 +19,20 @@ enum ListChangeAction: Int {
  Information about an attached file to the mailing or a removement.
  */
 struct MailingAttachementChange: Hashable {
-    //var objectId: NSManagedObjectID
+    var objectId: NSManagedObjectID?
     var fileName: String
     var action: ListChangeAction
+    
+    init(objectId : NSManagedObjectID, fileName: String, action: ListChangeAction) {
+        self.objectId = objectId
+        self.fileName = fileName
+        self.action = action
+    }
+    
+    init(fileName: String, action: ListChangeAction) {
+        self.fileName = fileName
+        self.action = action
+    }
     
     var hashValue: Int {
         get {

@@ -9,6 +9,8 @@ import Foundation
 import CoreData
 import os.log
 
+// TODO Create unique folder for mailing when attachments available.
+
 class Mailing: NSManagedObject {
     
     // MARK: -  class functions
@@ -63,8 +65,8 @@ class Mailing: NSManagedObject {
     }
     
     /**
-     Saves the given list of mailingattachment changes.
-     For a change with a remove the file is being deleted locally too.
+     Saves the given list of file attachment changes.
+     The file entity is created on demand inside this function.
      */
     private class func addMailingAttachmentChanges(_ attachmentChanges: [MailingAttachementChange], mailing: Mailing, in context: NSManagedObjectContext) throws {
         
@@ -72,24 +74,36 @@ class Mailing: NSManagedObject {
             for i in 0 ..< attachmentChanges.count {
                 let attachmentChange = attachmentChanges[i]
                 
-                // TODO implement
-                if attachmentChange.action == .added {
-                    // let mailingAttachment = create attachment
-                    //mailing.addToAttachments(mailingAttachment)
-                    print("Add attachment")
-                } else if attachmentChange.action == .removed {
-                    // let mailingAttachment
-                    //mailing.removeFromAttachments(mailingAttachment)
-                    print("Remove attachment")
-                    // TODO Remove file
+                // load or create file entity.
+                var fileEntity : File?
+                if let objectId = attachmentChange.objectId {
+                    fileEntity = try File.loadFile(objectId: objectId, in: context)
+                } else {
+                    fileEntity = File(context: context)
+                    fileEntity!.createtime = Date()
+                    fileEntity!.filename = attachmentChange.fileName
+                }
+                if let fileEntity = fileEntity {
+                    if attachmentChange.action == .added {
+                        mailing.addToAttachments(fileEntity)
+                    } else if attachmentChange.action == .removed {
+                        let fileName = fileEntity.filename
+                        mailing.removeFromAttachments(fileEntity)
+                        if let fileName = fileName {
+                            FileAttachmentHandler.removeFile(fileName: fileName)
+                        }
+                    }
                 }
             }
-        } /*catch let error as NSError {
-            os_log("Could not assign attachment to mailing. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+        } catch let error as NSError {
+            os_log("Could not assign file attachment to mailing. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
             throw error
-        }*/
+        }
     }
     
+    /**
+     Deletes the given mailing and all attached files
+     */
     class func deleteMailing(mailingDTO: MailingDTO, in context: NSManagedObjectContext) throws {
         
         if let objectId = mailingDTO.objectId {
@@ -97,6 +111,18 @@ class Mailing: NSManagedObject {
             
             do {
                 let mailingEntity = try context.existingObject(with: objectId) as! Mailing
+                
+                // Delete attached files
+                if let files = mailingEntity.attachments {
+                    for case let fileEntity as File in files {
+                        let fileName = fileEntity.filename
+                        context.delete(fileEntity)
+                        if let fileName = fileName {
+                            FileAttachmentHandler.removeFile(fileName: fileName)
+                        }
+                    }
+                }
+                // Delete mailing
                 context.delete(mailingEntity)
             } catch let error as NSError {
                 os_log("Could not delete mailing. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
@@ -136,18 +162,27 @@ class Mailing: NSManagedObject {
         do {
             let mailingEntity = try context.existingObject(with: objectId) as! Mailing
             
-            /* TODO Implement when database changes done
-            if let files = mailingEntity.attachedFiles {
+            if let files = mailingEntity.attachments {
                 attachedFiles.reserveCapacity(files.count)
-                for case let contact as MailingContact in attachedFiles {
-                    let attachedFile = MailingAttachmentMapper.mapToAssignedContact(mailing: mailing)
-                    attachedFiles(attachedFile)
+                for case let fileEntity as File in files {
+                    let attachedFile = AttachedFile(objectId: fileEntity.objectID, name: fileEntity.filename!)
+                    attachedFiles.append(attachedFile)
                 }
-            } */
+            }
         } catch let error as NSError {
-            print("Could not select mailing. \(error)")
+            print("Could not load attached files. \(error)")
         }
         
         return attachedFiles
+    }
+    
+    class func generateSubFolderName() -> String {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMddHHmmss"
+        
+        let formattedDate = dateFormatter.string(from: date)
+        
+        return formattedDate
     }
 }
