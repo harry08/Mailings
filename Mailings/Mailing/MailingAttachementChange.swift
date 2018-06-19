@@ -21,16 +21,19 @@ enum ListChangeAction: Int {
 struct MailingAttachementChange: Hashable {
     var objectId: NSManagedObjectID?
     var fileName: String
+    var folderName : String
     var action: ListChangeAction
     
-    init(objectId : NSManagedObjectID, fileName: String, action: ListChangeAction) {
+    init(objectId : NSManagedObjectID, fileName: String, folderName: String, action: ListChangeAction) {
         self.objectId = objectId
         self.fileName = fileName
+        self.folderName = folderName
         self.action = action
     }
     
-    init(fileName: String, action: ListChangeAction) {
+    init(fileName: String, folderName: String, action: ListChangeAction) {
         self.fileName = fileName
+        self.folderName = folderName
         self.action = action
     }
     

@@ -62,11 +62,11 @@ class FileAttachmentHandler {
     /**
      Deletes the given file
      */
-    class func removeFile(fileName: String) {
-        let filemgr = FileManager.default
-        let attachementURL = getAttachementsUrl()
-        let fileToDelete = attachementURL.appendingPathComponent(fileName)
+    class func removeFile(fileName: String, folderName: String) {
+        let subfolderUrl = getSubfolderUrl(folderName)
+        let fileToDelete = subfolderUrl.appendingPathComponent(fileName)
         
+        let filemgr = FileManager.default
         do {
             if filemgr.fileExists(atPath: fileToDelete.path) {
                 try filemgr.removeItem(at: fileToDelete)

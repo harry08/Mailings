@@ -67,6 +67,7 @@ class Mailing: NSManagedObject {
     /**
      Saves the given list of file attachment changes.
      The file entity is created on demand inside this function.
+     For changes where an attachment is being removed, the respective file is also deleted from the file system.
      */
     private class func addMailingAttachmentChanges(_ attachmentChanges: [MailingAttachementChange], mailing: Mailing, in context: NSManagedObjectContext) throws {
         
@@ -88,9 +89,11 @@ class Mailing: NSManagedObject {
                         mailing.addToAttachments(fileEntity)
                     } else if attachmentChange.action == .removed {
                         let fileName = fileEntity.filename
+                        let folderName = mailing.folder
                         mailing.removeFromAttachments(fileEntity)
-                        if let fileName = fileName {
-                            FileAttachmentHandler.removeFile(fileName: fileName)
+                        if let fileName = fileName,
+                            let folderName = folderName {
+                            FileAttachmentHandler.removeFile(fileName: fileName, folderName: folderName)
                         }
                     }
                 }
@@ -116,9 +119,11 @@ class Mailing: NSManagedObject {
                 if let files = mailingEntity.attachments {
                     for case let fileEntity as File in files {
                         let fileName = fileEntity.filename
+                        let folderName = mailingEntity.folder
                         context.delete(fileEntity)
-                        if let fileName = fileName {
-                            FileAttachmentHandler.removeFile(fileName: fileName)
+                        if let fileName = fileName,
+                            let folderName = folderName {
+                            FileAttachmentHandler.removeFile(fileName: fileName, folderName: folderName)
                         }
                     }
                 }

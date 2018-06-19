@@ -580,6 +580,14 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             viewEdited = false
             changedMailingText = nil
             changedMailingTitle = nil
+            
+            for i in 0 ..< attachementChanges.count {
+                let mailingAttachmentChange = attachementChanges[i]
+                if mailingAttachmentChange.action == .removed {
+                    FileAttachmentHandler.removeFile (fileName: mailingAttachmentChange.fileName, folderName: mailingAttachmentChange.folderName)
+                }
+            }
+            
         } catch {
             // TODO show Alert
         }
