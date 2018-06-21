@@ -131,7 +131,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
         if let objectId = removedFile.objectId {
             mailingAttachmentChange = MailingAttachementChange(objectId: objectId, fileName: removedFile.name, folderName: attachedFiles.subfolderName!, action: .removed)
         } else {
-            // File attachment was not saved before. Also directly delete file
+            // File attachment was not saved before. Also delete file directly.
             mailingAttachmentChange = MailingAttachementChange(fileName: removedFile.name, folderName: attachedFiles.subfolderName!, action: .removed)
             
             FileAttachmentHandler.removeFile(fileName: removedFile.name, folderName: attachedFiles.subfolderName!)

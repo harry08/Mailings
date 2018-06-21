@@ -296,6 +296,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         if mailingDTO.folder == nil {
             let subfolderName = Mailing.generateSubFolderName()
             mailingDTO.folder = subfolderName
+            self.mailingDTO?.folder = subfolderName
         }
         
         // Init with list of attached files
@@ -529,6 +530,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         
         changedMailingTitle = nil
         changedMailingText = nil
+        cancelAttachmentChanges()
         
         if isEditType() {
             configureBarButtonItems()
@@ -556,6 +558,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             viewEdited = false
             changedMailingText = nil
             changedMailingTitle = nil
+            self.mailingAttachementChanges.removeAll()
         } catch {
             // TODO show Alert
         }
@@ -580,14 +583,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             viewEdited = false
             changedMailingText = nil
             changedMailingTitle = nil
-            
-            for i in 0 ..< attachementChanges.count {
-                let mailingAttachmentChange = attachementChanges[i]
-                if mailingAttachmentChange.action == .removed {
-                    FileAttachmentHandler.removeFile (fileName: mailingAttachmentChange.fileName, folderName: mailingAttachmentChange.folderName)
-                }
-            }
-            
+            self.mailingAttachementChanges.removeAll()
         } catch {
             // TODO show Alert
         }
@@ -639,7 +635,11 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         
         // Prepare mails to send
         if let mailingDTO = mailingDTO {
-            let mailComposer = MailComposer(mailingDTO: mailingDTO)
+            if !attachedFiles.isInit() {
+                initAttachedFiles()
+            }
+            
+            let mailComposer = MailComposer(mailingDTO: mailingDTO, files: attachedFiles.files)
             mailsToSend = mailComposer.composeMailsToSend(emailAddresses: emailAddresses)
             if mailsToSend.count == 1 {
                 // Show Mail view directly
@@ -656,6 +656,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     /**
      Called after changing file attachements in sub view.
      Takes the changes into the fileAttachementChanges list.
+     If view is not in edit mode changes aaved directly.
      */
     func mailingFilesTableViewControllerDelegate(_ controller: MailingAttachementsTableViewController, didChangeAttachements attachedChanges: [MailingAttachementChange]) {
         
@@ -687,6 +688,21 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             delegate?.mailingDetailViewController(self, didFinishEditing: mailingDTO!, attachementChanges: mailingAttachementChanges)
             initAttachedFiles()
         }
+    }
+    
+    /**
+     Removes all attachment changes.
+     Also deletes files which are already copied to the mailing diretory.
+     */
+    func cancelAttachmentChanges() {
+        for i in 0 ..< mailingAttachementChanges.count {
+            let attachmentChange = mailingAttachementChanges[i]
+            if attachmentChange.action == .added {
+                FileAttachmentHandler.removeFile(fileName: attachmentChange.fileName, folderName: attachmentChange.folderName)
+            }
+        }
+        
+        mailingAttachementChanges.removeAll()
     }
     
     // MARK: - MailingTextViewController Delegate
@@ -755,6 +771,22 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         }
         if let messageBody = mailDTO.mailingDTO.text {
             mailComposerVC.setMessageBody(messageBody, isHTML: false)
+        }
+        
+        if mailDTO.attachments.count > 0 {
+            if let folderName = mailDTO.folder {
+                for i in 0 ..< mailDTO.attachments.count {
+                    let fileName = mailDTO.attachments[i]
+                    let url = FileAttachmentHandler.getUrlForFile(fileName: fileName, folderName: folderName)
+                    let mimeType = FileAttachmentHandler.getMimetype(fileUrl: url)
+                    do {
+                        let fileData = try Data.init(contentsOf: url)
+                        mailComposerVC.addAttachmentData(fileData, mimeType: mimeType, fileName: fileName)
+                    } catch let error as NSError {
+                        print("Error loading file: \(error.localizedDescription)")
+                    }
+                }
+            }
         }
         
         return mailComposerVC

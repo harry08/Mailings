@@ -45,8 +45,8 @@ class Mailing: NSManagedObject {
                     MailingMapper.mapToEntity(mailingDTO: mailingDTO, mailing: &mailingEntity)
                     mailingEntity.updatetime = Date()
                     
-                    if let attachementChanges = attachmentChanges {
-                        try addMailingAttachmentChanges(attachementChanges, mailing: mailingEntity, in: context)
+                    if let attachmentChanges = attachmentChanges {
+                        try addMailingAttachmentChanges(attachmentChanges, mailing: mailingEntity, in: context)
                     }
                 } catch let error as NSError {
                     os_log("Could not load contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
@@ -61,6 +61,10 @@ class Mailing: NSManagedObject {
         } catch let error as NSError {
             os_log("Could not save mailing. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
             throw error
+        }
+        
+        if let attachmentChanges = attachmentChanges {
+            removeFilesFromChanges(attachmentChanges)
         }
     }
     
@@ -101,6 +105,15 @@ class Mailing: NSManagedObject {
         } catch let error as NSError {
             os_log("Could not assign file attachment to mailing. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
             throw error
+        }
+    }
+    
+    private class func removeFilesFromChanges(_ attachmentChamges: [MailingAttachementChange]) {
+        for i in 0 ..< attachmentChamges.count {
+            let mailingAttachmentChange = attachmentChamges[i]
+            if mailingAttachmentChange.action == .removed {
+                FileAttachmentHandler.removeFile (fileName: mailingAttachmentChange.fileName, folderName: mailingAttachmentChange.folderName)
+            }
         }
     }
     

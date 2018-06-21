@@ -7,6 +7,21 @@
 
 import Foundation
 
+enum MimeType : String {
+    case pdf, jpg, doc
+    
+    func templateString() -> String {
+        switch self {
+        case .pdf:
+            return "application/pdf"
+        case .jpg:
+            return "image/jpg"
+        case .doc:
+            return "application/msword"
+        }
+    }
+}
+
 class FileAttachmentHandler {
     
     /**
@@ -109,5 +124,17 @@ class FileAttachmentHandler {
         
         let destinationFile = subfolderDir.appendingPathComponent(fileName, isDirectory: false)
         return destinationFile
+    }
+    
+    class func getMimetype(fileUrl: URL) -> String {
+        let suffix = fileUrl.lastPathComponent
+        if suffix != nil {
+            if let mimeType = MimeType(rawValue: suffix) {
+                return mimeType.templateString()
+            }
+        }
+        
+        // Default 
+        return "application/pdf"
     }
 }

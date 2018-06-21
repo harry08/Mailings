@@ -10,11 +10,13 @@ import Foundation
 class MailComposer {
     
     var mailingDTO: MailingDTO
+    var files = [AttachedFile]()
     
     var settingsController : CommonSettingsController
     
-    init(mailingDTO: MailingDTO) {
+    init(mailingDTO: MailingDTO, files: [AttachedFile]) {
         self.mailingDTO = mailingDTO
+        self.files = files
         
         settingsController = CommonSettingsController.sharedInstance
     }
@@ -28,6 +30,12 @@ class MailComposer {
             chunkSize = emailAddresses.count
         }
         
+        var attachments = [String]()
+        for i in 0 ..< files.count {
+            let file = files[i]
+            attachments.append(file.name)
+        }
+        
         var startIndex = 0
         var continueProcessing = true
         while (continueProcessing) {
@@ -39,7 +47,7 @@ class MailComposer {
             let chunk = emailAddresses[startIndex ..< endIndex]
             let ccAddresses = convertToArray(slice: chunk)
             
-            let mailToSend = MailDTO(mailingDTO: mailingDTO, emailAddresses: ccAddresses, emailSent: false)
+            let mailToSend = MailDTO(mailingDTO: mailingDTO, emailAddresses: ccAddresses, emailSent: false, folder: mailingDTO.folder, attachments: attachments)
             mailsToSend.append(mailToSend)
             
             startIndex = endIndex
