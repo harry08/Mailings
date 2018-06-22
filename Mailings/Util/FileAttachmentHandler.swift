@@ -8,7 +8,7 @@
 import Foundation
 
 enum MimeType : String {
-    case pdf, doc, jpg, png, tiff
+    case pdf, doc, jpg, png, tiff, bmp, gif, jpeg, svg, json, xml, js, txt, rtf, html, css, docx, xls, xlsx, ppt, csv, zip, mpeg, mov
     
     func templateString() -> String {
         switch self {
@@ -22,6 +22,44 @@ enum MimeType : String {
             return "image/png"
         case .tiff:
             return "image/tiff"
+        case .bmp:
+            return "image/bmp"
+        case .gif:
+            return "image/gif"
+        case .jpeg:
+            return "image/jpeg"
+        case .svg:
+            return "image/svg+xml"
+        case .json:
+            return "application/json"
+        case .js:
+            return "application/javascript"
+        case .xml:
+            return "application/xml"
+        case .txt:
+            return "text/plain"
+        case .rtf:
+            return "text/rtf"
+        case .html:
+            return "text/html"
+        case .css:
+            return "text/css"
+        case .docx:
+            return "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        case .xls:
+            return "application/msexcel"
+        case .xlsx:
+            return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        case .ppt:
+            return "application/mspowerpoint"
+        case .csv:
+            return "text/comma-separated-values"
+        case .zip:
+            return "application/zip"
+        case .mpeg:
+            return "video/mpeg"
+        case .mov:
+            return "video/quicktime"
         }
     }
 }
@@ -155,6 +193,6 @@ class FileAttachmentHandler {
         }
         
         // Default 
-        return "plain/text"
+        return "text/plain"
     }
 }
