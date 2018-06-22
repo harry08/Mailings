@@ -8,24 +8,36 @@
 import Foundation
 
 enum MimeType : String {
-    case pdf, jpg, doc
+    case pdf, doc, jpg, png, tiff
     
     func templateString() -> String {
         switch self {
         case .pdf:
             return "application/pdf"
-        case .jpg:
-            return "image/jpg"
         case .doc:
             return "application/msword"
+        case .jpg:
+            return "image/jpg"
+        case .png:
+            return "image/png"
+        case .tiff:
+            return "image/tiff"
         }
     }
 }
 
+/**
+ When a file is attached to a mailing it is copied to the local storage of the application.
+ A reference to this file is saved inside the database with the mailing.
+ 
+ Organisation of attached files per mailing:
+ Folder attachments inside the documents directory of the application
+ For each mailing a subdirectory is created.
+ */
 class FileAttachmentHandler {
     
     /**
-     Create the attachements subdirectory in the app documents directory if not yet exists.
+     Create the attachments subdirectory in the app documents directory if not yet exists.
      */
     class func createAttachementsDirectoryWithSubfolder(_ folderName: String) {
         let subfolderDir = getSubfolderUrl(folderName).path
@@ -62,6 +74,10 @@ class FileAttachmentHandler {
         }
     }
     
+    /**
+     Checks if the given file already exists in the attachments dir.
+     Check is done by filename.
+     */
     class func fileExistsInAttachmentsDir(url: URL, folderName: String) -> Bool {
         let subfolderUrl = getSubfolderUrl(folderName)
         let fileToCheck = subfolderUrl.appendingPathComponent(url.lastPathComponent, isDirectory: false)
@@ -126,15 +142,19 @@ class FileAttachmentHandler {
         return destinationFile
     }
     
+    /**
+     Returns the MimeType template String for the given file,
+     e.g. returns application/pdf for a pdf file.
+     */
     class func getMimetype(fileUrl: URL) -> String {
-        let suffix = fileUrl.lastPathComponent
-        if suffix != nil {
+        let suffix = fileUrl.pathExtension
+        if suffix.count > 0 {
             if let mimeType = MimeType(rawValue: suffix) {
                 return mimeType.templateString()
             }
         }
         
         // Default 
-        return "application/pdf"
+        return "plain/text"
     }
 }

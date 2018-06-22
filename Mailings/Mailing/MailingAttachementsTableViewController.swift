@@ -18,6 +18,7 @@ protocol MailingAttachementsTableViewControllerDelegate: class {
 
 /**
  Shows the attached files of a mailing in a TableView.
+ Allows attaching new files and removing existing attachments.
  */
 class MailingAttachementsTableViewController: UITableViewController, UIDocumentMenuDelegate, UIDocumentPickerDelegate, UINavigationControllerDelegate, QLPreviewControllerDataSource, QLPreviewControllerDelegate {
     
@@ -105,7 +106,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
         // Prepare Urls for QuickLook dataSource
         var filerUrls:[URL] = []
         filerUrls = attachedFiles.files.map { file in
-            let fileUrl = FileAttachmentHandler.getUrlForFile(fileName: file.name, folderName: attachedFiles.subfolderName!)
+            let fileUrl = FileAttachmentHandler.getUrlForFile(fileName: file.name, folderName: attachedFiles.subfolderName)
             return fileUrl
         }
         self.selectedUrls = filerUrls
@@ -129,12 +130,12 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
         let removedFile = attachedFiles.files[indexPath.row]
         var mailingAttachmentChange : MailingAttachementChange
         if let objectId = removedFile.objectId {
-            mailingAttachmentChange = MailingAttachementChange(objectId: objectId, fileName: removedFile.name, folderName: attachedFiles.subfolderName!, action: .removed)
+            mailingAttachmentChange = MailingAttachementChange(objectId: objectId, fileName: removedFile.name, folderName: attachedFiles.subfolderName, action: .removed)
         } else {
             // File attachment was not saved before. Also delete file directly.
-            mailingAttachmentChange = MailingAttachementChange(fileName: removedFile.name, folderName: attachedFiles.subfolderName!, action: .removed)
+            mailingAttachmentChange = MailingAttachementChange(fileName: removedFile.name, folderName: attachedFiles.subfolderName, action: .removed)
             
-            FileAttachmentHandler.removeFile(fileName: removedFile.name, folderName: attachedFiles.subfolderName!)
+            FileAttachmentHandler.removeFile(fileName: removedFile.name, folderName: attachedFiles.subfolderName)
         }
         
         attachedFiles.files.remove(at: indexPath.row)
@@ -166,13 +167,14 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
             let filemgr = FileManager.default
             
             if filemgr.fileExists(atPath: url.path) {
-                print("File at path \(url.path) exists")
-                
-                if FileAttachmentHandler.fileExistsInAttachmentsDir(url: url, folderName: attachedFiles.subfolderName!) {
-                    // TODO Show error
+                let mimeType = FileAttachmentHandler.getMimetype(fileUrl: url)
+                print("File at path \(url.path) exists. With MimeType: \(mimeType)")
+            
+                if FileAttachmentHandler.fileExistsInAttachmentsDir(url: url, folderName: attachedFiles.subfolderName) {
+                    // TODO Show Alert with error message
                     
                 } else {
-                    FileAttachmentHandler.copyFileToAttachementsDir(urlToCopy: url, folderName: attachedFiles.subfolderName!)
+                    FileAttachmentHandler.copyFileToAttachementsDir(urlToCopy: url, folderName: attachedFiles.subfolderName)
                     
                     let fileName = url.lastPathComponent
                     var mailingAttachementChanges = [MailingAttachementChange]()
@@ -182,7 +184,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
                         let attachedFile = AttachedFile(name: fileName)
                         attachedFiles.files.append(attachedFile)
                         
-                        mailingAttachementChanges.append(MailingAttachementChange(fileName: fileName, folderName: attachedFiles.subfolderName!, action: .added))
+                        mailingAttachementChanges.append(MailingAttachementChange(fileName: fileName, folderName: attachedFiles.subfolderName, action: .added))
                     }
                     
                     if mailingAttachementChanges.count > 0 {

@@ -3,7 +3,12 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "ContactPickerTableViewController.tableView(_:didSelectRowAt:):ContactPickerTableViewController.swift">
+         contextName = "ContactFilter.getCount(forSection:):ContactFilter.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "filterList.count">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "static MailingContactMapper.mapToEntity(contactDTO:contact:):MailingContactMapper.swift">
@@ -17,12 +22,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ContactFilter.getCount(forSection:):ContactFilter.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "filterList.count">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "static MailingContactMapper.mapToDTO(contact:):MailingContactMapper.swift">
       </ContextState>
       <ContextState
          contextName = "EditContactViewController.cancel(_:):EditContactViewController.swift">
@@ -36,7 +36,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "static FileAttachmentHandler.getMimetype(fileUrl:):FileAttachmentHandler.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "fileUrl.pathExtension">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "EditMailingListNewController.prepare(for:sender:):EditMailingListNewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static MailingContact.createOrUpdateFromDTO(contactDTO:in:):MailingContact.swift">
       </ContextState>
       <ContextState
          contextName = "static Mailing.createOrUpdateFromDTO(mailingDTO:in:):Mailing.swift">
@@ -45,9 +56,6 @@
                value = "mailingEntity">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "static MailingContact.createOrUpdateFromDTO(contactDTO:in:):MailingContact.swift">
       </ContextState>
       <ContextState
          contextName = "ContactFilter.getCountSections():ContactFilter.swift">
@@ -70,7 +78,7 @@
          contextName = "ContactFilterPickerTableViewController.contactFilter.didset:ContactFilterPickerTableViewController.swift">
       </ContextState>
       <ContextState
-         contextName = "static MailingContactMapper.mapToDTO(contact:):MailingContactMapper.swift">
+         contextName = "ContactPickerTableViewController.tableView(_:didSelectRowAt:):ContactPickerTableViewController.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

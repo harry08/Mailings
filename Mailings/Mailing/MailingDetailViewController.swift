@@ -63,7 +63,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     /**
      List of attached files
      */
-    var attachedFiles = MailingAttachements()
+    var attachedFiles : MailingAttachements?
     
     /**
      List of changes of attachements of this mailing
@@ -278,7 +278,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         {
             destinationVC.delegate = self
             
-            if !attachedFiles.isInit() {
+            if attachedFiles == nil {
                 initAttachedFiles()
             }
             destinationVC.attachedFiles = attachedFiles
@@ -299,12 +299,12 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             self.mailingDTO?.folder = subfolderName
         }
         
-        // Init with list of attached files
         if let objectId = mailingDTO.objectId {
-            attachedFiles.initWithFileList(Mailing.getAttachedFiles(objectId: objectId, in: container.viewContext), subfolderName: mailingDTO.folder!)
+            // Init with list of attached files
+            attachedFiles = MailingAttachements(files: Mailing.getAttachedFiles(objectId: objectId, in: container.viewContext), subFolderName: mailingDTO.folder!)
         } else {
-            // Init list of attachements
-            attachedFiles.initWithEmptyList(subfolderName: mailingDTO.folder!)
+            // Init with empty list of attachements
+            attachedFiles = MailingAttachements(subFolderName: mailingDTO.folder!)
         }
     }
     
@@ -635,11 +635,11 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         
         // Prepare mails to send
         if let mailingDTO = mailingDTO {
-            if !attachedFiles.isInit() {
+            if attachedFiles == nil {
                 initAttachedFiles()
             }
             
-            let mailComposer = MailComposer(mailingDTO: mailingDTO, files: attachedFiles.files)
+            let mailComposer = MailComposer(mailingDTO: mailingDTO, files: attachedFiles!.files)
             mailsToSend = mailComposer.composeMailsToSend(emailAddresses: emailAddresses)
             if mailsToSend.count == 1 {
                 // Show Mail view directly

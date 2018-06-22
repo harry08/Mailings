@@ -12,22 +12,15 @@ import Foundation
  Designed as a class to be passed as a reference.‚
  */
 class MailingAttachements {
-    var subfolderName : String? // TODO not optional
+    let subfolderName : String
     var files = [AttachedFile]()
-    var listIsInit = false
     
-    func initWithFileList(_ files: [AttachedFile], subfolderName: String) {
-        self.subfolderName = subfolderName
+    init(subFolderName: String) {
+        self.subfolderName = subFolderName
+    }
+    
+    init(files: [AttachedFile], subFolderName: String) {
         self.files = files
-        listIsInit = true
-    }
-    
-    func initWithEmptyList(subfolderName: String) {
-        self.subfolderName = subfolderName
-        listIsInit = true
-    }
-    
-    func isInit() -> Bool {
-        return listIsInit
+        self.subfolderName = subFolderName
     }
 }
