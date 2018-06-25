@@ -95,6 +95,7 @@ class Mailing: NSManagedObject {
                         let fileName = fileEntity.filename
                         let folderName = mailing.folder
                         mailing.removeFromAttachments(fileEntity)
+                        context.delete(fileEntity)
                         if let fileName = fileName,
                             let folderName = folderName {
                             FileAttachmentHandler.removeFile(fileName: fileName, folderName: folderName)
@@ -127,12 +128,12 @@ class Mailing: NSManagedObject {
             
             do {
                 let mailingEntity = try context.existingObject(with: objectId) as! Mailing
+                let folderName = mailingEntity.folder
                 
                 // Delete attached files
                 if let files = mailingEntity.attachments {
                     for case let fileEntity as File in files {
                         let fileName = fileEntity.filename
-                        let folderName = mailingEntity.folder
                         context.delete(fileEntity)
                         if let fileName = fileName,
                             let folderName = folderName {
@@ -142,6 +143,10 @@ class Mailing: NSManagedObject {
                 }
                 // Delete mailing
                 context.delete(mailingEntity)
+                // Delete subfolder of mailing
+                if let folderName = folderName {
+                    FileAttachmentHandler.removeFolder(folderName: folderName)
+                }
             } catch let error as NSError {
                 os_log("Could not delete mailing. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
                 throw error
@@ -192,6 +197,26 @@ class Mailing: NSManagedObject {
         }
         
         return attachedFiles
+    }
+    
+    class func getAttachedFile(objectId: NSManagedObjectID, fileName: String, in context: NSManagedObjectContext) -> AttachedFile? {
+        var attachedFile : AttachedFile?
+        
+        do {
+            let mailingEntity = try context.existingObject(with: objectId) as! Mailing
+            
+            if let files = mailingEntity.attachments {
+                for case let fileEntity as File in files {
+                    if fileEntity.filename == fileName {
+                        attachedFile = AttachedFile(objectId: fileEntity.objectID, name: fileEntity.filename!)
+                    }
+                }
+            }
+        } catch let error as NSError {
+            print("Could not load attached files. \(error)")
+        }
+        
+        return attachedFile
     }
     
     class func generateSubFolderName() -> String {

@@ -276,7 +276,10 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         } else if segue.identifier == "showMailingAttachements",
             let destinationVC = segue.destination as? MailingAttachementsTableViewController
         {
+            destinationVC.container = container
             destinationVC.delegate = self
+            destinationVC.mailingDTO = self.mailingDTO
+            destinationVC.parentEditMode = self.editMode
             
             if attachments == nil {
                 initAttachedFiles()
@@ -668,13 +671,17 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
                 // no entry with the fileName exists in the change list -> add it
                 self.mailingAttachementChanges.append(mailingAttachementChange)
             } else {
-                // A change entry for this contact already exists in the change list.
+                // A change entry for this fileName already exists in the change list.
                 if let existing = self.mailingAttachementChanges.first(where: { $0.fileName == mailingAttachementChange.fileName }) {
                     
                     if existing.action != mailingAttachementChange.action {
                         // The entry has a different action -> remove it from the change list.
                         if let index = self.mailingAttachementChanges.index(where: { $0.fileName == existing.fileName } ) {
                             self.mailingAttachementChanges.remove(at: index)
+                            
+                            if let attachments = attachments {
+                                FileAttachmentHandler.removeFile(fileName: mailingAttachementChange.fileName, folderName: attachments.subfolderName)
+                            }
                         }
                     }
                 }

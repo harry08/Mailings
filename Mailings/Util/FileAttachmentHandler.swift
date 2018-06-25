@@ -139,7 +139,20 @@ class FileAttachmentHandler {
         do {
             if filemgr.fileExists(atPath: fileToDelete.path) {
                 try filemgr.removeItem(at: fileToDelete)
-                print("Successfully deleted file to \(fileName)")
+                print("Successfully deleted file \(fileName)")
+            }
+        } catch let error as NSError {
+            print("Error: \(error.localizedDescription)")
+        }
+    }
+    
+    class func removeFolder(folderName: String) {
+        let subfolderUrl = getSubfolderUrl(folderName)
+        let filemgr = FileManager.default
+        do {
+            if filemgr.fileExists(atPath: subfolderUrl.path) {
+                try filemgr.removeItem(at: subfolderUrl)
+                print("Successfully deleted folder \(folderName)")
             }
         } catch let error as NSError {
             print("Error: \(error.localizedDescription)")

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 import MobileCoreServices
 import QuickLook
 
@@ -21,6 +22,10 @@ protocol MailingAttachementsTableViewControllerDelegate: class {
  Allows attaching new files and removing existing attachments.
  */
 class MailingAttachementsTableViewController: UITableViewController, UIDocumentMenuDelegate, UIDocumentPickerDelegate, UINavigationControllerDelegate, QLPreviewControllerDataSource, QLPreviewControllerDelegate {
+    
+    var container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+    
+    var mailingDTO : MailingDTO?
     
     /**
      List of attached files
@@ -65,6 +70,27 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
             return attachedFiles.files.count
         } else {
             return 0
+        }
+    }
+    
+    /**
+     Reloads data of the file with the given fileName
+     The objectId of the file entry needs to be filled.
+     */
+    private func reloadAttachment(fileName: String) {
+        if !parentEditMode {
+            guard let container = container else {
+                return
+            }
+            
+            if let attachments = self.attachments,
+                let mailingDTO = mailingDTO {
+                if let file = attachments.files.first(where: { $0.name == fileName }) {
+                    if let loadedFile = Mailing.getAttachedFile(objectId: mailingDTO.objectId!, fileName: fileName, in: container.viewContext) {
+                        file.objectId = loadedFile.objectId
+                    }
+                }
+            }
         }
     }
     
@@ -122,22 +148,19 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
      */
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,        forRowAt indexPath: IndexPath) {
         
-        guard let attachedFiles = attachments else {
+        guard let attachments = attachments else {
             return
         }
         
-        let removedFile = attachedFiles.files[indexPath.row]
+        let removedFile = attachments.files[indexPath.row]
         var mailingAttachmentChange : MailingAttachmentChange
         if let objectId = removedFile.objectId {
-            mailingAttachmentChange = MailingAttachmentChange(objectId: objectId, fileName: removedFile.name, folderName: attachedFiles.subfolderName, action: .removed)
+            mailingAttachmentChange = MailingAttachmentChange(objectId: objectId, fileName: removedFile.name, folderName: attachments.subfolderName, action: .removed)
         } else {
-            // File attachment was not saved before. Also delete file directly.
-            mailingAttachmentChange = MailingAttachmentChange(fileName: removedFile.name, folderName: attachedFiles.subfolderName, action: .removed)
-            
-            FileAttachmentHandler.removeFile(fileName: removedFile.name, folderName: attachedFiles.subfolderName)
+            mailingAttachmentChange = MailingAttachmentChange(fileName: removedFile.name, folderName: attachments.subfolderName, action: .removed)
         }
         
-        attachedFiles.files.remove(at: indexPath.row)
+        attachments.files.remove(at: indexPath.row)
         
         let indexPaths = [indexPath]
         tableView.deleteRows(at: indexPaths, with: .automatic)
@@ -188,6 +211,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
                     
                     if mailingAttachementChanges.count > 0 {
                         delegate?.mailingFilesTableViewControllerDelegate(self, didChangeAttachements: mailingAttachementChanges)
+                        reloadAttachment(fileName: fileName)
                     }
                     
                     updateUI()
