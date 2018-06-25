@@ -16,9 +16,10 @@ enum ListChangeAction: Int {
 }
 
 /**
- Information about an attached file to the mailing or a removement.
+ Information of a change to the attachments of a mailing.
+ Add or removal.
  */
-struct MailingAttachementChange: Hashable {
+struct MailingAttachmentChange: Hashable {
     var objectId: NSManagedObjectID?
     var fileName: String
     var folderName : String
@@ -44,7 +45,7 @@ struct MailingAttachementChange: Hashable {
     }
 }
 
-// For Equatable of AttachedFileChange
-func ==(lhs: MailingAttachementChange, rhs: MailingAttachementChange) -> Bool {
+// For Equatable of MailingAttachmentChange
+func ==(lhs: MailingAttachmentChange, rhs: MailingAttachmentChange) -> Bool {
     return lhs.fileName == rhs.fileName
 }

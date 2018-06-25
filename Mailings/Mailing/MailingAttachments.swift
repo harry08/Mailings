@@ -8,10 +8,11 @@
 import Foundation
 
 /**
- Container for attached files of a mailing
+ Container for attached files of a mailing.
+ Also contains the fubfolder in the attachments directory where the files for the mailing are stored.
  Designed as a class to be passed as a reference.‚
  */
-class MailingAttachements {
+class MailingAttachments {
     let subfolderName : String
     var files = [AttachedFile]()
     

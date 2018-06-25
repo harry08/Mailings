@@ -22,7 +22,7 @@ class Mailing: NSManagedObject {
      Creates a new mailing or updates an already existing mailing
      Depends on the objectId in MailingDTO.
      */
-    class func createOrUpdateFromDTO(mailingDTO: MailingDTO, attachmentChanges: [MailingAttachementChange]?, in context: NSManagedObjectContext) throws {
+    class func createOrUpdateFromDTO(mailingDTO: MailingDTO, attachmentChanges: [MailingAttachmentChange]?, in context: NSManagedObjectContext) throws {
         if mailingDTO.objectId == nil {
             // New mailing
             os_log("Creating new mailing...", log: OSLog.default, type: .debug)
@@ -73,7 +73,7 @@ class Mailing: NSManagedObject {
      The file entity is created on demand inside this function.
      For changes where an attachment is being removed, the respective file is also deleted from the file system.
      */
-    private class func addMailingAttachmentChanges(_ attachmentChanges: [MailingAttachementChange], mailing: Mailing, in context: NSManagedObjectContext) throws {
+    private class func addMailingAttachmentChanges(_ attachmentChanges: [MailingAttachmentChange], mailing: Mailing, in context: NSManagedObjectContext) throws {
         
         do {
             for i in 0 ..< attachmentChanges.count {
@@ -108,7 +108,7 @@ class Mailing: NSManagedObject {
         }
     }
     
-    private class func removeFilesFromChanges(_ attachmentChamges: [MailingAttachementChange]) {
+    private class func removeFilesFromChanges(_ attachmentChamges: [MailingAttachmentChange]) {
         for i in 0 ..< attachmentChamges.count {
             let mailingAttachmentChange = attachmentChamges[i]
             if mailingAttachmentChange.action == .removed {

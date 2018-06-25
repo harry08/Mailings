@@ -13,7 +13,7 @@ import QuickLook
  Delegate that is called after adding a new file to the mailing or removing a file from the mailing..
  */
 protocol MailingAttachementsTableViewControllerDelegate: class {
-    func mailingFilesTableViewControllerDelegate(_ controller: MailingAttachementsTableViewController, didChangeAttachements attachedChanges: [MailingAttachementChange])
+    func mailingFilesTableViewControllerDelegate(_ controller: MailingAttachementsTableViewController, didChangeAttachements attachedChanges: [MailingAttachmentChange])
 }
 
 /**
@@ -25,8 +25,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
     /**
      List of attached files
      */
-    // TODO rename to mailingAttachments
-    var attachedFiles : MailingAttachements? {
+    var attachments : MailingAttachments? {
         didSet {
             updateUI()
         }
@@ -62,7 +61,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
     }
     
     private func getNrOfAttachedFiles() -> Int {
-        if let attachedFiles = self.attachedFiles {
+        if let attachedFiles = self.attachments {
             return attachedFiles.files.count
         } else {
             return 0
@@ -84,7 +83,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AttachementCell", for: indexPath)
         
-        let attachedFile = attachedFiles!.files[indexPath.row]
+        let attachedFile = attachments!.files[indexPath.row]
         cell.textLabel?.text = attachedFile.name
         
         return cell
@@ -99,7 +98,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let attachedFiles = attachedFiles else {
+        guard let attachedFiles = attachments else {
             return
         }
         
@@ -123,17 +122,17 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
      */
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,        forRowAt indexPath: IndexPath) {
         
-        guard let attachedFiles = attachedFiles else {
+        guard let attachedFiles = attachments else {
             return
         }
         
         let removedFile = attachedFiles.files[indexPath.row]
-        var mailingAttachmentChange : MailingAttachementChange
+        var mailingAttachmentChange : MailingAttachmentChange
         if let objectId = removedFile.objectId {
-            mailingAttachmentChange = MailingAttachementChange(objectId: objectId, fileName: removedFile.name, folderName: attachedFiles.subfolderName, action: .removed)
+            mailingAttachmentChange = MailingAttachmentChange(objectId: objectId, fileName: removedFile.name, folderName: attachedFiles.subfolderName, action: .removed)
         } else {
             // File attachment was not saved before. Also delete file directly.
-            mailingAttachmentChange = MailingAttachementChange(fileName: removedFile.name, folderName: attachedFiles.subfolderName, action: .removed)
+            mailingAttachmentChange = MailingAttachmentChange(fileName: removedFile.name, folderName: attachedFiles.subfolderName, action: .removed)
             
             FileAttachmentHandler.removeFile(fileName: removedFile.name, folderName: attachedFiles.subfolderName)
         }
@@ -158,7 +157,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
      */
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         
-        guard let attachedFiles = attachedFiles else {
+        guard let attachedFiles = attachments else {
             return
         }
         
@@ -177,14 +176,14 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
                     FileAttachmentHandler.copyFileToAttachementsDir(urlToCopy: url, folderName: attachedFiles.subfolderName)
                     
                     let fileName = url.lastPathComponent
-                    var mailingAttachementChanges = [MailingAttachementChange]()
+                    var mailingAttachementChanges = [MailingAttachmentChange]()
                     
                     let attachementAlreadyAdded = attachedFiles.files.contains {$0.name == fileName}
                     if !attachementAlreadyAdded {
                         let attachedFile = AttachedFile(name: fileName)
                         attachedFiles.files.append(attachedFile)
                         
-                        mailingAttachementChanges.append(MailingAttachementChange(fileName: fileName, folderName: attachedFiles.subfolderName, action: .added))
+                        mailingAttachementChanges.append(MailingAttachmentChange(fileName: fileName, folderName: attachedFiles.subfolderName, action: .added))
                     }
                     
                     if mailingAttachementChanges.count > 0 {
