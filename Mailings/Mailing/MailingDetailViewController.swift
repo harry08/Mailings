@@ -422,6 +422,19 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         } else if indexPath.section == MailingDetailViewSection.attachement.rawValue {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActionFilesCell", for: indexPath)
             
+            var detailText = ""
+            if attachments == nil {
+                initAttachedFiles()
+            }
+            
+            if let attachments = attachments {
+                let count = attachments.files.count
+                if count > 0 {
+                    detailText = String(count)
+                }
+            }
+            cell.detailTextLabel?.text = detailText
+            
             return cell
         } else if indexPath.section == MailingDetailViewSection.action.rawValue && indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActionDeleteCell", for: indexPath)
@@ -533,6 +546,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         
         changedMailingTitle = nil
         changedMailingText = nil
+        attachments = nil
         cancelAttachmentChanges()
         
         if isEditType() {
@@ -700,16 +714,26 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     /**
      Removes all attachment changes.
      Also deletes files which are already copied to the mailing diretory.
+     For newly created mailings the subfolder is also removed.
      */
     func cancelAttachmentChanges() {
+        var subfolderName : String?
+        
         for i in 0 ..< mailingAttachementChanges.count {
             let attachmentChange = mailingAttachementChanges[i]
             if attachmentChange.action == .added {
                 FileAttachmentHandler.removeFile(fileName: attachmentChange.fileName, folderName: attachmentChange.folderName)
+                subfolderName = attachmentChange.folderName
             }
         }
         
         mailingAttachementChanges.removeAll()
+        
+        if isAddType() {
+            if let subfolderName = subfolderName {
+                FileAttachmentHandler.removeFolder(folderName: subfolderName)
+            }
+        }
     }
     
     // MARK: - MailingTextViewController Delegate
