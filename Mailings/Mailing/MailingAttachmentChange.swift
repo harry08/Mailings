@@ -16,8 +16,8 @@ enum ListChangeAction: Int {
 }
 
 /**
- Information of a change to the attachments of a mailing.
- Add or removal.
+ Information about a change to the attachments of a mailing.
+ Add or removal of a file.
  */
 struct MailingAttachmentChange: Hashable {
     var objectId: NSManagedObjectID?

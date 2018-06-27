@@ -299,7 +299,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         if mailingDTO.folder == nil {
             let subfolderName = Mailing.generateSubFolderName()
             mailingDTO.folder = subfolderName
-            self.mailingDTO?.folder = subfolderName
+            self.mailingDTO!.folder = subfolderName
         }
         
         if let objectId = mailingDTO.objectId {

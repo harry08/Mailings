@@ -112,6 +112,25 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
         let attachedFile = attachments!.files[indexPath.row]
         cell.textLabel?.text = attachedFile.name
         
+        let fileAttributes = FileAttachmentHandler.getFileAttributes(fileName: attachedFile.name, folderName: attachments!.subfolderName)
+        
+        var detailLabelText = ""
+        if let modDate = fileAttributes.modificationDate {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd.MM.yyyy"
+            let formattedDate = dateFormatter.string(from: modDate as Date)
+            
+            detailLabelText = formattedDate
+        }
+        
+        if let fileSize = fileAttributes.size {
+            let sizeText = ByteCountFormatter.string(fromByteCount: Int64(fileSize), countStyle: ByteCountFormatter.CountStyle.file)
+            
+            detailLabelText = detailLabelText + " - " + sizeText
+        }
+        
+        cell.detailTextLabel?.text = detailLabelText
+        
         return cell
     }
 
@@ -189,11 +208,13 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
             let filemgr = FileManager.default
             
             if filemgr.fileExists(atPath: url.path) {
-                let mimeType = FileAttachmentHandler.getMimetype(fileUrl: url)
-                print("File at path \(url.path) exists. With MimeType: \(mimeType)")
-            
                 if FileAttachmentHandler.fileExistsInAttachmentsDir(url: url, folderName: attachedFiles.subfolderName) {
-                    // TODO Show Alert with error message
+                    let alertController = UIAlertController(title: "Datei mit diesem Namen bereits vorhanden", message: "Bitte wählen Sie eine andere Datei aus.", preferredStyle: .alert)
+                    
+                    let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alertController.addAction(defaultAction)
+                    
+                    present(alertController, animated: true, completion: nil)
                     
                 } else {
                     FileAttachmentHandler.copyFileToAttachementsDir(urlToCopy: url, folderName: attachedFiles.subfolderName)
