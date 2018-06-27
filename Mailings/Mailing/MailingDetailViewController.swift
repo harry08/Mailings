@@ -770,12 +770,21 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     // MARK: - Send mail
     
     func composeMail(_ mailDTO: MailDTO) {
-        let mailComposeViewController = configuredMailComposeViewController(mailDTO: mailDTO)
-        if !MFMailComposeViewController.canSendMail() {
-            self.showSendMailErrorAlert()
-        } else {
+        if MessageComposer.canSendText() {
+            let mailComposeViewController = configuredMailComposeViewController(mailDTO: mailDTO)
             self.present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
         }
+    }
+    
+    func configuredMailComposeViewController(mailDTO: MailDTO) -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Set the mailComposeDelegate property to self
+        
+        MessageComposer.updateMailComposeViewController(mailComposerVC, mailDTO: mailDTO)
+        
+        return mailComposerVC
     }
     
     func showSendMailErrorAlert() {
@@ -790,36 +799,5 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         
         controller.dismiss(animated: true, completion: nil)
-    }
-    
-    func configuredMailComposeViewController(mailDTO: MailDTO) -> MFMailComposeViewController {
-        let mailComposerVC = MFMailComposeViewController()
-        mailComposerVC.mailComposeDelegate = self // Set the mailComposeDelegate property to self
-        
-        mailComposerVC.setBccRecipients(mailDTO.emailAddresses)
-        if let messageSubject = mailDTO.mailingDTO.title {
-            mailComposerVC.setSubject(messageSubject)
-        }
-        if let messageBody = mailDTO.mailingDTO.text {
-            mailComposerVC.setMessageBody(messageBody, isHTML: false)
-        }
-        
-        if mailDTO.attachments.count > 0 {
-            if let folderName = mailDTO.folder {
-                for i in 0 ..< mailDTO.attachments.count {
-                    let fileName = mailDTO.attachments[i]
-                    let url = FileAttachmentHandler.getUrlForFile(fileName: fileName, folderName: folderName)
-                    let mimeType = FileAttachmentHandler.getMimetype(fileUrl: url)
-                    do {
-                        let fileData = try Data.init(contentsOf: url)
-                        mailComposerVC.addAttachmentData(fileData, mimeType: mimeType, fileName: fileName)
-                    } catch let error as NSError {
-                        print("Error loading file: \(error.localizedDescription)")
-                    }
-                }
-            }
-        }
-        
-        return mailComposerVC
     }
 }

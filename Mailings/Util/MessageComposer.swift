@@ -13,79 +13,97 @@ import MessageUI
  */
 class MessageComposer: NSObject, MFMailComposeViewControllerDelegate {
     
-    func canSendText() -> Bool {
+    class func canSendText() -> Bool {
         return MFMessageComposeViewController.canSendText()
     }
     
-    func configuredMailComposeViewController() -> MFMailComposeViewController {
-
-        let mailComposerVc = MFMailComposeViewController()
-        mailComposerVc.mailComposeDelegate = self
-            
-        return mailComposerVc
+    /**
+     Updates the given MFMailComposerViewController with the given email address
+     */
+    class func updateMailComposeViewController(_ mailComposerVC: MFMailComposeViewController, emailAddress: String) {
+        
+        updateMailComposeViewController(mailComposerVC, emailAddresses: [emailAddress])
     }
     
     /**
-     Creates a MFMailComposerViewController for the given email addresses
+     Updates the given MFMailComposerViewController with the given email addresses.
      */
-    func configuredMailComposeViewController(emailAddresses: [String]) -> MFMailComposeViewController {
+    class func updateMailComposeViewController(_ mailComposerVC: MFMailComposeViewController, emailAddresses: [String]) {
         
-        let mailComposerVc = MFMailComposeViewController()
-        mailComposerVc.mailComposeDelegate = self
-        
-        mailComposerVc.setBccRecipients(emailAddresses)
-        
-        return mailComposerVc
+        if emailAddresses.count == 1 {
+            mailComposerVC.setToRecipients(emailAddresses)
+        } else {
+            mailComposerVC.setBccRecipients(emailAddresses)
+        }
     }
     
     /**
-     Creates a MFMailComposerViewController for the given email address
+     Updates the given MFMailComposerViewController for the given mailing and email address
      */
-    func configuredMailComposeViewController(emailAddress: String) -> MFMailComposeViewController {
-        
-        let mailComposerVc = MFMailComposeViewController()
-        mailComposerVc.mailComposeDelegate = self
-        
-        mailComposerVc.setToRecipients([emailAddress])
-        
-        return mailComposerVc
-    }
-    
-    /**
-     Creates a MFMailComposerViewController for the given mailing and email address
-     */
-    func configuredMailComposeViewController(mailing: MailingDTO, emailAddress: String) -> MFMailComposeViewController {
+    class func updateMailComposeViewController(_ mailComposerVC: MFMailComposeViewController, mailing: MailingDTO, attachedFiles: [AttachedFile], emailAddress: String) {
         
         var emailAddresses = [String]()
         emailAddresses.append(emailAddress)
         
-        return configuredMailComposeViewController(mailing: mailing, emailAddresses: emailAddresses)
+        updateMailComposeViewController(mailComposerVC, mailing: mailing, attachedFiles: attachedFiles, emailAddresses: emailAddresses)
     }
     
-    /**
-     Creates a MFMailComposerViewController for the provided mailing and given email addresses
-     */
-    func configuredMailComposeViewController(mailing: MailingDTO, emailAddresses: [String]) -> MFMailComposeViewController {
-        
-        let mailComposerVc = MFMailComposeViewController()
-        mailComposerVc.mailComposeDelegate = self
+    class func updateMailComposeViewController(_ mailComposerVC: MFMailComposeViewController, mailing: MailingDTO, attachedFiles: [AttachedFile], emailAddresses: [String]) {
+       
+        if emailAddresses.count == 1 {
+            mailComposerVC.setToRecipients(emailAddresses)
+        } else {
+            mailComposerVC.setBccRecipients(emailAddresses)
+        }
         
         if let title = mailing.title {
-            mailComposerVc.setSubject(title)
+            mailComposerVC.setSubject(title)
         }
         if let text = mailing.text {
-            mailComposerVc.setMessageBody(text, isHTML: false)
-        }
-        if emailAddresses.count == 1 {
-            mailComposerVc.setToRecipients(emailAddresses)
-        } else {
-            mailComposerVc.setBccRecipients(emailAddresses)
+            mailComposerVC.setMessageBody(text, isHTML: false)
         }
         
-        return mailComposerVc
+        if attachedFiles.count > 0 {
+            if let folderName = mailing.folder {
+                for i in 0 ..< attachedFiles.count {
+                    let file = attachedFiles[i]
+                    let url = FileAttachmentHandler.getUrlForFile(fileName: file.name, folderName: folderName)
+                    let mimeType = FileAttachmentHandler.getMimetype(fileUrl: url)
+                    do {
+                        let fileData = try Data.init(contentsOf: url)
+                        mailComposerVC.addAttachmentData(fileData, mimeType: mimeType, fileName: file.name)
+                    } catch let error as NSError {
+                        print("Error loading file: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
     }
     
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true, completion: nil)
+    class func updateMailComposeViewController(_ mailComposerVC: MFMailComposeViewController, mailDTO: MailDTO) {
+        mailComposerVC.setBccRecipients(mailDTO.emailAddresses)
+        
+        if let messageSubject = mailDTO.mailingDTO.title {
+            mailComposerVC.setSubject(messageSubject)
+        }
+        if let messageBody = mailDTO.mailingDTO.text {
+            mailComposerVC.setMessageBody(messageBody, isHTML: false)
+        }
+        
+        if mailDTO.attachments.count > 0 {
+            if let folderName = mailDTO.folder {
+                for i in 0 ..< mailDTO.attachments.count {
+                    let fileName = mailDTO.attachments[i]
+                    let url = FileAttachmentHandler.getUrlForFile(fileName: fileName, folderName: folderName)
+                    let mimeType = FileAttachmentHandler.getMimetype(fileUrl: url)
+                    do {
+                        let fileData = try Data.init(contentsOf: url)
+                        mailComposerVC.addAttachmentData(fileData, mimeType: mimeType, fileName: fileName)
+                    } catch let error as NSError {
+                        print("Error loading file: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
     }
 }

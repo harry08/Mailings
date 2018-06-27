@@ -28,7 +28,7 @@ protocol ContactDetailViewControllerInfoDelegate: class {
     func contactDetailViewControllerDidChangeData(_ controller: ContactDetailViewController)
 }
 
-class ContactDetailViewController: UITableViewController, ContactDetailViewControllerDelegate, ContactMailingListsTableViewControllerDelegate, MailingPickerTableViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
+class ContactDetailViewController: UITableViewController, ContactDetailViewControllerDelegate, ContactMailingListsTableViewControllerDelegate, MailingPickerTableViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate, MFMailComposeViewControllerDelegate {
     
     @IBOutlet weak var firstnameTextField: UITextField!
     @IBOutlet weak var lastnameTextField: UITextField!
@@ -329,20 +329,17 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
         }
     }
     
+    // MARK: - Send mail
+    
     /**
      Presents the iOS screen to write an email to the given email addresses
      */
     func composeMail(emailAddress: String) {
-        if messageComposer.canSendText() {
-            let messageComposeVc = messageComposer.configuredMailComposeViewController(emailAddress: emailAddress)
+        if MessageComposer.canSendText() {
+            let messageComposeVc = configuredMailComposeViewController(emailAddress: emailAddress)
             self.present(messageComposeVc, animated: true, completion: nil)
         } else {
-            let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
-            
-            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(defaultAction)
-            
-            self.present(alertController, animated: true, completion: nil)
+            showSendMailErrorAlert()
         }
     }
     
@@ -350,17 +347,50 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
      Presents the iOS screen to write an email with the contents of the provided mailing to the given email address
      */
     func composeMailForMailing(_ mailingDTO: MailingDTO, emailAddress: String) {
-        if messageComposer.canSendText() {
-            let messageComposeVc = messageComposer.configuredMailComposeViewController(mailing: mailingDTO, emailAddress: emailAddress)
+        if MessageComposer.canSendText() {
+            guard let container = container else {
+                return
+            }
+            
+            let attachedFiles = Mailing.getAttachedFiles(objectId: mailingDTO.objectId!, in: container.viewContext)
+            
+            let messageComposeVc = configuredMailComposeViewController(mailing: mailingDTO, attachedFiles: attachedFiles, emailAddress: emailAddress)
             self.present(messageComposeVc, animated: true, completion: nil)
         } else {
-            let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
-            
-            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(defaultAction)
-            
-            self.present(alertController, animated: true, completion: nil)
+            showSendMailErrorAlert()
         }
+    }
+    
+    func configuredMailComposeViewController(emailAddress: String) -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Set the mailComposeDelegate property to self
+        
+        MessageComposer.updateMailComposeViewController(mailComposerVC, emailAddress: emailAddress)
+        
+        return mailComposerVC
+    }
+    
+    func configuredMailComposeViewController(mailing: MailingDTO, attachedFiles: [AttachedFile], emailAddress: String) -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Set the mailComposeDelegate property to self
+        
+        MessageComposer.updateMailComposeViewController(mailComposerVC, mailing: mailing, attachedFiles: attachedFiles, emailAddress: emailAddress)
+        
+        return mailComposerVC
+    }
+    
+    func showSendMailErrorAlert() {
+        let alertController = UIAlertController(title: "Mail kann nicht gesendet werden", message: "Bitte E-Mail Einstellungen überprüfen und erneut versuchen.", preferredStyle: .alert)
+        
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(defaultAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        
+        controller.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - TableView Delegate
