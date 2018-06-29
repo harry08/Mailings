@@ -241,16 +241,67 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
      Text and files.
      */
     @objc func shareMailingContentAction(sender: UIBarButtonItem) {
-        var activityItems = [Any]()
-        if let mailingText = mailingDTO?.text {
-            activityItems.append(mailingText as NSString)
+        guard let mailingDTO = mailingDTO else {
+            return
         }
         
-        if let attachments = attachments {
-            for i in 0 ..< attachments.files.count {
-                let file = attachments.files[i]
-                let url = FileAttachmentHandler.getUrlForFile(fileName: file.name, folderName: attachments.subfolderName)
-                activityItems.append(url)
+        let containsText = mailingDTO.text != nil
+        let containsAttachments = attachments != nil && attachments!.files.count > 0
+        
+        if containsText && containsAttachments {
+            showSharingContentMenu(sender: sender)
+        } else if containsText && !containsAttachments{
+            shareMailingContent(shareText: true, shareFiles: false, sender: sender)
+        } else if !containsText && containsAttachments{
+            shareMailingContent(shareText: false, shareFiles: true, sender: sender)
+        }
+    }
+    
+    func showSharingContentMenu(sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Nur Text senden", style: .default) { _ in
+            self.shareMailingContent(shareText: true, shareFiles: false, sender: sender)
+        })
+        alert.addAction(UIAlertAction(title: "Nur Dateien senden", style: .default) { _ in
+            self.shareMailingContent(shareText: false, shareFiles: true, sender: sender)
+        })
+        alert.addAction(UIAlertAction(title: "Text und Dateien senden", style: .default) { _ in
+            self.shareMailingContent(shareText: true, shareFiles: true, sender: sender)
+        })
+        alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
+            // Do nothing
+        })
+        
+        // The following 2 lines are needed for iPad.
+        alert.popoverPresentationController?.sourceView = view
+        if let barView = sender.value(forKey: "view") as? UIView {
+            let barFrame = barView.frame
+            alert.popoverPresentationController?.sourceRect = barFrame
+        }
+        
+        self.present(alert, animated: true)
+    }
+    
+    func shareMailingContent(shareText: Bool, shareFiles: Bool, sender: UIBarButtonItem) {
+        guard let mailingDTO = mailingDTO else {
+            return
+        }
+        
+        var activityItems = [Any]()
+        
+        if shareText {
+            if let mailingText = mailingDTO.text {
+                activityItems.append(mailingText as NSString)
+            }
+        }
+        
+        if shareFiles {
+            if let attachments = attachments {
+                for i in 0 ..< attachments.files.count {
+                    let file = attachments.files[i]
+                    let url = FileAttachmentHandler.getUrlForFile(fileName: file.name, folderName: attachments.subfolderName)
+                    activityItems.append(url)
+                }
             }
         }
         

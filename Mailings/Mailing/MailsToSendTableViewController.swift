@@ -195,13 +195,8 @@ class MailsToSendTableViewController: UITableViewController, MFMailComposeViewCo
         let mailComposerVC = MFMailComposeViewController()
         mailComposerVC.mailComposeDelegate = self // Set the mailComposeDelegate property to self
         
-        mailComposerVC.setBccRecipients(mailDTO.emailAddresses)
-        if let messageSubject = mailDTO.mailingDTO.title {
-            mailComposerVC.setSubject(messageSubject)
-        }
-        if let messageBody = mailDTO.mailingDTO.text {
-            mailComposerVC.setMessageBody(messageBody, isHTML: false)
-        }
+        MessageComposer.updateMailComposeViewController(mailComposerVC, mailDTO: mailDTO)
+        
         return mailComposerVC
     }
 }
