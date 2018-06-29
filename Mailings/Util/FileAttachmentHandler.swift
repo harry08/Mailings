@@ -6,63 +6,8 @@
 //
 
 import Foundation
+import MobileCoreServices
 
-enum MimeType : String {
-    case pdf, doc, jpg, png, tiff, bmp, gif, jpeg, svg, json, xml, js, txt, rtf, html, css, docx, xls, xlsx, ppt, csv, zip, mpeg, mov
-    
-    func templateString() -> String {
-        switch self {
-        case .pdf:
-            return "application/pdf"
-        case .doc:
-            return "application/msword"
-        case .jpg:
-            return "image/jpg"
-        case .png:
-            return "image/png"
-        case .tiff:
-            return "image/tiff"
-        case .bmp:
-            return "image/bmp"
-        case .gif:
-            return "image/gif"
-        case .jpeg:
-            return "image/jpeg"
-        case .svg:
-            return "image/svg+xml"
-        case .json:
-            return "application/json"
-        case .js:
-            return "application/javascript"
-        case .xml:
-            return "application/xml"
-        case .txt:
-            return "text/plain"
-        case .rtf:
-            return "text/rtf"
-        case .html:
-            return "text/html"
-        case .css:
-            return "text/css"
-        case .docx:
-            return "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        case .xls:
-            return "application/msexcel"
-        case .xlsx:
-            return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        case .ppt:
-            return "application/mspowerpoint"
-        case .csv:
-            return "text/comma-separated-values"
-        case .zip:
-            return "application/zip"
-        case .mpeg:
-            return "video/mpeg"
-        case .mov:
-            return "video/quicktime"
-        }
-    }
-}
 
 struct FileAttributes {
     var size: UInt64?
@@ -202,16 +147,17 @@ class FileAttachmentHandler {
      Returns the MimeType template String for the given file,
      e.g. returns application/pdf for a pdf file.
      */
-    class func getMimetype(fileUrl: URL) -> String {
-        let suffix = fileUrl.pathExtension
-        if suffix.count > 0 {
-            if let mimeType = MimeType(rawValue: suffix) {
-                return mimeType.templateString()
+    class func mimeTypeForUrl(_ fileUrl: URL) -> String {
+        let pathExtension = fileUrl.pathExtension
+        
+        if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue() {
+            if let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
+                return mimetype as String
             }
         }
         
-        // Default 
-        return "text/plain"
+        // Default = binary file
+        return "application/octet-stream"
     }
     
     class func getFileAttributes(fileName: String, folderName: String) -> FileAttributes {

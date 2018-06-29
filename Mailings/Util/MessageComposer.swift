@@ -68,7 +68,7 @@ class MessageComposer: NSObject, MFMailComposeViewControllerDelegate {
                 for i in 0 ..< attachedFiles.count {
                     let file = attachedFiles[i]
                     let url = FileAttachmentHandler.getUrlForFile(fileName: file.name, folderName: folderName)
-                    let mimeType = FileAttachmentHandler.getMimetype(fileUrl: url)
+                    let mimeType = FileAttachmentHandler.mimeTypeForUrl(url)
                     do {
                         let fileData = try Data.init(contentsOf: url)
                         mailComposerVC.addAttachmentData(fileData, mimeType: mimeType, fileName: file.name)
@@ -95,7 +95,7 @@ class MessageComposer: NSObject, MFMailComposeViewControllerDelegate {
                 for i in 0 ..< mailDTO.attachments.count {
                     let fileName = mailDTO.attachments[i]
                     let url = FileAttachmentHandler.getUrlForFile(fileName: fileName, folderName: folderName)
-                    let mimeType = FileAttachmentHandler.getMimetype(fileUrl: url)
+                    let mimeType = FileAttachmentHandler.mimeTypeForUrl(url)
                     do {
                         let fileData = try Data.init(contentsOf: url)
                         mailComposerVC.addAttachmentData(fileData, mimeType: mimeType, fileName: fileName)

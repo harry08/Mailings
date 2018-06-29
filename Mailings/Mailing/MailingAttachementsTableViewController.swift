@@ -151,6 +151,10 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
         var filerUrls:[URL] = []
         filerUrls = attachedFiles.files.map { file in
             let fileUrl = FileAttachmentHandler.getUrlForFile(fileName: file.name, folderName: attachedFiles.subfolderName)
+            
+            let mimetpe = FileAttachmentHandler.mimeTypeForUrl(fileUrl)
+            print(mimetpe)
+            
             return fileUrl
         }
         self.selectedUrls = filerUrls
