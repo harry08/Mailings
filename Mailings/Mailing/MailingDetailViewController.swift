@@ -196,7 +196,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             
             var items = [UIBarButtonItem]()
             items.append(
-                UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareMailingTextAction))
+                UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareMailingContentAction))
             )
             
             self.toolbarItems = items
@@ -237,11 +237,25 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     }
     
     /**
-     Shares the content of this mailing as simple text.
+     Shares the content of this mailing.
+     Text and files.
      */
-    @objc func shareMailingTextAction(sender: UIBarButtonItem) {
-        if let shareContent = mailingDTO?.text {
-            let activityViewController = UIActivityViewController(activityItems: [shareContent as NSString], applicationActivities: nil)
+    @objc func shareMailingContentAction(sender: UIBarButtonItem) {
+        var activityItems = [Any]()
+        if let mailingText = mailingDTO?.text {
+            activityItems.append(mailingText as NSString)
+        }
+        
+        if let attachments = attachments {
+            for i in 0 ..< attachments.files.count {
+                let file = attachments.files[i]
+                let url = FileAttachmentHandler.getUrlForFile(fileName: file.name, folderName: attachments.subfolderName)
+                activityItems.append(url)
+            }
+        }
+        
+        if activityItems.count > 0 {
+            let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
             
             // Relevant for iPad to adhere the popover to the share button.
             activityViewController.popoverPresentationController?.sourceView = view
