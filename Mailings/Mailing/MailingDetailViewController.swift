@@ -273,10 +273,9 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         })
         
         // The following 2 lines are needed for iPad.
-        alert.popoverPresentationController?.sourceView = view
-        if let barView = sender.value(forKey: "view") as? UIView {
-            let barFrame = barView.frame
-            alert.popoverPresentationController?.sourceRect = barFrame
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = view
+            popoverController.barButtonItem = sender
         }
         
         self.present(alert, animated: true)
