@@ -259,22 +259,21 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     
     func showSharingContentMenu(sender: UIBarButtonItem) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Nur Text senden", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: "Nur Text teilen...", style: .default) { _ in
             self.shareMailingContent(shareText: true, shareFiles: false, sender: sender)
         })
-        alert.addAction(UIAlertAction(title: "Nur Dateien senden", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: "Nur Dateien teilen...", style: .default) { _ in
             self.shareMailingContent(shareText: false, shareFiles: true, sender: sender)
         })
-        alert.addAction(UIAlertAction(title: "Text und Dateien senden", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: "Text und Dateien teilen...", style: .default) { _ in
             self.shareMailingContent(shareText: true, shareFiles: true, sender: sender)
         })
         alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { _ in
             // Do nothing
         })
         
-        // The following 2 lines are needed for iPad.
+        // Set barbuttonItem for iPad.
         if let popoverController = alert.popoverPresentationController {
-            popoverController.sourceView = view
             popoverController.barButtonItem = sender
         }
         
