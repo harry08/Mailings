@@ -217,6 +217,9 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             )
             
             if HtmlUtil.isHtml(getMailingText()) {
+                let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+                spacer.width = 5
+                items.append(spacer)
                 items.append(
                     UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(previewHtmlAction))
                 )
