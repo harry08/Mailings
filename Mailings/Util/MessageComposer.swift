@@ -60,7 +60,8 @@ class MessageComposer: NSObject, MFMailComposeViewControllerDelegate {
             mailComposerVC.setSubject(title)
         }
         if let text = mailing.text {
-            mailComposerVC.setMessageBody(text, isHTML: false)
+            let htmlEmail = HtmlUtil.isHtml(text)
+            mailComposerVC.setMessageBody(text, isHTML: htmlEmail)
         }
         
         if attachedFiles.count > 0 {
@@ -87,7 +88,8 @@ class MessageComposer: NSObject, MFMailComposeViewControllerDelegate {
             mailComposerVC.setSubject(messageSubject)
         }
         if let messageBody = mailDTO.mailingDTO.text {
-            mailComposerVC.setMessageBody(messageBody, isHTML: false)
+            let htmlEmail = HtmlUtil.isHtml(messageBody)
+            mailComposerVC.setMessageBody(messageBody, isHTML: htmlEmail)
         }
         
         if mailDTO.attachments.count > 0 {

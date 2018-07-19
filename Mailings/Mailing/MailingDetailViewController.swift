@@ -130,6 +130,23 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     }
     
     /**
+     Returns the text of the mailing. If the mailing has changes the changed text is returned.
+     Otherwise the saved one.
+     */
+    private func getMailingText() -> String {
+        if let changedMailingText = changedMailingText {
+            return changedMailingText
+        } else {
+            if let mailingDTO = mailingDTO,
+                let text = mailingDTO.text {
+                    return text
+            } else {
+                return ""
+            }
+        }
+    }
+    
+    /**
      Fills the changed values into the MailingListDTO.
      */
     private func fillMailingDTO() {
@@ -199,6 +216,12 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
                 UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareMailingContentAction))
             )
             
+            if HtmlUtil.isHtml(getMailingText()) {
+                items.append(
+                    UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(previewHtmlAction))
+                )
+            }
+            
             self.toolbarItems = items
         }
     }
@@ -256,7 +279,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             shareMailingContent(shareText: false, shareFiles: true, sender: sender)
         }
     }
-    
+
     func showSharingContentMenu(sender: UIBarButtonItem) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Nur Text teilen...", style: .default) { _ in
@@ -313,7 +336,17 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             self.present(activityViewController, animated: true, completion: {})
         }
     }
-    
+
+    @objc func previewHtmlAction(sender: UIBarButtonItem) {
+        if let mailingDTO = mailingDTO,
+            let text = mailingDTO.text {
+            if HtmlUtil.isHtml(text) {
+                print("HtmlPreview: \(text)")
+                performSegue(withIdentifier: "showHtmlPreview", sender: nil)
+            }
+        }
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "pickMailingList",
             let destinationVC = segue.destination as? MailingListPickerTableViewController
@@ -331,11 +364,13 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             destinationVC.parentEditMode = self.editMode
             destinationVC.mailingTextViewControllerDelegate = self
             
-            var editMailingDTO = MailingDTO(objectId: mailingDTO?.objectId, title: mailingDTO?.title, text: mailingDTO?.text, folder: mailingDTO?.folder)
-            if let changedMailingText = changedMailingText {
-                editMailingDTO.text = changedMailingText
+            if let mailingDTO = mailingDTO {
+                var editMailingDTO = MailingDTO(objectId: mailingDTO.objectId, title: mailingDTO.title, text: mailingDTO.text, folder: mailingDTO.folder)
+                if let changedMailingText = changedMailingText {
+                    editMailingDTO.text = changedMailingText
+                }
+                destinationVC.mailing = editMailingDTO
             }
-            destinationVC.mailing = editMailingDTO
         } else if segue.identifier == "showMailingAttachements",
             let destinationVC = segue.destination as? MailingAttachementsTableViewController
         {
@@ -468,16 +503,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         } else if indexPath.section == MailingDetailViewSection.content.rawValue {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ContentCell", for: indexPath) as! MailingContentTableViewCell
             
-            if let changedMailingText = changedMailingText {
-                cell.contentLabel.text = changedMailingText
-            } else {
-                if let mailingDTO = mailingDTO {
-                    cell.contentLabel.text = mailingDTO.text
-                } else {
-                    cell.contentLabel.text = ""
-                }
-            }
-            
+            cell.contentLabel.text = getMailingText()
             cell.contentLabel.textColor = UIColor(white: 114/255, alpha: 1)
             cell.contentLabel.font = UIFont.preferredFont(forTextStyle: .body)
             
@@ -800,12 +826,14 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     }
     
     // MARK: - MailingTextViewController Delegate
+    /**
+     Called after finishing editing the mailing text
+     */
     func mailingTextViewController(_ controller: MailingTextViewController, didFinishEditing mailing: MailingDTO) {
         if editMode {
             // This view is in edit mode. Take value and stay in edit mode
             self.changedMailingText = mailing.text
-            viewEdited = true
-            tableView.reloadData()
+            viewEdited = true            
         } else {
             // This view is not in edit mode. Take value and save directly
             self.mailingDTO?.text = mailing.text
@@ -822,12 +850,12 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
                 viewEdited = false
                 changedMailingText = nil
                 changedMailingTitle = nil
-                tableView.reloadData()
             } catch {
                 // TODO show Alert
             }
         }
-        print("Finished editing the mailing text. Save changes.")
+        tableView.reloadData()
+        configureToolbar()
     }
     
     // MARK: - Send mail
