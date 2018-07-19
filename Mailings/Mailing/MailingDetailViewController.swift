@@ -341,7 +341,6 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
         if let mailingDTO = mailingDTO,
             let text = mailingDTO.text {
             if HtmlUtil.isHtml(text) {
-                print("HtmlPreview: \(text)")
                 performSegue(withIdentifier: "showHtmlPreview", sender: nil)
             }
         }
@@ -383,6 +382,11 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
                 initAttachedFiles()
             }
             destinationVC.attachments = attachments
+        } else if segue.identifier == "showHtmlPreview",
+            let destinationVC = segue.destination as? HtmlPreviewViewController {
+        
+            let text = getMailingText()
+            destinationVC.htmlText = text
         }
     }
     
