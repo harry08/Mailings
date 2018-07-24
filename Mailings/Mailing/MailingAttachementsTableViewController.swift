@@ -98,7 +98,7 @@ class MailingAttachementsTableViewController: UITableViewController, UIDocumentM
      Shows the menu to open a DocumentPicker to choose a file to add to the mailing.
      */
     @IBAction func addNewFile(_ sender: Any) {
-        let importMenu = UIDocumentPickerViewController(documentTypes: [String(kUTTypePDF), String(kUTTypeText)], in: .import)
+        let importMenu = UIDocumentPickerViewController(documentTypes: [String(kUTTypePDF), String(kUTTypeText),  String(kUTTypeImage), String(kUTTypeCompositeContent)], in: .import)
         importMenu.delegate = self
         importMenu.modalPresentationStyle = .formSheet
         self.present(importMenu, animated: true, completion: nil)
