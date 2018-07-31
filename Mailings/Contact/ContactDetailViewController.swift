@@ -232,6 +232,9 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             items.append(
                 UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(sendEmailAction))
             )
+            let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+            spacer.width = 5
+            items.append(spacer)
             items.append(
                 UIBarButtonItem(image: msgImage, style: .plain, target: self, action: #selector(sendMailingAction))
             )
