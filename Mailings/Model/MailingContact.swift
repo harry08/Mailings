@@ -251,6 +251,18 @@ class MailingContact: NSManagedObject {
         return assignedMailingLists
     }
     
+    class func getAllContacts(in context: NSManagedObjectContext) -> [MailingContact] {
+        let request : NSFetchRequest<MailingContact> = MailingContact.fetchRequest()
+        do {
+            let matches = try context.fetch(request)
+            return matches
+        } catch let error as NSError {
+            print("Could not select contacts. \(error)")
+        }
+        
+        return []
+    }
+    
     // MARK: - statistic functions
     
     // Returns the number of non retired contacts
