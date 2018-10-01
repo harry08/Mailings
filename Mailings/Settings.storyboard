@@ -92,7 +92,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Kontakt-Export" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="i61-tQ-sb5">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Daten-Export" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="i61-tQ-sb5">
                                                     <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -194,19 +194,28 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uLV-D7-VG4">
-                                <rect key="frame" x="16" y="88" width="343" height="30"/>
+                                <rect key="frame" x="16" y="130" width="343" height="30"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="Alle Kontakte exportieren"/>
+                                <state key="normal" title="Export aller Kontakte in csv Datei"/>
                                 <connections>
                                     <action selector="exportContacts:" destination="dqZ-2q-fQb" eventType="touchUpInside" id="TXo-ry-7TO"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lu3-eo-O4H">
+                                <rect key="frame" x="16" y="87" width="343" height="33"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Export aller Verteilerlisten in csv Datei"/>
+                                <connections>
+                                    <action selector="exportMailingLists:" destination="dqZ-2q-fQb" eventType="touchUpInside" id="OEM-2U-Jgr"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="IoA-66-1K0"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Kontakt-Export" id="zpy-dT-FHC"/>
+                    <navigationItem key="navigationItem" title="Daten-Export" id="zpy-dT-FHC"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K1i-pS-3eP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -253,7 +262,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="PP1-Gh-EJK"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Kontakt-Import" id="FlY-Iy-8ma">
+                    <navigationItem key="navigationItem" title="Adressbuch-Import" id="FlY-Iy-8ma">
                         <barButtonItem key="backBarButtonItem" title="Einstellungen" id="lFI-6g-fvk"/>
                     </navigationItem>
                     <connections>
