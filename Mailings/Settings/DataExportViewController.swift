@@ -41,6 +41,11 @@ class DataExportViewController: UIViewController {
         }
     }
     
+    /**
+     Creates a csv file with all contacts.
+     Besides the normal contact data like name a record containts also the assigned mailinglists of a contact.
+     For each available mailing list a column is added to the export record.
+     */
     @IBAction func exportContacts(_ sender: Any) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
@@ -123,6 +128,7 @@ class DataExportViewController: UIViewController {
             }
         }
         
+        // Fill up the record with empty entries for not assigned mailing lists.
         for _ in count ..< nrOfMailingLists {
             contactRecord.append(",")
         }
