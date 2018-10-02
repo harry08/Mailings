@@ -37,7 +37,7 @@ class DataExportViewController: UIViewController {
                 csvText.append(getDataFromMailingList(mailingList))
             }
             
-            writeToFile(csvText, path: path)
+            writeToFile(csvText, path: path, sender: sender)
         }
     }
     
@@ -64,7 +64,7 @@ class DataExportViewController: UIViewController {
                 csvText.append(getDataFromContact(contact, nrOfMailingLists: mailingLists.count))
             }
             
-            writeToFile(csvText, path: path)
+            writeToFile(csvText, path: path, sender: sender)
         }
     }
     
@@ -171,7 +171,7 @@ class DataExportViewController: UIViewController {
         return mailingListRecord
     }
     
-    private func writeToFile(_ text: String, path: URL) {
+    private func writeToFile(_ text: String, path: URL, sender: Any) {
         do {
             try text.write(to: path, atomically: true, encoding: String.Encoding.utf8)
             
@@ -189,6 +189,7 @@ class DataExportViewController: UIViewController {
             
             // Relevant for iPad to adhere the popover to the share button.
             activityViewController.popoverPresentationController?.sourceView = view
+            activityViewController.popoverPresentationController?.sourceRect = (sender as! UIButton).frame
             
             self.present(activityViewController, animated: true, completion: {})
             
