@@ -65,7 +65,7 @@
 		4AC1FD8B204476BA003CEFDA /* CommonSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC1FD8A204476BA003CEFDA /* CommonSetting.swift */; };
 		4AC3857320640C8900A619E8 /* ContactFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC3857220640C8900A619E8 /* ContactFilter.swift */; };
 		4AC40312202E0396001A14C5 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AC40311202E0396001A14C5 /* Settings.storyboard */; };
-		4AD38512215CA06C003060F5 /* ContactExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD38511215CA06C003060F5 /* ContactExportViewController.swift */; };
+		4AD38512215CA06C003060F5 /* DataExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD38511215CA06C003060F5 /* DataExportViewController.swift */; };
 		4AD59F5A20049549008FC37C /* MailingPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD59F5920049549008FC37C /* MailingPickerTableViewController.swift */; };
 		4AD999C8201BCC3600C0CE6D /* MailingList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AD999C7201BCC3600C0CE6D /* MailingList.storyboard */; };
 		4ADEFA44204EEAA80074FFA5 /* ContactMailingListsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADEFA43204EEAA80074FFA5 /* ContactMailingListsTableViewController.swift */; };
@@ -142,7 +142,7 @@
 		4AC1FD8A204476BA003CEFDA /* CommonSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSetting.swift; sourceTree = "<group>"; };
 		4AC3857220640C8900A619E8 /* ContactFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFilter.swift; sourceTree = "<group>"; };
 		4AC40311202E0396001A14C5 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
-		4AD38511215CA06C003060F5 /* ContactExportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactExportViewController.swift; sourceTree = "<group>"; };
+		4AD38511215CA06C003060F5 /* DataExportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExportViewController.swift; sourceTree = "<group>"; };
 		4AD59F5920049549008FC37C /* MailingPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailingPickerTableViewController.swift; sourceTree = "<group>"; };
 		4AD999C7201BCC3600C0CE6D /* MailingList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MailingList.storyboard; sourceTree = "<group>"; };
 		4ADEFA43204EEAA80074FFA5 /* ContactMailingListsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactMailingListsTableViewController.swift; sourceTree = "<group>"; };
@@ -275,7 +275,7 @@
 			isa = PBXGroup;
 			children = (
 				4A17ADB21FF58E2400FEDD1E /* ImportContactsViewController.swift */,
-				4AD38511215CA06C003060F5 /* ContactExportViewController.swift */,
+				4AD38511215CA06C003060F5 /* DataExportViewController.swift */,
 				4AB9AF111FF56CE10005EFFA /* InfoElement.swift */,
 				4AB9AF0F1FF56CC30005EFFA /* CommonInfoViewController.swift */,
 				4AB9AF091FF559D20005EFFA /* SettingsViewController.swift */,
@@ -462,7 +462,7 @@
 				4A63556D203B307B00140F2B /* MailComposer.swift in Sources */,
 				4A7FF5C81FFCB2F500685105 /* MailingListMapper.swift in Sources */,
 				4A5C6F822036CBE800ECF1F3 /* AddressbookGroupPickerTableViewController.swift in Sources */,
-				4AD38512215CA06C003060F5 /* ContactExportViewController.swift in Sources */,
+				4AD38512215CA06C003060F5 /* DataExportViewController.swift in Sources */,
 				4AB9AF101FF56CC30005EFFA /* CommonInfoViewController.swift in Sources */,
 				4A5F4F38202A520B00ED10D7 /* AssingedContacts.swift in Sources */,
 				4A4BA9A32022F7C900BF0594 /* ContactPickerTableViewController.swift in Sources */,

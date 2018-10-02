@@ -9,9 +9,9 @@ import UIKit
 import CoreData
 
 /**
- View to controll exporting contacts to a file
+ View to controll exporting contacts and mailing lists to a file
  */
-class ContactExportViewController: UIViewController {
+class DataExportViewController: UIViewController {
     
     var container: NSPersistentContainer? =
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer

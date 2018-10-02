@@ -72,7 +72,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Kontakt-Import" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uWk-pc-Xmt">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Addressbuch-Import" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uWk-pc-Xmt">
                                                     <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -185,10 +185,10 @@
             </objects>
             <point key="canvasLocation" x="2236" y="1003"/>
         </scene>
-        <!--Contact Export-->
+        <!--Data Export-->
         <scene sceneID="uSX-Es-0da">
             <objects>
-                <viewController id="dqZ-2q-fQb" userLabel="Contact Export" customClass="ContactExportViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="dqZ-2q-fQb" userLabel="Data Export" customClass="DataExportViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6Zb-4V-jrb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
