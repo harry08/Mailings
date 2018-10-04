@@ -7,7 +7,6 @@
 
 import Foundation
 import CoreData
-import os.log
 
 class MailingList: NSManagedObject {
     
@@ -148,7 +147,7 @@ class MailingList: NSManagedObject {
     class func createOrUpdateFromDTO(_ mailingListDTO: MailingListDTO, assignmentChanges: [ContactAssignmentChange]?, in context: NSManagedObjectContext) throws {
         if mailingListDTO.objectId == nil {
             // New mailing
-            os_log("Creating new mailingList...", log: OSLog.default, type: .debug)
+            print("Creating new mailingList...")
             var mailingListEntity = MailingList(context: context)
             mailingListEntity.createtime = Date()
             mailingListEntity.updatetime = Date()
@@ -160,7 +159,7 @@ class MailingList: NSManagedObject {
         } else {
             // Load and update existing mailing
             if let objectId = mailingListDTO.objectId {
-                os_log("Updating existing mailingList with id %s...", log: OSLog.default, type: .debug, objectId)
+                print("Updating existing mailingList with id \(objectId)...")
                 
                 do {
                     var mailingListEntity = try context.existingObject(with: objectId) as! MailingList
@@ -172,7 +171,7 @@ class MailingList: NSManagedObject {
                         try addContactAssignmentChanges(assignmentChanges, mailingList: mailingListEntity, in: context)
                     }
                 } catch let error as NSError {
-                    os_log("Could not update existing mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+                    print("Could not update existing mailingList. \(error), \(error.userInfo)")
                     throw error
                 }
             }
@@ -180,9 +179,9 @@ class MailingList: NSManagedObject {
         
         do {
             try context.save()
-            os_log("MailingList saved", log: OSLog.default, type: .debug)
+            print("MailingList saved")
         } catch let error as NSError {
-            os_log("Could not save mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            print("Could not save mailingList. \(error), \(error.userInfo)")
             throw error
         }
     }
@@ -204,7 +203,7 @@ class MailingList: NSManagedObject {
                 }
             }
         } catch let error as NSError {
-            os_log("Could not load contact and assign it to the mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            print("Could not load contact and assign it to the mailingList. \(error), \(error.userInfo)")
             throw error
         }
     }
@@ -212,22 +211,22 @@ class MailingList: NSManagedObject {
     class func deleteMailingList(_ mailingListDTO: MailingListDTO, in context: NSManagedObjectContext) throws {
         
         if let objectId = mailingListDTO.objectId {
-            os_log("Deleting existing mailingList with id %s...", log: OSLog.default, type: .debug, objectId)
+            print("Deleting existing mailingList with id \(objectId)...")
             
             do {
                 let mailingListEntity = try context.existingObject(with: objectId) as! MailingList
                 context.delete(mailingListEntity)
             } catch let error as NSError {
-                os_log("Could not delete mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+                print("Could not delete mailingList. \(error), \(error.userInfo)")
                 throw error
             }
         }
         
         do {
             try context.save()
-            os_log("MailingList deleted", log: OSLog.default, type: .debug)
+            print("MailingList deleted")
         } catch let error as NSError {
-            os_log("Could not delete mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            print("Could not delete mailingList. \(error), \(error.userInfo)")
             throw error
         }
     }

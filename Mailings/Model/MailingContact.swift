@@ -8,7 +8,6 @@
 import Foundation
 import CoreData
 import Contacts
-import os.log
 
 class MailingContact: NSManagedObject {
 
@@ -50,7 +49,7 @@ class MailingContact: NSManagedObject {
         let contactInfo = contact.givenName + " " + contact.familyName + ", " + String(describing: email)
         
         if !existing {
-            os_log("Creating contact %s ...", log: OSLog.default, type: .info, contactInfo)
+            print("Creating contact \(contactInfo)")
             let mailingContact = MailingContact(context: context)
             mailingContact.lastname = contact.familyName
             mailingContact.firstname = contact.givenName
@@ -68,7 +67,6 @@ class MailingContact: NSManagedObject {
             }
         } else {
             print("Contact \(contactInfo) already exists.")
-            os_log("Contact %s already exists...", log: OSLog.default, type: .info, contactInfo)
         }
     }
     
@@ -86,7 +84,7 @@ class MailingContact: NSManagedObject {
     class func createOrUpdateFromDTO(contactDTO: MailingContactDTO, assignmentChanges: [MailingListAssignmentChange]?, in context: NSManagedObjectContext) throws {
         if contactDTO.objectId == nil {
             // New contact
-            os_log("Creating new contact...", log: OSLog.default, type: .debug)
+            print("Creating new contact...")
             var contactEntity = MailingContact(context: context)
             contactEntity.createtime = Date()
             contactEntity.updatetime = Date()
@@ -105,7 +103,7 @@ class MailingContact: NSManagedObject {
         } else {
             // Load and update existing contact
             if let objectId = contactDTO.objectId {
-                os_log("Updating existing contact with id %s...", log: OSLog.default, type: .debug, objectId)
+                print("Updating existing contact with id \(objectId)")
                 
                 do {
                     var contactEntity = try context.existingObject(with: objectId) as! MailingContact
@@ -116,7 +114,7 @@ class MailingContact: NSManagedObject {
                         try addMailingListAssignmentChanges(assignmentChanges, contact: contactEntity, in: context)
                     }
                 } catch let error as NSError {
-                    os_log("Could not load contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+                    print("Could not load contact. \(error), \(error.userInfo)")
                     throw error
                 }
             }
@@ -124,9 +122,9 @@ class MailingContact: NSManagedObject {
         
         do {
             try context.save()
-            os_log("Contact saved", log: OSLog.default, type: .debug)
+            print("Contact saved")
         } catch let error as NSError {
-            os_log("Could not save contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            print("Could not load contact. \(error), \(error.userInfo)")
             throw error
         }
     }
@@ -148,7 +146,7 @@ class MailingContact: NSManagedObject {
                 }
             }
         } catch let error as NSError {
-            os_log("Could not mailinglists and assign it to the mailingList. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            print("Could not mailinglists and assign it to the mailingList. \(error), \(error.userInfo))")
             throw error
         }
     }
@@ -156,22 +154,22 @@ class MailingContact: NSManagedObject {
     class func deleteContact(contactDTO: MailingContactDTO, in context: NSManagedObjectContext) throws {
         
         if let objectId = contactDTO.objectId {
-            os_log("Deleting existing contact with id %s...", log: OSLog.default, type: .debug, objectId)
+            print("Deleting existing contact with id \(objectId)...")
             
             do {
                 let contactEntity = try context.existingObject(with: objectId) as! MailingContact
                 context.delete(contactEntity)
             } catch let error as NSError {
-                os_log("Could not delete contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+                print("Could not delete contact. \(error), \(error.userInfo))")
                 throw error
             }
         }
         
         do {
             try context.save()
-            os_log("Contact deleted", log: OSLog.default, type: .debug)
+            print("Contact deleted")
         } catch let error as NSError {
-            os_log("Could not delete contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            print("Could not delete contact. \(error), \(error.userInfo))")
             throw error
         }
     }
@@ -184,7 +182,7 @@ class MailingContact: NSManagedObject {
             
             return contactDTO
         } catch let error as NSError {
-            os_log("Could not load contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            print("Could not load contact. \(error), \(error.userInfo))")
             throw error
         }
     }
@@ -195,7 +193,7 @@ class MailingContact: NSManagedObject {
             let contactEntity = try context.existingObject(with: objectId) as! MailingContact
             return contactEntity
         } catch let error as NSError {
-            os_log("Could not load contact. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            print("Could not load contact. \(error), \(error.userInfo))")
             throw error
         }
     }
@@ -274,7 +272,7 @@ class MailingContact: NSManagedObject {
             let matches = try context.fetch(request)
             count = matches.count
         } catch let error as NSError {
-            os_log("Could not count contacts. %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            print("Could not count contacts. \(error), \(error.userInfo))")
         }
         
         return count
