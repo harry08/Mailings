@@ -43,7 +43,7 @@ class DataExportViewController: UIViewController {
     
     /**
      Creates a csv file with all contacts.
-     Besides the normal contact data like name a record containts also the assigned mailinglists of a contact.
+     Besides the normal contact data like name a record also containts the assigned mailinglists of this contact.
      For each available mailing list a column is added to the export record.
      */
     @IBAction func exportContacts(_ sender: Any) {
@@ -61,7 +61,7 @@ class DataExportViewController: UIViewController {
             
             let contacts = MailingContact.getAllContacts(in: context)
             contacts.forEach { contact in
-                csvText.append(getDataFromContact(contact, nrOfMailingLists: mailingLists.count))
+                csvText.append(getDataFromContact(contact, mailingLists: mailingLists))
             }
             
             writeToFile(csvText, path: path, sender: sender)
@@ -71,12 +71,13 @@ class DataExportViewController: UIViewController {
     private func getContactHeader(mailingLists: [MailingList]) -> String {
         var header = "Vorname,Name,Email,Notizen,Erstellt am, Geändert am"
         
-        var count = mailingLists.count
-        if count == 0 {
-            count = 1
-        }
-        for _ in 0 ..< count {
-            header.append(",Verteilerliste")
+        // Add each mailingList as a column to the header
+        for mailingList in mailingLists {
+            var name = ""
+            if mailingList.name != nil {
+                name = mailingList.name!
+            }
+            header.append(",\(name)")
         }
         
         header.append("\n")
@@ -87,7 +88,7 @@ class DataExportViewController: UIViewController {
     /**
      Returns a comma separated string for the given contact entity.
      */
-    private func getDataFromContact(_ contact: MailingContact, nrOfMailingLists: Int) -> String {
+    private func getDataFromContact(_ contact: MailingContact, mailingLists: [MailingList]) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
         
@@ -118,21 +119,21 @@ class DataExportViewController: UIViewController {
         
         var contactRecord = "\(firstName),\(lastName),\(email),\(notes),\(created),\(updated)"
         
-        var count = 0
-        if let mailingLists = contact.lists {
-            for case let mailingList as MailingList in mailingLists {
-                if let mailingListName = mailingList.name {
-                    contactRecord.append(",\(mailingListName)")
-                    count += 1
+        // Fill each mailinglist column with 1 if contact is assigned to this mailinglist. Otherwise 0.
+        for mailingList in mailingLists {
+            var assigned = 0
+            
+            if let contactMailingLists = contact.lists {
+                for case let contactMailingList as MailingList in contactMailingLists {
+                    if contactMailingList.objectID == mailingList.objectID {
+                        assigned = 1
+                    }
                 }
             }
+            
+            contactRecord.append(",\(assigned)")
         }
-        
-        // Fill up the record with empty entries for not assigned mailing lists.
-        for _ in count ..< nrOfMailingLists {
-            contactRecord.append(",")
-        }
-        
+    
         contactRecord.append("\n")
         
         return contactRecord
