@@ -159,7 +159,7 @@ class ImportContactsViewController: UIViewController, CNContactPickerDelegate, A
             showImportResult(importedContacts: contactCounter)
             
         } catch let error as NSError {
-            os_log("Could not save addressbook contact: %s, %s", log: OSLog.default, type: .error, error, error.userInfo)
+            print("Could not save addressbook contact: \(error), \(error.userInfo)")
         }
     }
     

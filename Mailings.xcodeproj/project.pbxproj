@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4A047CE920FF04A200449F03 /* HtmlUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A047CE820FF04A200449F03 /* HtmlUtil.swift */; };
+		4A051EC4216C748700383923 /* CsvContactReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A051EC3216C748700383923 /* CsvContactReader.swift */; };
 		4A17ADAF1FF58BD900FEDD1E /* MailingContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADAE1FF58BD900FEDD1E /* MailingContact.swift */; };
 		4A17ADB11FF58CE400FEDD1E /* Mailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADB01FF58CE400FEDD1E /* Mailing.swift */; };
 		4A17ADB31FF58E2400FEDD1E /* ImportContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADB21FF58E2400FEDD1E /* ImportContactsViewController.swift */; };
@@ -18,6 +19,7 @@
 		4A23B3CD208711860033337D /* MailingTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A23B3CC208711860033337D /* MailingTitleTableViewCell.swift */; };
 		4A28003E200FCB300095E694 /* MessageComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A28003D200FCB300095E694 /* MessageComposer.swift */; };
 		4A28589220FFA2EA00C735D3 /* HtmlPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A28589120FFA2EA00C735D3 /* HtmlPreviewViewController.swift */; };
+		4A37CF3A216667B200ABA2B9 /* DataImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A37CF39216667B200ABA2B9 /* DataImportViewController.swift */; };
 		4A4A2D2D20452D9A00CB3457 /* SettingDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4A2D2C20452D9A00CB3457 /* SettingDTO.swift */; };
 		4A4A548A20D0E4C7004D4B4B /* FileAttachmentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4A548920D0E4C7004D4B4B /* FileAttachmentHandler.swift */; };
 		4A4BA9A12022EDAA00BF0594 /* MailingListContactsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4BA9A02022EDAA00BF0594 /* MailingListContactsTableViewController.swift */; };
@@ -82,6 +84,7 @@
 
 /* Begin PBXFileReference section */
 		4A047CE820FF04A200449F03 /* HtmlUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlUtil.swift; sourceTree = "<group>"; };
+		4A051EC3216C748700383923 /* CsvContactReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvContactReader.swift; sourceTree = "<group>"; };
 		4A17ADAE1FF58BD900FEDD1E /* MailingContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingContact.swift; sourceTree = "<group>"; };
 		4A17ADB01FF58CE400FEDD1E /* Mailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mailing.swift; sourceTree = "<group>"; };
 		4A17ADB21FF58E2400FEDD1E /* ImportContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportContactsViewController.swift; sourceTree = "<group>"; };
@@ -93,6 +96,7 @@
 		4A23B3CC208711860033337D /* MailingTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingTitleTableViewCell.swift; sourceTree = "<group>"; };
 		4A28003D200FCB300095E694 /* MessageComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageComposer.swift; sourceTree = "<group>"; };
 		4A28589120FFA2EA00C735D3 /* HtmlPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlPreviewViewController.swift; sourceTree = "<group>"; };
+		4A37CF39216667B200ABA2B9 /* DataImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataImportViewController.swift; sourceTree = "<group>"; };
 		4A4A2D2C20452D9A00CB3457 /* SettingDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDTO.swift; sourceTree = "<group>"; };
 		4A4A548920D0E4C7004D4B4B /* FileAttachmentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentHandler.swift; sourceTree = "<group>"; };
 		4A4BA9A02022EDAA00BF0594 /* MailingListContactsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingListContactsTableViewController.swift; sourceTree = "<group>"; };
@@ -276,6 +280,7 @@
 			children = (
 				4A17ADB21FF58E2400FEDD1E /* ImportContactsViewController.swift */,
 				4AD38511215CA06C003060F5 /* DataExportViewController.swift */,
+				4A37CF39216667B200ABA2B9 /* DataImportViewController.swift */,
 				4AB9AF111FF56CE10005EFFA /* InfoElement.swift */,
 				4AB9AF0F1FF56CC30005EFFA /* CommonInfoViewController.swift */,
 				4AB9AF091FF559D20005EFFA /* SettingsViewController.swift */,
@@ -283,6 +288,7 @@
 				4A757AD42041897A005B0FB8 /* ContactGroupDTO.swift */,
 				4AFFFA472043E3CD00E81D50 /* CommonSettingsViewController.swift */,
 				4AB54ACD2045C807001A9C04 /* CommonSettingsController.swift */,
+				4A051EC3216C748700383923 /* CsvContactReader.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -423,6 +429,7 @@
 				4ADEFA44204EEAA80074FFA5 /* ContactMailingListsTableViewController.swift in Sources */,
 				4A17ADB31FF58E2400FEDD1E /* ImportContactsViewController.swift in Sources */,
 				4A7FF5C41FFCAC2D00685105 /* MailingContactDTO.swift in Sources */,
+				4A051EC4216C748700383923 /* CsvContactReader.swift in Sources */,
 				4A69F32B2060DF620051E49F /* ContactFilterPickerTableViewController.swift in Sources */,
 				4A707E4F20106DA0005243BE /* MailingListTableViewController.swift in Sources */,
 				4A56F73620864D980025180B /* MailingTextViewController.swift in Sources */,
@@ -443,6 +450,7 @@
 				4AB9AF0E1FF55C680005EFFA /* Mailings.xcdatamodeld in Sources */,
 				4A985E441FF14BD80055F6BA /* AppDelegate.swift in Sources */,
 				4AB9AF121FF56CE10005EFFA /* InfoElement.swift in Sources */,
+				4A37CF3A216667B200ABA2B9 /* DataImportViewController.swift in Sources */,
 				4AC1FD8B204476BA003CEFDA /* CommonSetting.swift in Sources */,
 				4A23B3CD208711860033337D /* MailingTitleTableViewCell.swift in Sources */,
 				4AE86FD1200348D300D981B4 /* FetchedResultsTableViewController.swift in Sources */,

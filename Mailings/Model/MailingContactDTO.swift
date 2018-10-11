@@ -15,4 +15,6 @@ struct MailingContactDTO {
     var lastname: String?
     var email: String?
     var notes: String?
+    var createtime: Date?
+    var updatetime: Date?
 }

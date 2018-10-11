@@ -25,6 +25,26 @@ class MailingList: NSManagedObject {
         }
     }
     
+    class func loadMailingListByBame(_ name: String, in context: NSManagedObjectContext) throws -> MailingListDTO? {
+        do {
+            let request : NSFetchRequest<MailingList> = MailingList.fetchRequest()
+            let predicate = NSPredicate(format: "name = %@", name)
+            request.predicate = predicate
+            
+            let mailingLists = try context.fetch(request)
+            if let mailingList = mailingLists.first {
+                let mailinglistDTO = MailingListMapper.mapToDTO(mailingList: mailingList)
+                
+                return mailinglistDTO
+            }
+        } catch let error as NSError {
+            print("Could not load mailingList. \(error), \(error.userInfo)")
+            throw error
+        }
+        
+        return nil
+    }
+    
     // Loads a mailinglist with a given id.
     class func loadMailingListEntity(objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws -> MailingList {
         do {

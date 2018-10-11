@@ -15,12 +15,16 @@ class MailingContact: NSManagedObject {
     
     // Checks if for the given addressbook contact a mailingcontact already exists.
     // Check is done by firstname and lastname
-    class func contactExists(contact: CNContact, in context: NSManagedObjectContext) throws -> Bool {
+    class func contactExists(contact: CNContact, in context: NSManagedObjectContext) throws -> Bool {        
+        return try contactExists(firstname: contact.givenName, lastname: contact.familyName, in: context)
+    }
+    
+    class func contactExists(firstname: String, lastname: String, in context: NSManagedObjectContext) throws -> Bool {
+    
         var existing : Bool = false
         
-        // TODO Check also email
         let request : NSFetchRequest<MailingContact> = MailingContact.fetchRequest()
-        request.predicate = NSPredicate(format: "lastname = %@ and firstname = %@", contact.familyName, contact.givenName)
+        request.predicate = NSPredicate(format: "lastname = %@ and firstname = %@", lastname, firstname)
         do {
             let matches = try context.fetch(request)
             if (matches.count > 0) {
@@ -79,16 +83,26 @@ class MailingContact: NSManagedObject {
     /**
      Creates a new contact or updates an already existing contact
      Depends on the objectId in MailingContactDTO.
-     The assignmentChanges array is optional. i.e. if not set, the default values get
+     The assignmentChanges array is optional. i.e. if not set, the default values get set
      */
     class func createOrUpdateFromDTO(contactDTO: MailingContactDTO, assignmentChanges: [MailingListAssignmentChange]?, in context: NSManagedObjectContext) throws {
         if contactDTO.objectId == nil {
             // New contact
             print("Creating new contact...")
             var contactEntity = MailingContact(context: context)
-            contactEntity.createtime = Date()
-            contactEntity.updatetime = Date()
             MailingContactMapper.mapToEntity(contactDTO: contactDTO, contact: &contactEntity)
+            // The DTO can contain craetetime and updatetime in case of a data import. Then these values are used
+            // Otherwise newly set
+            if let createtime = contactDTO.createtime {
+                contactEntity.createtime = createtime
+            } else {
+                contactEntity.createtime = Date()
+            }
+            if let updatetime = contactDTO.updatetime {
+                contactEntity.updatetime = updatetime
+            } else {
+                contactEntity.updatetime = Date()
+            }
             
             if assignmentChanges == nil {
                 // Assignment to default mailinglists
@@ -203,7 +217,7 @@ class MailingContact: NSManagedObject {
         var emailAddresses = [String]()
         
         let request : NSFetchRequest<MailingList> = MailingList.fetchRequest()
-        let predicate = NSPredicate(format: "name = = %@", mailingList)
+        let predicate = NSPredicate(format: "name = %@", mailingList)
         request.predicate = predicate
         
         do {

@@ -10,7 +10,7 @@ import Foundation
 class MailingContactMapper {
     
     class func mapToDTO(contact: MailingContact) -> MailingContactDTO {
-        let contactDTO = MailingContactDTO(objectId: contact.objectID, firstname: contact.firstname, lastname: contact.lastname, email: contact.email, notes: contact.notes)
+        let contactDTO = MailingContactDTO(objectId: contact.objectID, firstname: contact.firstname, lastname: contact.lastname, email: contact.email, notes: contact.notes, createtime: contact.createtime, updatetime: contact.updatetime)
         
         return contactDTO
     }
