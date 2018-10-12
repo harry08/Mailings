@@ -208,7 +208,7 @@
         <!--Data Export-->
         <scene sceneID="uSX-Es-0da">
             <objects>
-                <viewController id="dqZ-2q-fQb" userLabel="Data Export" customClass="DataExportViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="dqZ-2q-fQb" userLabel="Data Export" customClass="DataExportViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6Zb-4V-jrb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -244,7 +244,7 @@
         <!--Data Import-->
         <scene sceneID="wkK-6N-qoj">
             <objects>
-                <viewController id="2SQ-VC-wCL" userLabel="Data Import" customClass="DataImportViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="2SQ-VC-wCL" userLabel="Data Import" customClass="DataImportViewController" customModule="Mailings" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8PV-Ju-4bX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -14,6 +14,9 @@ import CoreData
  Expected format of the String:
  Vorname,Name,Email,Notizen,Erstellt am, Geändert am,Info Mail,Neue Liste\n
  Martina,Müller,mm@online.de,,20180124061137,20180124061137,1,1\n
+ 
+ The collumns after Geändert am represent the assigned mailing list. If they are omitted,
+ the imported contacts are assigned to the default mailing lists.
  */
 class CsvContactReader {
 
