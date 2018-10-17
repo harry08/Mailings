@@ -61,8 +61,11 @@ class DataImportViewController: UIViewController, UIDocumentPickerDelegate, CsvC
                 reader.delegate = self
                 do {
                     try reader.importContacts()
+                } catch let e as CsvReaderError {
+                    print("CsvReaderError: \(e.kind)")
+                    self.showImportError(e)
                 } catch {
-                    print("Error. Failed to import contacts from file")
+                    print("General Error. Failed to import contacts from file")
                 }
             
                 do {
@@ -78,6 +81,20 @@ class DataImportViewController: UIViewController, UIDocumentPickerDelegate, CsvC
                     print("Failure to save context: \(error)")
                 }
             }
+        }
+    }
+    
+    private func showImportError(_ error: CsvReaderError) {
+        var imporResultMessage = "Fehler beim Import."
+        if error.kind == .invalidColumns {
+            imporResultMessage.append(" Fehlerhaftes Dateiformat")
+        }
+        
+        DispatchQueue.main.async {
+            self.progressView.isHidden = true
+            
+            self.infoLabel.text = imporResultMessage
+            self.infoLabel.isHidden = false
         }
     }
     

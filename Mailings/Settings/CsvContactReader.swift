@@ -8,6 +8,15 @@
 import Foundation
 import CoreData
 
+struct CsvReaderError: Error {
+    enum ErrorKind {
+        case invalidColumns
+        case invalidRecord
+    }
+    
+    let kind: ErrorKind
+}
+
 /**
  Delegate to get informed with the progress information during importing
  */
@@ -135,20 +144,17 @@ class CsvContactReader {
                     try MailingContact.createOrUpdateFromDTO(contactDTO: contact, in: context)
                 }
                 
-                
                 return contact
             }
         } catch let error as NSError {
             print("Error persisting contact: \(error), \(error.userInfo)")
-            throw error
+            throw CsvReaderError(kind: .invalidRecord)
         }
         
         return nil
     }
     
     func processHeader(_ header: String.SubSequence) throws {
-        print("Header: \(header)")
-        
         headerElements = [String]()
         
         let columns = header.split(separator: ",", omittingEmptySubsequences: false)
@@ -157,11 +163,16 @@ class CsvContactReader {
             headerElements.append(colName)
         }
         
-        for header in headerElements {
-            if !contactHeaderFields.contains(header) {
-                // Field not available in contact headers. It is asssumed to be a mailing list
-                headerContainsMailingLists = true
+        if headerElements.contains("Vorname") && headerElements.contains("Name") && headerElements.contains("Email") {
+        
+            for header in headerElements {
+                if !contactHeaderFields.contains(header) {
+                    // Field not available in contact headers. It is asssumed to be a mailing list
+                    headerContainsMailingLists = true
+                }
             }
+        } else {
+            throw CsvReaderError(kind: .invalidColumns)
         }
     }
 }
