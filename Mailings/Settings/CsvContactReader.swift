@@ -9,13 +9,22 @@ import Foundation
 import CoreData
 
 /**
+ Delegate to get informed with the progress information during importing
+ */
+protocol CsvContactReaderDelegate: class {
+    func csvContactReaderInitialized(_ reader: CsvContactReader, numberOfRecords: Int)
+    func csvContactReaderProgress(_ reader: CsvContactReader, recordNumber: Int)
+    func csvContactReaderFinished(_ reader: CsvContactReader, importedContacts: [MailingContactDTO])
+}
+
+/**
  Imports contacts from csv Strings.
  The string should have a header with the column names.
  Expected format of the String:
  Vorname,Name,Email,Notizen,Erstellt am, Geändert am,Info Mail,Neue Liste\n
  Martina,Müller,mm@online.de,,20180124061137,20180124061137,1,1\n
  
- The collumns after Geändert am represent the assigned mailing list. If they are omitted,
+ The columns after Geändert am represent the assigned mailing list. If they are omitted,
  the imported contacts are assigned to the default mailing lists.
  */
 class CsvContactReader {
@@ -28,15 +37,23 @@ class CsvContactReader {
     var headerElements = [String]()
     var headerContainsMailingLists = false
     
+    /**
+     Delegate to call after each status change
+     Weak reference to avoid ownership cycles.
+     */
+    weak var delegate: CsvContactReaderDelegate?
+    
     init(csvContent: String, context: NSManagedObjectContext) {
         self.content = csvContent
         self.context = context
     }
     
-    public func importContacts() throws -> [MailingContactDTO] {
+    public func importContacts() throws { // -> [MailingContactDTO] {
         var importedContacts = [MailingContactDTO]()
         
         let lines = content.split(separator: "\n")
+        delegate?.csvContactReaderInitialized(self, numberOfRecords: lines.count)
+        
         for (index, line) in lines.enumerated() {
             if index == 0 {
                 try processHeader(line)
@@ -49,9 +66,12 @@ class CsvContactReader {
                     print("Could not import contact from line: \(line)")
                 }
             }
+            delegate?.csvContactReaderProgress(self, recordNumber: index)
         }
         
-        return importedContacts
+        delegate?.csvContactReaderFinished(self, importedContacts: importedContacts)
+        
+       // return importedContacts
     }
     
     func processLine(_ line: String.SubSequence) throws -> MailingContactDTO? {

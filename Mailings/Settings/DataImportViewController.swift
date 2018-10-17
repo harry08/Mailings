@@ -11,18 +11,29 @@ import CoreData
 
 /**
  View to controll importing contacts from a csv file
+ 
+ Handling of UI updating within a long running task with usage of
+ - PrivateManagedObjectContext
+ - DispatchQueue.main.async
+ - ManagedObjectContext as private queue.
+ 
+ For details see
+ https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/Concurrency.html
  */
-class DataImportViewController: UIViewController, UIDocumentPickerDelegate {
-    
+class DataImportViewController: UIViewController, UIDocumentPickerDelegate, CsvContactReaderDelegate {
     @IBOutlet weak var infoLabel: UILabel!
+    @IBOutlet weak var progressView: UIProgressView!
+    
+    var numberOfRecords : Int = 0
     
     var container: NSPersistentContainer? =
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         infoLabel.isHidden = true
+        progressView.isHidden = true
     }
     
     /**
@@ -35,18 +46,37 @@ class DataImportViewController: UIViewController, UIDocumentPickerDelegate {
         self.present(importMenu, animated: true, completion: nil)
     }
     
+    /**
+     Opens the selected file and starts the import via CsvContactReader.
+     */
     func readDataFromFile(at url: URL) throws {
         let content = try String(contentsOf: url)
-        
         if let context = self.container?.viewContext {
-            let reader = CsvContactReader(csvContent: content, context: context)
-            do {
-                let importedContacts = try reader.importContacts()
-                print("Nr of imported contacts: \(importedContacts.count)")
-                
-                showImportResult(importedContacts: importedContacts.count)
-            } catch {
-                print("Error. Failed to import contacts from file")
+            
+            let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+            privateMOC.parent = context
+            
+            privateMOC.perform {
+                let reader = CsvContactReader(csvContent: content, context: privateMOC)
+                reader.delegate = self
+                do {
+                    try reader.importContacts()
+                } catch {
+                    print("Error. Failed to import contacts from file")
+                }
+            
+                do {
+                    try privateMOC.save()
+                    context.performAndWait {
+                        do {
+                            try context.save()
+                        } catch {
+                            print("Failure to save context: \(error)")
+                        }
+                    }
+                } catch {
+                    print("Failure to save context: \(error)")
+                }
             }
         }
     }
@@ -63,8 +93,43 @@ class DataImportViewController: UIViewController, UIDocumentPickerDelegate {
         print(message)
         
         let imporResultMessage = "Kontaktimport abgeschlossen\n\(message)"
-        infoLabel.text = imporResultMessage
-        infoLabel.isHidden = false
+        
+        DispatchQueue.main.async {
+            self.infoLabel.text = imporResultMessage
+            self.infoLabel.isHidden = false
+        }
+    }
+    
+    // MARK: - CsvContactReader Delegate
+    func csvContactReaderInitialized(_ reader: CsvContactReader, numberOfRecords: Int) {
+        self.numberOfRecords = numberOfRecords
+        let progressValue = 0.0
+        DispatchQueue.main.async {
+            self.progressView.progress = Float(progressValue)
+            self.progressView.isHidden = false
+            
+            self.infoLabel.text = "Importiere Kontakte..."
+            self.infoLabel.isHidden = false
+        }
+    }
+    
+    func csvContactReaderProgress(_ reader: CsvContactReader, recordNumber: Int) {
+        let progressValue =  1.0 / Float(numberOfRecords) * Float(recordNumber)
+        print("Progress \(progressValue)")
+        DispatchQueue.main.async {
+            print("Progress in DispatchQueue\(progressValue)")
+            self.progressView.progress = progressValue
+            self.progressView.isHidden = false
+        }
+    }
+    
+    func csvContactReaderFinished(_ reader: CsvContactReader, importedContacts: [MailingContactDTO]) {
+        let progressValue = 1.0
+        DispatchQueue.main.async {
+            self.progressView.progress = Float(progressValue)
+        }
+        
+        showImportResult(importedContacts: importedContacts.count)
     }
     
     // MARK: - Document Picker

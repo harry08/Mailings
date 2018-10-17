@@ -260,12 +260,16 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t7e-1x-VUW" userLabel="InfoLabel">
-                                <rect key="frame" x="14" y="193" width="343" height="75"/>
+                                <rect key="frame" x="16" y="233" width="343" height="75"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5JT-nk-lLT">
+                                <rect key="frame" x="16" y="227" width="343" height="3"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="4tj-rL-s89"/>
@@ -273,11 +277,12 @@
                     <navigationItem key="navigationItem" title="Daten-Import" id="vdT-OV-blZ"/>
                     <connections>
                         <outlet property="infoLabel" destination="t7e-1x-VUW" id="6ik-lq-FnM"/>
+                        <outlet property="progressView" destination="5JT-nk-lLT" id="zqm-Bp-V7p"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K7E-tX-Qpw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2236" y="3877"/>
+            <point key="canvasLocation" x="2236" y="3876.611694152924"/>
         </scene>
         <!--Contact Import-->
         <scene sceneID="x0j-en-A3w">
