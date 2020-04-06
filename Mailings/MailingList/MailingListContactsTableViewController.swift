@@ -145,8 +145,8 @@ class MailingListContactsTableViewController: UITableViewController, ContactPick
         let cell = tableView.dequeueReusableCell(withIdentifier: "MailingContactCell", for: indexPath)
         
         let assignedContact = assignedContacts!.contacts[indexPath.row]
-        cell.textLabel?.text = assignedContact.lastname!
-        cell.detailTextLabel?.text = assignedContact.firstname!
+        cell.textLabel?.text = assignedContact.lastname
+        cell.detailTextLabel?.text = assignedContact.firstname
         
         return cell
     }

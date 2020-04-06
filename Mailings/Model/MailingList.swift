@@ -102,6 +102,8 @@ class MailingList: NSManagedObject {
             print("Could not select mailingList. \(error)")
         }
         
+        assingedContacts.sort()
+        
         return assingedContacts
     }
     
