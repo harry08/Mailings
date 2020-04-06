@@ -10,6 +10,7 @@ import Foundation
 struct MailDTO {
     var mailingDTO: MailingDTO
     var emailAddresses: [String]
+    var recipientAsBcc = false
     var emailSent = false
     var folder: String?
     var attachments = [String]()

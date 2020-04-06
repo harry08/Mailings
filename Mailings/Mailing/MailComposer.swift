@@ -11,12 +11,14 @@ class MailComposer {
     
     var mailingDTO: MailingDTO
     var files = [AttachedFile]()
+    var recipientAsBcc: Bool
     
     var settingsController : CommonSettingsController
     
-    init(mailingDTO: MailingDTO, files: [AttachedFile]) {
+    init(mailingDTO: MailingDTO, files: [AttachedFile], recipientAsBcc: Bool) {
         self.mailingDTO = mailingDTO
         self.files = files
+        self.recipientAsBcc = recipientAsBcc
         
         settingsController = CommonSettingsController.sharedInstance
     }
@@ -47,7 +49,7 @@ class MailComposer {
             let chunk = emailAddresses[startIndex ..< endIndex]
             let ccAddresses = convertToArray(slice: chunk)
             
-            let mailToSend = MailDTO(mailingDTO: mailingDTO, emailAddresses: ccAddresses, emailSent: false, folder: mailingDTO.folder, attachments: attachments)
+            let mailToSend = MailDTO(mailingDTO: self.mailingDTO, emailAddresses: ccAddresses, recipientAsBcc: self.recipientAsBcc, emailSent: false, folder: mailingDTO.folder, attachments: attachments)
             mailsToSend.append(mailToSend)
             
             startIndex = endIndex

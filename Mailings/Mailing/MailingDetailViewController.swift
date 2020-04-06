@@ -752,7 +752,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
                 initAttachedFiles()
             }
             
-            let mailComposer = MailComposer(mailingDTO: mailingDTO, files: attachments!.files)
+            let mailComposer = MailComposer(mailingDTO: mailingDTO, files: attachments!.files, recipientAsBcc: chosenMailingList.recipientAsBcc)
             mailsToSend = mailComposer.composeMailsToSend(emailAddresses: emailAddresses)
             if mailsToSend.count == 1 {
                 // Show Mail view directly

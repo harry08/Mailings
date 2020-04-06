@@ -82,7 +82,11 @@ class MessageComposer: NSObject, MFMailComposeViewControllerDelegate {
     }
     
     class func updateMailComposeViewController(_ mailComposerVC: MFMailComposeViewController, mailDTO: MailDTO) {
-        mailComposerVC.setBccRecipients(mailDTO.emailAddresses)
+        if (mailDTO.recipientAsBcc) {
+            mailComposerVC.setBccRecipients(mailDTO.emailAddresses)
+        } else {
+            mailComposerVC.setToRecipients(mailDTO.emailAddresses)
+        }
         
         if let messageSubject = mailDTO.mailingDTO.title {
             mailComposerVC.setSubject(messageSubject)
