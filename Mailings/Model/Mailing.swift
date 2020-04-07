@@ -37,8 +37,6 @@ class Mailing: NSManagedObject {
         } else {
             // Load and update existing mailing
             if let objectId = mailingDTO.objectId {
-                os_log("Updating existing mailing with id %s...", log: OSLog.default, type: .debug, objectId)
-                
                 do {
                     var mailingEntity = try context.existingObject(with: objectId) as! Mailing
                     
@@ -124,8 +122,6 @@ class Mailing: NSManagedObject {
     class func deleteMailing(mailingDTO: MailingDTO, in context: NSManagedObjectContext) throws {
         
         if let objectId = mailingDTO.objectId {
-            os_log("Deleting existing mailing with id %s...", log: OSLog.default, type: .debug, objectId)
-            
             do {
                 let mailingEntity = try context.existingObject(with: objectId) as! Mailing
                 let folderName = mailingEntity.folder
