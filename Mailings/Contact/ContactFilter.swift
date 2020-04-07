@@ -11,7 +11,7 @@ import Foundation
  Available sections in filter overview
  */
 enum FilterSection: Int {
-    case general, mailingList, reset
+    case sorting, filter, reset
 }
 
 /**

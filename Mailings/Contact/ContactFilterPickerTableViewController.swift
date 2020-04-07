@@ -61,10 +61,10 @@ class ContactFilterPickerTableViewController: UITableViewController {
             
             var title : String
             switch filterSection {
-            case .general:
-                title = "Allgemein"
-            case .mailingList:
-                title = "Verteilerliste"
+            case .sorting:
+                title = "Sortierung"
+            case .filter:
+                title = "Filter"
             case .reset:
                 title = ""
             }
@@ -104,11 +104,11 @@ class ContactFilterPickerTableViewController: UITableViewController {
             
             let nrOfItemsInSection = contactFilter.getCount(forSection: filterSection)
             
-            if case .general = filterSection {
+            if case .sorting = filterSection {
                 contactFilter.setSelectedIndex(indexPath.row, forSection: filterSection)
                 tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
                 removeCheckmarksFromSection(indexPath.section, except: indexPath.row, count: nrOfItemsInSection)
-            } else if case .mailingList = filterSection {
+            } else if case .filter = filterSection {
                 contactFilter.setSelectedIndex(indexPath.row, forSection: filterSection)
                 tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
                 removeCheckmarksFromSection(indexPath.section, except: indexPath.row, count: nrOfItemsInSection)

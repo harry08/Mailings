@@ -8,12 +8,13 @@
 import Foundation
 
 enum FilterType {
-    // General
-    case all
-    case mostRecentAdded
-    case mostRecentEdited
+    // Sort
+    case sortByName
+    case sortByAddedDesc
+    case sortByEditedDesc
     
-    // Mailinglists
+    // Filtering by Mailinglists
+    case all
     case notAssignedToMailingList
     case assignedToMailingList (mailingList: String)
     

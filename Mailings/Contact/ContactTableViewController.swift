@@ -134,16 +134,17 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
                     let filters = contactFilter.getSelectedFilters()
                     for filterElement in filters {
                         switch filterElement.filterType {
-                        case .mostRecentAdded:
-                            // Filter to show the 10 last added contacts
-                            request.fetchLimit = 10
+                        case .sortByName:
+                            request.sortDescriptors = [NSSortDescriptor(
+                                key: "lastname",
+                                ascending: true
+                                )]
+                        case .sortByAddedDesc:
                             request.sortDescriptors = [NSSortDescriptor(
                                 key: "createtime",
                                 ascending: false
                                 )]
-                        case .mostRecentEdited:
-                            // Filter to show the 10 last edited contacts
-                            request.fetchLimit = 10
+                        case .sortByEditedDesc:
                             request.sortDescriptors = [NSSortDescriptor(
                                 key: "updatetime",
                                 ascending: false
@@ -206,18 +207,19 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
     private func createContactFilter() -> ContactFilter {
         let newContactFilter = ContactFilter()
         
-        newContactFilter.addFilter(FilterElement(title: "Alle", filterType: .all), to: .general, isSelected: true)
-        newContactFilter.addFilter(FilterElement(title: "Zuletzt hinzugefügt", filterType: .mostRecentAdded), to: .general)
-        newContactFilter.addFilter(FilterElement(title: "Zuletzt geändert", filterType: .mostRecentEdited), to: .general)
+        newContactFilter.addFilter(FilterElement(title: "Name", filterType: .sortByName), to: .sorting, isSelected: true)
+        newContactFilter.addFilter(FilterElement(title: "Zuletzt hinzugefügt", filterType: .sortByAddedDesc), to: .sorting)
+        newContactFilter.addFilter(FilterElement(title: "Zuletzt geändert", filterType: .sortByEditedDesc), to: .sorting)
         
-        newContactFilter.addFilter(FilterElement(title: "Zu keiner Liste zugeordnet", filterType: .notAssignedToMailingList), to: .mailingList)
+        newContactFilter.addFilter(FilterElement(title: "Alle", filterType: .all), to: .filter, isSelected: true)
+        newContactFilter.addFilter(FilterElement(title: "Zu keiner Liste zugeordnet", filterType: .notAssignedToMailingList), to: .filter)
         // For every available mailing list create a filter entry
         if let container = container {
             let mailingLists = MailingList.getAllMailingLists(in: container.viewContext)
             for mailingList in mailingLists {
                 if let name = mailingList.name {
                     let filterElement = FilterElement(title: "Zugeordnet zu " + name, filterType: .assignedToMailingList(mailingList: name))
-                    newContactFilter.addFilter(filterElement, to: .mailingList)
+                    newContactFilter.addFilter(filterElement, to: .filter)
                 }
             }
         }
