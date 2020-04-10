@@ -84,7 +84,7 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
         if !footerView.isHidden {
             if let contactFilter = contactFilter,
                 let nrOfUnfilteredContacts = nrOfUnfilteredContacts,
-                contactFilter.isFiltered() {
+                contactFilter.hasFilterAppliedInSectionFilter() {
                 // Show information for filtered list
                 let count = getNrOfContacts()
                 footerLabel.text = "\(count) von \(nrOfUnfilteredContacts) Kontakten"
@@ -207,24 +207,24 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
     private func createContactFilter() -> ContactFilter {
         let newContactFilter = ContactFilter()
         
-        newContactFilter.addFilter(FilterElement(title: "Name", filterType: .sortByName), to: .sorting, isSelected: true)
-        newContactFilter.addFilter(FilterElement(title: "Zuletzt hinzugefügt", filterType: .sortByAddedDesc), to: .sorting)
-        newContactFilter.addFilter(FilterElement(title: "Zuletzt geändert", filterType: .sortByEditedDesc), to: .sorting)
+        newContactFilter.addFilter(FilterElement(title: "Name", filterType: .sortByName, defaultFilter: true), to: .sorting) 
+        newContactFilter.addFilter(FilterElement(title: "Zuletzt hinzugefügt", filterType: .sortByAddedDesc, defaultFilter: false), to: .sorting)
+        newContactFilter.addFilter(FilterElement(title: "Zuletzt geändert", filterType: .sortByEditedDesc, defaultFilter: false), to: .sorting)
         
-        newContactFilter.addFilter(FilterElement(title: "Alle", filterType: .all), to: .filter, isSelected: true)
-        newContactFilter.addFilter(FilterElement(title: "Zu keiner Liste zugeordnet", filterType: .notAssignedToMailingList), to: .filter)
+        newContactFilter.addFilter(FilterElement(title: "Alle", filterType: .all, defaultFilter: true), to: .filter)
+        newContactFilter.addFilter(FilterElement(title: "Zu keiner Liste zugeordnet", filterType: .notAssignedToMailingList, defaultFilter: false), to: .filter)
         // For every available mailing list create a filter entry
         if let container = container {
             let mailingLists = MailingList.getAllMailingLists(in: container.viewContext)
             for mailingList in mailingLists {
                 if let name = mailingList.name {
-                    let filterElement = FilterElement(title: "Zugeordnet zu " + name, filterType: .assignedToMailingList(mailingList: name))
+                    let filterElement = FilterElement(title: "Zugeordnet zu " + name, filterType: .assignedToMailingList(mailingList: name), defaultFilter: false)
                     newContactFilter.addFilter(filterElement, to: .filter)
                 }
             }
         }
         
-        newContactFilter.addFilter(FilterElement(title: "Filter zurücksetzen", filterType: .resetFilter), to: .reset)
+        newContactFilter.addFilter(FilterElement(title: "Filter zurücksetzen", filterType: .resetFilter, defaultFilter: false), to: .reset)
         
         return newContactFilter
     }
@@ -248,7 +248,7 @@ class ContactTableViewController: FetchedResultsTableViewController, ContactDeta
         if getNrOfContacts() >= 12 {
             return true
         } else if let contactFilter = contactFilter {
-            return contactFilter.isFiltered()
+            return contactFilter.hasFilterAppliedInSectionFilter()
         }
         
         return false

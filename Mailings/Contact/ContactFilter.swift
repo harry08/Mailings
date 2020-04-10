@@ -26,12 +26,12 @@ class ContactFilter {
      Adds a filterElement to a section.
      Set isSelected to true if this filter should be the one which is selected in this section.
      */
-    func addFilter(_ filter: FilterElement, to section: FilterSection, isSelected : Bool = false) {
+    func addFilter(_ filter: FilterElement, to section: FilterSection) {
         var sectionInfo = filters[section]
         if sectionInfo == nil {
             sectionInfo = SectionInfo()
         }
-        sectionInfo!.addFilter(filter, isSelected: isSelected)
+        sectionInfo!.addFilter(filter)
         
         filters[section] = sectionInfo
     }
@@ -96,9 +96,8 @@ class ContactFilter {
         for sectionIndex in 0 ... 1 {
             if let section = FilterSection(rawValue: sectionIndex),
                 let sectionInfo = filters[section] {
-                if sectionInfo.hasSelection() {
-                    let filterElement = sectionInfo.getSelection()
-                    filterElements.append(filterElement!)
+                if let filterElement = getSelectedFilterForSection(sectionInfo) {
+                    filterElements.append(filterElement)
                 }
             }
         }
@@ -106,19 +105,36 @@ class ContactFilter {
         return filterElements
     }
     
+    func getSelectedFilterForSection(_ sectionInfo: SectionInfo) -> FilterElement? {
+        if sectionInfo.hasSelection() {
+            let filterElement = sectionInfo.getSelection()
+            return filterElement!
+        }
+        
+        return nil
+    }
+    
     /**
-     Returns true, if at least one filter is set.
+     Returns true, if at least one filter is set which is not a default filter.
      */
     func isFiltered() -> Bool {
         let filterElements = getSelectedFilters()
-        if filterElements.count == 0 {
-            return false
-        } else if filterElements.count == 1 {
-            if case.all = filterElements[0].filterType {
-                return false
-            }
+        let hasFiltes = filterElements.contains { element in
+            return !element.defaultFilter
         }
         
-        return true
+        return hasFiltes
+    }
+    
+    /**
+    Returns true, if a filter is set that shrinks the list.
+    */
+    func hasFilterAppliedInSectionFilter() -> Bool {
+        if let sectionInfo = filters[FilterSection.filter],
+            let filterElement = getSelectedFilterForSection(sectionInfo) {
+            return !filterElement.defaultFilter
+        }
+        
+        return false
     }
 }

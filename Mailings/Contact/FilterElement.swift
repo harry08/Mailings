@@ -25,10 +25,12 @@ enum FilterType {
 struct FilterElement {
     let title: String
     let filterType: FilterType
+    let defaultFilter: Bool
     
-    init(title: String, filterType: FilterType) {
+    init(title: String, filterType: FilterType, defaultFilter: Bool) {
         self.title = title
         self.filterType = filterType
+        self.defaultFilter = defaultFilter
     }
 }
 
@@ -60,17 +62,11 @@ class SectionInfo {
         if isValidIndex(index) {
             selectionIndex = index
         }
-        // TODO throw
     }
     
-    func getIndexForFilterType(_ filterType: FilterType) -> Int {
-        return -1
-        // TODO
-    }
-    
-    func addFilter(_ filter: FilterElement, isSelected: Bool) {
+    func addFilter(_ filter: FilterElement) {
         filters.append(filter)
-        if isSelected {
+        if filter.defaultFilter {
             selectionIndex = filters.count - 1
         }
     }

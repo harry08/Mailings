@@ -36,6 +36,7 @@
 		4A6CF6ED202D774000F791D1 /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A6CF6EC202D774000F791D1 /* Contact.storyboard */; };
 		4A6DE0761FFE0319009BEFA1 /* MailingListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6DE0751FFE0319009BEFA1 /* MailingListDTO.swift */; };
 		4A707E4F20106DA0005243BE /* MailingListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A707E4E20106DA0005243BE /* MailingListTableViewController.swift */; };
+		4A739017243C74CC003142E1 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A739016243C74CC003142E1 /* UIHelper.swift */; };
 		4A757AD52041897A005B0FB8 /* ContactGroupDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A757AD42041897A005B0FB8 /* ContactGroupDTO.swift */; };
 		4A7FF5C21FFCAB7F00685105 /* MailingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7FF5C11FFCAB7F00685105 /* MailingList.swift */; };
 		4A7FF5C41FFCAC2D00685105 /* MailingContactDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7FF5C31FFCAC2D00685105 /* MailingContactDTO.swift */; };
@@ -113,6 +114,7 @@
 		4A6CF6EC202D774000F791D1 /* Contact.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Contact.storyboard; sourceTree = "<group>"; };
 		4A6DE0751FFE0319009BEFA1 /* MailingListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingListDTO.swift; sourceTree = "<group>"; };
 		4A707E4E20106DA0005243BE /* MailingListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingListTableViewController.swift; sourceTree = "<group>"; };
+		4A739016243C74CC003142E1 /* UIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		4A757AD42041897A005B0FB8 /* ContactGroupDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDTO.swift; sourceTree = "<group>"; };
 		4A7FF5C11FFCAB7F00685105 /* MailingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingList.swift; sourceTree = "<group>"; };
 		4A7FF5C31FFCAC2D00685105 /* MailingContactDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingContactDTO.swift; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 				4A28003D200FCB300095E694 /* MessageComposer.swift */,
 				4A4A548920D0E4C7004D4B4B /* FileAttachmentHandler.swift */,
 				4A047CE820FF04A200449F03 /* HtmlUtil.swift */,
+				4A739016243C74CC003142E1 /* UIHelper.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -464,6 +467,7 @@
 				4A757AD52041897A005B0FB8 /* ContactGroupDTO.swift in Sources */,
 				4AB386D4201BD9EA00840237 /* MailingListDetailViewController.swift in Sources */,
 				4A8B306920C4F1CE00DB9617 /* AttachedFile.swift in Sources */,
+				4A739017243C74CC003142E1 /* UIHelper.swift in Sources */,
 				4A65A209202CB084009A73FF /* ContactAssignmentChange.swift in Sources */,
 				4A17ADAF1FF58BD900FEDD1E /* MailingContact.swift in Sources */,
 				4A1D690B20AF45B60037B331 /* MailingAttachementsTableViewController.swift in Sources */,
