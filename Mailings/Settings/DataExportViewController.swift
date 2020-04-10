@@ -18,6 +18,10 @@ class DataExportViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if UIHelper.isDarkMode(traitCollection: traitCollection) {
+            view.backgroundColor = UIColor.black
+        }
     }
     
     @IBAction func exportMailingLists(_ sender: Any) {

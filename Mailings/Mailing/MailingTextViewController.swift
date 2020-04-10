@@ -46,6 +46,10 @@ class MailingTextViewController: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         
         textView.delegate = self
+        if UIHelper.isDarkMode(traitCollection: traitCollection) {
+            view.backgroundColor = UIColor.black
+            textView.backgroundColor = UIColor.black
+        }
         
         if let mailing = mailing {
             textView.text = mailing.text

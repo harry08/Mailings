@@ -223,9 +223,9 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             
         } else {
             self.navigationController?.isToolbarHidden = false
-            self.navigationController?.toolbar.barStyle = .default
+            self.navigationController?.toolbar.barStyle = UIHelper.getUIBarStyle(traitCollection: traitCollection)
             self.navigationController?.toolbar.isTranslucent = true
-            self.navigationController?.toolbar.barTintColor = UIColor.white
+            self.navigationController?.toolbar.barTintColor = UIHelper.getBarTintColor(traitCollection: traitCollection)
             
             let msgImage = UIImage(named: "message.png")
             var items = [UIBarButtonItem]()

@@ -21,6 +21,10 @@ class ImportContactsViewController: UIViewController, CNContactPickerDelegate, A
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if UIHelper.isDarkMode(traitCollection: traitCollection) {
+            view.backgroundColor = UIColor.black
+        }
+        
         infoLabel.isHidden = true
     }
     
