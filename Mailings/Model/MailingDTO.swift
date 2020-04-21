@@ -14,4 +14,6 @@ struct MailingDTO {
     var text: String?
     // folder for attachments
     var folder: String?
+    var createtime: Date?
+    var updatetime: Date?
 }

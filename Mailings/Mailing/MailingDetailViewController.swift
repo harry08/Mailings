@@ -13,7 +13,7 @@ import MessageUI
  Sections of static table inside MailingDetailView
  */
 enum MailingDetailViewSection: Int {
-    case title = 0, content, attachement, action
+    case title = 0, content, attachement, extended, action
 }
 
 /**
@@ -419,7 +419,7 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
     // MARK: - TableView Delegate
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
+        return 5
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -448,6 +448,13 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
                 
                 if !containsText {
                     return 176
+                }
+            case .extended:
+                if isEditType() {
+                    // Only visible for an existing contact
+                    return super.tableView(tableView, heightForRowAt: indexPath)
+                } else {
+                    return 0
                 }
             case .action:
                 // Section for send and delete button.
@@ -530,6 +537,11 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
                 }
             }
             cell.detailTextLabel?.text = detailText
+            cell.detailTextLabel?.textColor = UIColor(white: 114/255, alpha: 1)
+            
+            return cell
+        } else if indexPath.section == MailingDetailViewSection.extended.rawValue && indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ExtendedCell", for: indexPath)
             
             return cell
         } else if indexPath.section == MailingDetailViewSection.action.rawValue && indexPath.row == 0 {
@@ -556,6 +568,9 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             case .attachement:
                 // Should be selectable to attach files
                 return indexPath
+            case .extended:
+                // Should be selectable to show extended data
+                return indexPath
             case .action:
                 // Should be selectable to delete a mailing or send a mailing
                 return indexPath
@@ -581,6 +596,28 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             case .attachement:
                 // Show attached files in separate view
                 performSegue(withIdentifier: "showMailingAttachements", sender: nil)
+            case .extended:
+                // Show extended data
+                let tableView = GenericTableViewController(style: .grouped)
+                tableView.viewTitle = "Erweiterte Daten"
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
+                
+                var createTimeString = ""
+                if let createTime = mailingDTO?.createtime {
+                    createTimeString = dateFormatter.string(from: createTime)
+                }
+                var updateTimeString = ""
+                if let updateTime = mailingDTO?.updatetime {
+                    updateTimeString = dateFormatter.string(from: updateTime)
+                }
+                
+                tableView.tableViewData =
+                    [CellData(title: "Geändert am", sectionData: [updateTimeString]),
+                     CellData(title: "Erstellt am", sectionData: [createTimeString])]
+                
+                self.navigationController?.pushViewController(tableView, animated: true)
             case .action:
                 if indexPath.row == 0 {
                     // Delete mailing
@@ -697,6 +734,11 @@ class MailingDetailViewController: UITableViewController, UITextFieldDelegate, U
             changedMailingText = nil
             changedMailingTitle = nil
             self.mailingAttachementChanges.removeAll()
+            
+            // Reload mailingDTO
+            if let objectId = mailingDTO?.objectId {
+                mailingDTO = try Mailing.loadMailing(objectId, in: container.viewContext)
+            }
         } catch {
             // TODO show Alert
         }

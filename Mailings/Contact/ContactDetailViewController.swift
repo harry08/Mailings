@@ -404,7 +404,10 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             // Section 2 should be selectable to navigate to the mailinglist details.
             return indexPath
         } else if indexPath.section == 4 {
-            // Section 4 should be selectable to delete a contact.
+            // Section 4 should be selectable to navigate to the Extended data page.
+            return indexPath
+        } else if indexPath.section == 5 {
+            // Section 5 should be selectable to delete a contact.
             return indexPath
         } else {
             return nil
@@ -413,6 +416,14 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 4 {
+            // Section for extended data
+            if isEditType() {
+                // Only visible for an existing contact
+                return super.tableView(tableView, heightForRowAt: indexPath)
+            } else {
+                return 0
+            }
+        } else if indexPath.section == 5 {
             // Section for delete button.
             if editMode && isEditType() {
                 // Only visible if view is in editMode for an existing contact
@@ -427,6 +438,29 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 4 {
+            // Show extended data
+            let tableView = GenericTableViewController(style: .grouped)
+            tableView.viewTitle = "Erweiterte Daten"
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
+            
+            var createTimeString = ""
+            if let createTime = mailingContactDTO?.createtime {
+                createTimeString = dateFormatter.string(from: createTime)
+            }
+            var updateTimeString = ""
+            if let updateTime = mailingContactDTO?.updatetime {
+                updateTimeString = dateFormatter.string(from: updateTime)
+            }
+            
+            tableView.tableViewData =
+                [CellData(title: "Geändert am", sectionData: [updateTimeString]),
+                 CellData(title: "Erstellt am", sectionData: [createTimeString])]
+            
+            self.navigationController?.pushViewController(tableView, animated: true)
+            
+        } else if indexPath.section == 5 {
             // Delete contact
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Kontakt löschen", style: .default) { _ in
@@ -507,6 +541,11 @@ class ContactDetailViewController: UITableViewController, ContactDetailViewContr
             viewEdited = false
             dataChanged = true
             mailingListAssignmentChanges = [MailingListAssignmentChange]()
+            
+            // Reload mailincContactDTO
+            if let objectId = mailingContactDTO?.objectId {
+                mailingContactDTO = try MailingContact.loadContact(objectId, in: container.viewContext)
+            }
         } catch {
             // TODO show Alert
         }

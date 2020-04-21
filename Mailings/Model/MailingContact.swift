@@ -189,7 +189,7 @@ class MailingContact: NSManagedObject {
     }
     
     // Loads a contact with a given id.
-    class func loadContact(objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws -> MailingContactDTO {
+    class func loadContact(_ objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws -> MailingContactDTO {
         do {
             let contactEntity = try context.existingObject(with: objectId) as! MailingContact
             let contactDTO = MailingContactMapper.mapToDTO(contact: contactEntity)

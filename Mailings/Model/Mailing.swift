@@ -159,7 +159,7 @@ class Mailing: NSManagedObject {
     }
     
     // Loads a mailing with a given id.
-    class func loadMailing(objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws -> MailingDTO {
+    class func loadMailing(_ objectId: NSManagedObjectID, in context: NSManagedObjectContext) throws -> MailingDTO {
         do {
             let mailingEntity = try context.existingObject(with: objectId) as! Mailing
             let mailingDTO = MailingMapper.mapToDTO(mailing: mailingEntity)
