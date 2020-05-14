@@ -13,6 +13,10 @@ import CoreData
  */
 class DataExportViewController: UIViewController {
     
+    let wordDelimiterChar : Character = ";"
+    let recordDelimiterChar : Character = "\n"
+    let quoteChar : Character = "\""
+    
     var container: NSPersistentContainer? =
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
 
@@ -34,12 +38,25 @@ class DataExportViewController: UIViewController {
         if let path = path,
             let context = self.container?.viewContext {
             
-            var csvText = "Name,Default,Empfänger als bcc,Erstellt am, Geändert am\n"
+            // Header
+            var csvText = "Name"
+            csvText.append(self.wordDelimiterChar)
+            csvText.append("Default")
+            csvText.append(self.wordDelimiterChar)
+            csvText.append("Empfänger als bcc")
+            csvText.append(self.wordDelimiterChar)
+            csvText.append("Erstellt am")
+            csvText.append(self.wordDelimiterChar)
+            csvText.append("Geändert am")
+            csvText.append(self.recordDelimiterChar)
             
+            // Mailinglista
             let mailingLists = MailingList.getAllMailingLists(in: context)
             mailingLists.forEach { mailingList in
                 csvText.append(getDataFromMailingList(mailingList))
             }
+            
+            csvText.append(self.recordDelimiterChar)
             
             writeToFile(csvText, path: path, sender: sender)
         }
@@ -73,7 +90,18 @@ class DataExportViewController: UIViewController {
     }
     
     private func getContactHeader(mailingLists: [MailingList]) -> String {
-        var header = "Vorname,Name,Email,Notizen,Erstellt am, Geändert am"
+        //var header = "Vorname,Name,Email,Notizen,Erstellt am, Geändert am"
+        var header = "Vorname"
+        header.append(self.wordDelimiterChar)
+        header.append("Name")
+        header.append(self.wordDelimiterChar)
+        header.append("Email")
+        header.append(self.wordDelimiterChar)
+        header.append("Notizen")
+        header.append(self.wordDelimiterChar)
+        header.append("Erstellt am")
+        header.append(self.wordDelimiterChar)
+        header.append("Geändert am")
         
         // Add each mailingList as a column to the header
         for mailingList in mailingLists {
@@ -81,10 +109,11 @@ class DataExportViewController: UIViewController {
             if mailingList.name != nil {
                 name = mailingList.name!
             }
-            header.append(",\(name)")
+            header.append(self.wordDelimiterChar)
+            header.append("\(name)")
         }
         
-        header.append("\n")
+        header.append(self.recordDelimiterChar)
         
         return header
     }
@@ -121,7 +150,22 @@ class DataExportViewController: UIViewController {
             updated = dateFormatter.string(from: updatetime)
         }
         
-        var contactRecord = "\(firstName),\(lastName),\(email),\(notes),\(created),\(updated)"
+        var contactRecord = "\(firstName)"
+        contactRecord.append(self.wordDelimiterChar)
+        contactRecord.append("\(lastName)")
+        contactRecord.append(self.wordDelimiterChar)
+        contactRecord.append("\(email)")
+        contactRecord.append(self.wordDelimiterChar)
+        if notes.count > 0 {
+            if notes.contains(wordDelimiterChar) || notes.contains(recordDelimiterChar) {
+                notes = "\(quoteChar)\(notes)\(quoteChar)"
+            }
+        }
+        contactRecord.append("\(notes)")
+        contactRecord.append(self.wordDelimiterChar)
+        contactRecord.append("\(created)")
+        contactRecord.append(self.wordDelimiterChar)
+        contactRecord.append("\(updated)")
         
         // Fill each mailinglist column with 1 if contact is assigned to this mailinglist. Otherwise 0.
         for mailingList in mailingLists {
@@ -134,11 +178,11 @@ class DataExportViewController: UIViewController {
                     }
                 }
             }
-            
-            contactRecord.append(",\(assigned)")
+            contactRecord.append(self.wordDelimiterChar)
+            contactRecord.append("\(assigned)")
         }
     
-        contactRecord.append("\n")
+        contactRecord.append(self.recordDelimiterChar)
         
         return contactRecord
     }
@@ -171,7 +215,16 @@ class DataExportViewController: UIViewController {
             updated = dateFormatter.string(from: updatetime)
         }
         
-        let mailingListRecord = "\(name),\(defaultAssignment),\(bcc),\(created),\(updated)\n"
+        var mailingListRecord = "\(name)"
+        mailingListRecord.append(self.wordDelimiterChar)
+        mailingListRecord.append("\(defaultAssignment)")
+        mailingListRecord.append(self.wordDelimiterChar)
+        mailingListRecord.append("\(bcc)")
+        mailingListRecord.append(self.wordDelimiterChar)
+        mailingListRecord.append("\(created)")
+        mailingListRecord.append(self.wordDelimiterChar)
+        mailingListRecord.append("\(updated)")
+        mailingListRecord.append(self.recordDelimiterChar)
         
         return mailingListRecord
     }

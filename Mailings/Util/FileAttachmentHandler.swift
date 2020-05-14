@@ -9,11 +9,6 @@ import Foundation
 import MobileCoreServices
 
 
-struct FileAttributes {
-    var size: UInt64?
-    var modificationDate: NSDate?
-}
-
 /**
  When a file is attached to a mailing it is copied to the local storage of the application.
  A reference to this file is saved inside the database with the mailing.
@@ -164,22 +159,6 @@ class FileAttachmentHandler {
         let subfolderDir = getSubfolderUrl(folderName)
         let file = subfolderDir.appendingPathComponent(fileName, isDirectory: false)
         
-        return getFileAttributes(fileUrl: file)
-    }
-    
-    class func getFileAttributes(fileUrl: URL) -> FileAttributes {
-        let filemgr = FileManager.default
-        
-        var attributes = FileAttributes()
-        
-        do {
-            var attr = try filemgr.attributesOfItem(atPath: fileUrl.path)
-            attributes.size = attr[FileAttributeKey.size] as? UInt64
-            attributes.modificationDate = attr[FileAttributeKey.modificationDate] as? NSDate
-        } catch let error as NSError {
-            print("Error: \(error.localizedDescription)")
-        }
-        
-        return attributes
+        return FileUtil.getFileAttributes(fileUrl: file)
     }
 }

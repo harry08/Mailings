@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4A047CE920FF04A200449F03 /* HtmlUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A047CE820FF04A200449F03 /* HtmlUtil.swift */; };
-		4A051EC4216C748700383923 /* CsvContactReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A051EC3216C748700383923 /* CsvContactReader.swift */; };
+		4A0CB29D24500DB000419F7E /* FileImportPreviewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0CB29C24500DB000419F7E /* FileImportPreviewTableViewController.swift */; };
+		4A0E9501245A994400C709DE /* ContactCsvReaderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0E9500245A994400C709DE /* ContactCsvReaderTest.swift */; };
 		4A17ADAF1FF58BD900FEDD1E /* MailingContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADAE1FF58BD900FEDD1E /* MailingContact.swift */; };
 		4A17ADB11FF58CE400FEDD1E /* Mailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADB01FF58CE400FEDD1E /* Mailing.swift */; };
 		4A17ADB31FF58E2400FEDD1E /* ImportContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17ADB21FF58E2400FEDD1E /* ImportContactsViewController.swift */; };
@@ -19,7 +20,9 @@
 		4A23B3CD208711860033337D /* MailingTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A23B3CC208711860033337D /* MailingTitleTableViewCell.swift */; };
 		4A28003E200FCB300095E694 /* MessageComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A28003D200FCB300095E694 /* MessageComposer.swift */; };
 		4A28589220FFA2EA00C735D3 /* HtmlPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A28589120FFA2EA00C735D3 /* HtmlPreviewViewController.swift */; };
+		4A350D962463D20500941005 /* FileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A350D952463D20500941005 /* FileUtil.swift */; };
 		4A37CF3A216667B200ABA2B9 /* DataImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A37CF39216667B200ABA2B9 /* DataImportViewController.swift */; };
+		4A423D912467524500626332 /* ContactCsvReaderHeaderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A423D902467524500626332 /* ContactCsvReaderHeaderTest.swift */; };
 		4A4A2D2D20452D9A00CB3457 /* SettingDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4A2D2C20452D9A00CB3457 /* SettingDTO.swift */; };
 		4A4A548A20D0E4C7004D4B4B /* FileAttachmentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4A548920D0E4C7004D4B4B /* FileAttachmentHandler.swift */; };
 		4A4BA9A12022EDAA00BF0594 /* MailingListContactsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4BA9A02022EDAA00BF0594 /* MailingListContactsTableViewController.swift */; };
@@ -80,13 +83,27 @@
 		4AE86FCD2002036600D981B4 /* MailingDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE86FCC2002036600D981B4 /* MailingDTO.swift */; };
 		4AE86FD1200348D300D981B4 /* FetchedResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE86FD0200348D300D981B4 /* FetchedResultsTableViewController.swift */; };
 		4AE86FD4200349B000D981B4 /* ContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE86FD3200349B000D981B4 /* ContactTableViewController.swift */; };
+		4AEE27B62459473000F74244 /* ContactCsvReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE27B52459473000F74244 /* ContactCsvReader.swift */; };
 		4AFADF3620616A9100825A58 /* FilterElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFADF3520616A9100825A58 /* FilterElement.swift */; };
 		4AFFFA482043E3CD00E81D50 /* CommonSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFFFA472043E3CD00E81D50 /* CommonSettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		4A0E94FB245A969B00C709DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A985E381FF14BD80055F6BA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A985E3F1FF14BD80055F6BA;
+			remoteInfo = Mailings;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		4A047CE820FF04A200449F03 /* HtmlUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlUtil.swift; sourceTree = "<group>"; };
-		4A051EC3216C748700383923 /* CsvContactReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvContactReader.swift; sourceTree = "<group>"; };
+		4A0CB29C24500DB000419F7E /* FileImportPreviewTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportPreviewTableViewController.swift; sourceTree = "<group>"; };
+		4A0E94F6245A969B00C709DE /* MailingsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MailingsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A0E94FA245A969B00C709DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4A0E9500245A994400C709DE /* ContactCsvReaderTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCsvReaderTest.swift; sourceTree = "<group>"; };
 		4A17ADAE1FF58BD900FEDD1E /* MailingContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingContact.swift; sourceTree = "<group>"; };
 		4A17ADB01FF58CE400FEDD1E /* Mailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mailing.swift; sourceTree = "<group>"; };
 		4A17ADB21FF58E2400FEDD1E /* ImportContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportContactsViewController.swift; sourceTree = "<group>"; };
@@ -98,7 +115,9 @@
 		4A23B3CC208711860033337D /* MailingTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingTitleTableViewCell.swift; sourceTree = "<group>"; };
 		4A28003D200FCB300095E694 /* MessageComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageComposer.swift; sourceTree = "<group>"; };
 		4A28589120FFA2EA00C735D3 /* HtmlPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlPreviewViewController.swift; sourceTree = "<group>"; };
+		4A350D952463D20500941005 /* FileUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtil.swift; sourceTree = "<group>"; };
 		4A37CF39216667B200ABA2B9 /* DataImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataImportViewController.swift; sourceTree = "<group>"; };
+		4A423D902467524500626332 /* ContactCsvReaderHeaderTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCsvReaderHeaderTest.swift; sourceTree = "<group>"; };
 		4A4A2D2C20452D9A00CB3457 /* SettingDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDTO.swift; sourceTree = "<group>"; };
 		4A4A548920D0E4C7004D4B4B /* FileAttachmentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentHandler.swift; sourceTree = "<group>"; };
 		4A4BA9A02022EDAA00BF0594 /* MailingListContactsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingListContactsTableViewController.swift; sourceTree = "<group>"; };
@@ -161,11 +180,19 @@
 		4AE86FCC2002036600D981B4 /* MailingDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingDTO.swift; sourceTree = "<group>"; };
 		4AE86FD0200348D300D981B4 /* FetchedResultsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedResultsTableViewController.swift; sourceTree = "<group>"; };
 		4AE86FD3200349B000D981B4 /* ContactTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewController.swift; sourceTree = "<group>"; };
+		4AEE27B52459473000F74244 /* ContactCsvReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCsvReader.swift; sourceTree = "<group>"; };
 		4AFADF3520616A9100825A58 /* FilterElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterElement.swift; sourceTree = "<group>"; };
 		4AFFFA472043E3CD00E81D50 /* CommonSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4A0E94F3245A969B00C709DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4A985E3D1FF14BD80055F6BA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -176,6 +203,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A0E94F7245A969B00C709DE /* MailingsTests */ = {
+			isa = PBXGroup;
+			children = (
+				4A423D902467524500626332 /* ContactCsvReaderHeaderTest.swift */,
+				4A0E9500245A994400C709DE /* ContactCsvReaderTest.swift */,
+				4A0E94FA245A969B00C709DE /* Info.plist */,
+			);
+			path = MailingsTests;
+			sourceTree = "<group>";
+		};
 		4A707E5020106DAB005243BE /* MailingList */ = {
 			isa = PBXGroup;
 			children = (
@@ -194,6 +231,7 @@
 			children = (
 				4A17ADB41FF5985300FEDD1E /* Readme.md */,
 				4A985E421FF14BD80055F6BA /* Mailings */,
+				4A0E94F7245A969B00C709DE /* MailingsTests */,
 				4A985E411FF14BD80055F6BA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -202,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				4A985E401FF14BD80055F6BA /* Mailings.app */,
+				4A0E94F6245A969B00C709DE /* MailingsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -292,7 +331,8 @@
 				4A757AD42041897A005B0FB8 /* ContactGroupDTO.swift */,
 				4AFFFA472043E3CD00E81D50 /* CommonSettingsViewController.swift */,
 				4AB54ACD2045C807001A9C04 /* CommonSettingsController.swift */,
-				4A051EC3216C748700383923 /* CsvContactReader.swift */,
+				4A0CB29C24500DB000419F7E /* FileImportPreviewTableViewController.swift */,
+				4AEE27B52459473000F74244 /* ContactCsvReader.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -336,6 +376,7 @@
 				4A047CE820FF04A200449F03 /* HtmlUtil.swift */,
 				4A739016243C74CC003142E1 /* UIHelper.swift */,
 				4A552D33244966AE00C68D86 /* GenericTableViewController.swift */,
+				4A350D952463D20500941005 /* FileUtil.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -343,6 +384,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4A0E94F5245A969B00C709DE /* MailingsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A0E94FF245A969B00C709DE /* Build configuration list for PBXNativeTarget "MailingsTests" */;
+			buildPhases = (
+				4A0E94F2245A969B00C709DE /* Sources */,
+				4A0E94F3245A969B00C709DE /* Frameworks */,
+				4A0E94F4245A969B00C709DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4A0E94FC245A969B00C709DE /* PBXTargetDependency */,
+			);
+			name = MailingsTests;
+			productName = MailingsTests;
+			productReference = 4A0E94F6245A969B00C709DE /* MailingsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		4A985E3F1FF14BD80055F6BA /* Mailings */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4A985E541FF14BD80055F6BA /* Build configuration list for PBXNativeTarget "Mailings" */;
@@ -366,10 +425,15 @@
 		4A985E381FF14BD80055F6BA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0910;
+				LastSwiftUpdateCheck = 1120;
 				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = Huebner;
 				TargetAttributes = {
+					4A0E94F5245A969B00C709DE = {
+						CreatedOnToolsVersion = 11.2.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 4A985E3F1FF14BD80055F6BA;
+					};
 					4A985E3F1FF14BD80055F6BA = {
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
@@ -395,11 +459,19 @@
 			projectRoot = "";
 			targets = (
 				4A985E3F1FF14BD80055F6BA /* Mailings */,
+				4A0E94F5245A969B00C709DE /* MailingsTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4A0E94F4245A969B00C709DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4A985E3E1FF14BD80055F6BA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -423,11 +495,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4A0E94F2245A969B00C709DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A423D912467524500626332 /* ContactCsvReaderHeaderTest.swift in Sources */,
+				4A0E9501245A994400C709DE /* ContactCsvReaderTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4A985E3C1FF14BD80055F6BA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				4ADEFA46204EEB310074FFA5 /* AssignedMailingLists.swift in Sources */,
+				4A0CB29D24500DB000419F7E /* FileImportPreviewTableViewController.swift in Sources */,
 				4A23B3CB2087064E0033337D /* MailingContentTableViewCell.swift in Sources */,
 				4AD59F5A20049549008FC37C /* MailingPickerTableViewController.swift in Sources */,
 				4AC3857320640C8900A619E8 /* ContactFilter.swift in Sources */,
@@ -435,7 +517,6 @@
 				4ADEFA44204EEAA80074FFA5 /* ContactMailingListsTableViewController.swift in Sources */,
 				4A17ADB31FF58E2400FEDD1E /* ImportContactsViewController.swift in Sources */,
 				4A7FF5C41FFCAC2D00685105 /* MailingContactDTO.swift in Sources */,
-				4A051EC4216C748700383923 /* CsvContactReader.swift in Sources */,
 				4A69F32B2060DF620051E49F /* ContactFilterPickerTableViewController.swift in Sources */,
 				4A707E4F20106DA0005243BE /* MailingListTableViewController.swift in Sources */,
 				4A56F73620864D980025180B /* MailingTextViewController.swift in Sources */,
@@ -475,6 +556,7 @@
 				4A65A209202CB084009A73FF /* ContactAssignmentChange.swift in Sources */,
 				4A17ADAF1FF58BD900FEDD1E /* MailingContact.swift in Sources */,
 				4A1D690B20AF45B60037B331 /* MailingAttachementsTableViewController.swift in Sources */,
+				4A350D962463D20500941005 /* FileUtil.swift in Sources */,
 				4A63556D203B307B00140F2B /* MailComposer.swift in Sources */,
 				4A7FF5C81FFCB2F500685105 /* MailingListMapper.swift in Sources */,
 				4A5C6F822036CBE800ECF1F3 /* AddressbookGroupPickerTableViewController.swift in Sources */,
@@ -486,6 +568,7 @@
 				4ADEFA48204EEB650074FFA5 /* AssignedMailingList.swift in Sources */,
 				4AB54ACE2045C807001A9C04 /* CommonSettingsController.swift in Sources */,
 				4A047CE920FF04A200449F03 /* HtmlUtil.swift in Sources */,
+				4AEE27B62459473000F74244 /* ContactCsvReader.swift in Sources */,
 				4A4A2D2D20452D9A00CB3457 /* SettingDTO.swift in Sources */,
 				4A9A1F33203BF365008EB043 /* MailingDetailViewController.swift in Sources */,
 				4AB9AF0A1FF559D20005EFFA /* SettingsViewController.swift in Sources */,
@@ -493,6 +576,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4A0E94FC245A969B00C709DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A985E3F1FF14BD80055F6BA /* Mailings */;
+			targetProxy = 4A0E94FB245A969B00C709DE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		4A985E491FF14BD80055F6BA /* Main.storyboard */ = {
@@ -514,6 +605,49 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		4A0E94FD245A969B00C709DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SK8T4S74TT;
+				INFOPLIST_FILE = MailingsTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = huebner.MailingsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mailings.app/Mailings";
+			};
+			name = Debug;
+		};
+		4A0E94FE245A969B00C709DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SK8T4S74TT;
+				INFOPLIST_FILE = MailingsTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = huebner.MailingsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mailings.app/Mailings";
+			};
+			name = Release;
+		};
 		4A985E521FF14BD80055F6BA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -631,6 +765,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SK8T4S74TT;
 				INFOPLIST_FILE = Mailings/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = de.huebner.Mailings;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -650,6 +785,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SK8T4S74TT;
 				INFOPLIST_FILE = Mailings/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = de.huebner.Mailings;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -662,6 +798,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4A0E94FF245A969B00C709DE /* Build configuration list for PBXNativeTarget "MailingsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A0E94FD245A969B00C709DE /* Debug */,
+				4A0E94FE245A969B00C709DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4A985E3B1FF14BD80055F6BA /* Build configuration list for PBXProject "Mailings" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -11,7 +11,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "static MailingContactMapper.mapToEntity(contactDTO:contact:):MailingContactMapper.swift">
+         contextName = "ContactFilterPickerTableViewController.contactFilter.didset:ContactFilterPickerTableViewController.swift">
       </ContextState>
       <ContextState
          contextName = "ContactPickerTableViewController.tableView(_:cellForRowAt:):ContactPickerTableViewController.swift">
@@ -22,7 +22,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "static MailingContactMapper.mapToDTO(contact:):MailingContactMapper.swift">
+         contextName = "ContactPickerTableViewController.tableView(_:didSelectRowAt:):ContactPickerTableViewController.swift">
       </ContextState>
       <ContextState
          contextName = "EditContactViewController.cancel(_:):EditContactViewController.swift">
@@ -44,10 +44,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "EditMailingListNewController.prepare(for:sender:):EditMailingListNewController.swift">
+         contextName = "ContactCsvReader.processLine(_:lineIndex:):ContactCsvReader.swift">
       </ContextState>
       <ContextState
-         contextName = "static MailingContact.createOrUpdateFromDTO(contactDTO:in:):MailingContact.swift">
+         contextName = "ContactCsvReader.updateContact(_:value:columnIndex:lineIndex:):ContactCsvReader.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "dateFormatter.date(from: value)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ContactCsvReaderTest.testWithAllColumns():ContactCsvReaderTest.swift">
       </ContextState>
       <ContextState
          contextName = "static Mailing.createOrUpdateFromDTO(mailingDTO:in:):Mailing.swift">
@@ -56,6 +64,12 @@
                value = "mailingEntity">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static MailingContact.createOrUpdateFromDTO(contactDTO:in:):MailingContact.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static MailingContactMapper.mapToDTO(contact:):MailingContactMapper.swift">
       </ContextState>
       <ContextState
          contextName = "ContactFilter.getCountSections():ContactFilter.swift">
@@ -75,10 +89,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ContactFilterPickerTableViewController.contactFilter.didset:ContactFilterPickerTableViewController.swift">
+         contextName = "static MailingContactMapper.mapToEntity(contactDTO:contact:):MailingContactMapper.swift">
       </ContextState>
       <ContextState
-         contextName = "ContactPickerTableViewController.tableView(_:didSelectRowAt:):ContactPickerTableViewController.swift">
+         contextName = "EditMailingListNewController.prepare(for:sender:):EditMailingListNewController.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

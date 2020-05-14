@@ -154,6 +154,28 @@ class MailingList: NSManagedObject {
         return []
     }
     
+    class func getAllMailingListsAsDTO(in context: NSManagedObjectContext) -> [MailingListDTO] {
+        var mailingLists = [MailingListDTO]()
+        
+        let allMailingLists = getAllMailingLists(in: context)
+        for mailingList in allMailingLists {
+            let mailingListDTO = MailingListMapper.mapToDTO(mailingList: mailingList)
+            mailingLists.append(mailingListDTO)
+        }
+        
+        return mailingLists
+    }
+    
+    class func getMailingListByName(_ name: String, mailingLists: [MailingListDTO]) -> MailingListDTO? {
+        for mailingList in mailingLists {
+            if mailingList.name == name {
+                return mailingList
+            }
+        }
+        
+        return nil
+    }
+    
     /**
      Creates a new mailing or updates an already existing mailing
      Depends on the objectId in MailingDTO.
