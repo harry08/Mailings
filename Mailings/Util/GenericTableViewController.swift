@@ -62,6 +62,7 @@ class GenericTableViewController : UITableViewController {
             var cells : Array<UITableViewCell> = Array()
             cellData.sectionData.forEach {sectionData in
                 let dataCell = UITableViewCell()
+                dataCell.selectionStyle = .none
                 
                 let dataLabel = UILabel()
                 dataLabel.translatesAutoresizingMaskIntoConstraints = false

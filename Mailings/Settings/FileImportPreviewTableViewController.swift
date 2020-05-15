@@ -34,16 +34,19 @@ class FileImportPreviewTableViewController : UITableViewController {
     
     let filenameCell : UITableViewCell = {
         let cell = UITableViewCell()
+        cell.selectionStyle = .none
         return cell
     }()
     
     let lastChangedCell : UITableViewCell = {
         let cell = UITableViewCell()
+        cell.selectionStyle = .none
         return cell
     }()
     
     let nrOfRecordsCell : UITableViewCell = {
         let cell = UITableViewCell()
+        cell.selectionStyle = .none
         return cell
     }()
     
@@ -115,6 +118,7 @@ class FileImportPreviewTableViewController : UITableViewController {
     private func initPreviewCells() {
         for i in 0...3 {
             let previewCell = UITableViewCell()
+            previewCell.selectionStyle = .none
             
             let previewLabel = UILabel()
             previewLabel.tag = i

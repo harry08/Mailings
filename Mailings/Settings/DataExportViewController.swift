@@ -29,6 +29,7 @@ class DataExportViewController: UIViewController {
     }
     
     @IBAction func exportMailingLists(_ sender: Any) {
+        let csvUtil = CsvUtil()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
         
@@ -39,16 +40,8 @@ class DataExportViewController: UIViewController {
             let context = self.container?.viewContext {
             
             // Header
-            var csvText = "Name"
-            csvText.append(self.wordDelimiterChar)
-            csvText.append("Default")
-            csvText.append(self.wordDelimiterChar)
-            csvText.append("Empfänger als bcc")
-            csvText.append(self.wordDelimiterChar)
-            csvText.append("Erstellt am")
-            csvText.append(self.wordDelimiterChar)
-            csvText.append("Geändert am")
-            csvText.append(self.recordDelimiterChar)
+            let values = ["Name", "Default", "Empfänger als bcc", "Erstellt am", "Geändert am"]
+            var csvText = csvUtil.csvString(values, appendRecordDelimter: true)
             
             // Mailinglista
             let mailingLists = MailingList.getAllMailingLists(in: context)
@@ -90,18 +83,9 @@ class DataExportViewController: UIViewController {
     }
     
     private func getContactHeader(mailingLists: [MailingList]) -> String {
-        //var header = "Vorname,Name,Email,Notizen,Erstellt am, Geändert am"
-        var header = "Vorname"
-        header.append(self.wordDelimiterChar)
-        header.append("Name")
-        header.append(self.wordDelimiterChar)
-        header.append("Email")
-        header.append(self.wordDelimiterChar)
-        header.append("Notizen")
-        header.append(self.wordDelimiterChar)
-        header.append("Erstellt am")
-        header.append(self.wordDelimiterChar)
-        header.append("Geändert am")
+        let csvUtil = CsvUtil()
+        let values = ["Vorname", "Name", "Email", "Notizen", "Erstellt am", "Geändert am"]
+        var header = csvUtil.csvString(values)
         
         // Add each mailingList as a column to the header
         for mailingList in mailingLists {
@@ -122,6 +106,7 @@ class DataExportViewController: UIViewController {
      Returns a comma separated string for the given contact entity.
      */
     private func getDataFromContact(_ contact: MailingContact, mailingLists: [MailingList]) -> String {
+        let csvUtil = CsvUtil()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
         
@@ -150,22 +135,8 @@ class DataExportViewController: UIViewController {
             updated = dateFormatter.string(from: updatetime)
         }
         
-        var contactRecord = "\(firstName)"
-        contactRecord.append(self.wordDelimiterChar)
-        contactRecord.append("\(lastName)")
-        contactRecord.append(self.wordDelimiterChar)
-        contactRecord.append("\(email)")
-        contactRecord.append(self.wordDelimiterChar)
-        if notes.count > 0 {
-            if notes.contains(wordDelimiterChar) || notes.contains(recordDelimiterChar) {
-                notes = "\(quoteChar)\(notes)\(quoteChar)"
-            }
-        }
-        contactRecord.append("\(notes)")
-        contactRecord.append(self.wordDelimiterChar)
-        contactRecord.append("\(created)")
-        contactRecord.append(self.wordDelimiterChar)
-        contactRecord.append("\(updated)")
+        let values = [firstName, lastName, email, notes, created, updated]
+        var contactRecord = csvUtil.csvString(values)
         
         // Fill each mailinglist column with 1 if contact is assigned to this mailinglist. Otherwise 0.
         for mailingList in mailingLists {
@@ -191,6 +162,7 @@ class DataExportViewController: UIViewController {
      Returns a comma separated string for the given mailinglist entity.
      */
     private func getDataFromMailingList(_ mailingList: MailingList) -> String {
+        let csvUtil = CsvUtil()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
         
@@ -215,18 +187,8 @@ class DataExportViewController: UIViewController {
             updated = dateFormatter.string(from: updatetime)
         }
         
-        var mailingListRecord = "\(name)"
-        mailingListRecord.append(self.wordDelimiterChar)
-        mailingListRecord.append("\(defaultAssignment)")
-        mailingListRecord.append(self.wordDelimiterChar)
-        mailingListRecord.append("\(bcc)")
-        mailingListRecord.append(self.wordDelimiterChar)
-        mailingListRecord.append("\(created)")
-        mailingListRecord.append(self.wordDelimiterChar)
-        mailingListRecord.append("\(updated)")
-        mailingListRecord.append(self.recordDelimiterChar)
-        
-        return mailingListRecord
+        let values = [name, defaultAssignment, bcc, created, updated]
+        return csvUtil.csvString(values, appendRecordDelimter: true)
     }
     
     private func writeToFile(_ text: String, path: URL, sender: Any) {

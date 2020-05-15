@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A0253BC246EAA91002CC5AC /* CsvUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0253BB246EAA91002CC5AC /* CsvUtilTest.swift */; };
 		4A047CE920FF04A200449F03 /* HtmlUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A047CE820FF04A200449F03 /* HtmlUtil.swift */; };
 		4A0CB29D24500DB000419F7E /* FileImportPreviewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0CB29C24500DB000419F7E /* FileImportPreviewTableViewController.swift */; };
 		4A0E9501245A994400C709DE /* ContactCsvReaderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0E9500245A994400C709DE /* ContactCsvReaderTest.swift */; };
@@ -25,6 +26,7 @@
 		4A423D912467524500626332 /* ContactCsvReaderHeaderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A423D902467524500626332 /* ContactCsvReaderHeaderTest.swift */; };
 		4A4A2D2D20452D9A00CB3457 /* SettingDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4A2D2C20452D9A00CB3457 /* SettingDTO.swift */; };
 		4A4A548A20D0E4C7004D4B4B /* FileAttachmentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4A548920D0E4C7004D4B4B /* FileAttachmentHandler.swift */; };
+		4A4A5898246E73EC00BD7B99 /* CsvUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4A5897246E73EC00BD7B99 /* CsvUtil.swift */; };
 		4A4BA9A12022EDAA00BF0594 /* MailingListContactsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4BA9A02022EDAA00BF0594 /* MailingListContactsTableViewController.swift */; };
 		4A4BA9A32022F7C900BF0594 /* ContactPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4BA9A22022F7C900BF0594 /* ContactPickerTableViewController.swift */; };
 		4A552D34244966AE00C68D86 /* GenericTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A552D33244966AE00C68D86 /* GenericTableViewController.swift */; };
@@ -99,6 +101,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4A0253BB246EAA91002CC5AC /* CsvUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvUtilTest.swift; sourceTree = "<group>"; };
 		4A047CE820FF04A200449F03 /* HtmlUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlUtil.swift; sourceTree = "<group>"; };
 		4A0CB29C24500DB000419F7E /* FileImportPreviewTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportPreviewTableViewController.swift; sourceTree = "<group>"; };
 		4A0E94F6245A969B00C709DE /* MailingsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MailingsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,6 +123,7 @@
 		4A423D902467524500626332 /* ContactCsvReaderHeaderTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCsvReaderHeaderTest.swift; sourceTree = "<group>"; };
 		4A4A2D2C20452D9A00CB3457 /* SettingDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDTO.swift; sourceTree = "<group>"; };
 		4A4A548920D0E4C7004D4B4B /* FileAttachmentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentHandler.swift; sourceTree = "<group>"; };
+		4A4A5897246E73EC00BD7B99 /* CsvUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvUtil.swift; sourceTree = "<group>"; };
 		4A4BA9A02022EDAA00BF0594 /* MailingListContactsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailingListContactsTableViewController.swift; sourceTree = "<group>"; };
 		4A4BA9A22022F7C900BF0594 /* ContactPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTableViewController.swift; sourceTree = "<group>"; };
 		4A552D33244966AE00C68D86 /* GenericTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericTableViewController.swift; sourceTree = "<group>"; };
@@ -206,6 +210,7 @@
 		4A0E94F7245A969B00C709DE /* MailingsTests */ = {
 			isa = PBXGroup;
 			children = (
+				4A0253BB246EAA91002CC5AC /* CsvUtilTest.swift */,
 				4A423D902467524500626332 /* ContactCsvReaderHeaderTest.swift */,
 				4A0E9500245A994400C709DE /* ContactCsvReaderTest.swift */,
 				4A0E94FA245A969B00C709DE /* Info.plist */,
@@ -377,6 +382,7 @@
 				4A739016243C74CC003142E1 /* UIHelper.swift */,
 				4A552D33244966AE00C68D86 /* GenericTableViewController.swift */,
 				4A350D952463D20500941005 /* FileUtil.swift */,
+				4A4A5897246E73EC00BD7B99 /* CsvUtil.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -499,6 +505,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A0253BC246EAA91002CC5AC /* CsvUtilTest.swift in Sources */,
 				4A423D912467524500626332 /* ContactCsvReaderHeaderTest.swift in Sources */,
 				4A0E9501245A994400C709DE /* ContactCsvReaderTest.swift in Sources */,
 			);
@@ -559,6 +566,7 @@
 				4A350D962463D20500941005 /* FileUtil.swift in Sources */,
 				4A63556D203B307B00140F2B /* MailComposer.swift in Sources */,
 				4A7FF5C81FFCB2F500685105 /* MailingListMapper.swift in Sources */,
+				4A4A5898246E73EC00BD7B99 /* CsvUtil.swift in Sources */,
 				4A5C6F822036CBE800ECF1F3 /* AddressbookGroupPickerTableViewController.swift in Sources */,
 				4AD38512215CA06C003060F5 /* DataExportViewController.swift in Sources */,
 				4AB9AF101FF56CC30005EFFA /* CommonInfoViewController.swift in Sources */,
