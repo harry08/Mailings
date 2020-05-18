@@ -26,7 +26,18 @@ class FileImportPreviewTableViewController : UITableViewController {
     
     weak var delegate: FileImportPreviewTableViewControllerDelegate?
     
-    var previewContacts = [PreviewContact]()
+    var numberOfRows : Int = 0
+    
+    var previewContacts = [PreviewContact]() {
+        didSet {
+            // Initially maximum 10 rows visible
+            if previewContacts.count >= 10 {
+                numberOfRows = 10
+            } else {
+                numberOfRows = previewContacts.count
+            }
+        }
+    }
     
     var previewError = ""
     
@@ -109,14 +120,14 @@ class FileImportPreviewTableViewController : UITableViewController {
         nrOfRecordsLabel.leadingAnchor.constraint(equalTo: nrOfRecordsCell.leadingAnchor, constant: 20).isActive = true
         nrOfRecordsLabel.centerYAnchor.constraint(equalTo: nrOfRecordsCell.centerYAnchor).isActive = true
         
-        initPreviewCells()
+        initPreviewCells(startIndex: 0)
     }
     
     /**
      Maximum 4 preview cells are displayed
      */
-    private func initPreviewCells() {
-        for i in 0...3 {
+    private func initPreviewCells(startIndex: Int) {
+        for i in startIndex...numberOfRows-1 {
             let previewCell = UITableViewCell()
             previewCell.selectionStyle = .none
             
@@ -138,8 +149,19 @@ class FileImportPreviewTableViewController : UITableViewController {
         tableView.reloadData()
     }
     
-    @objc
-    func importAction() {
+    @objc func showMoreAction(_ sender: UIButton!) {
+        if numberOfRows * 2 > previewContacts.count {
+            numberOfRows = previewContacts.count
+        } else {
+            numberOfRows *= 2
+        }
+        let startIndex = self.previewCells.count
+        initPreviewCells(startIndex: startIndex)
+        
+        self.tableView.reloadData()
+    }
+    
+    @objc func importAction() {
         navigationController?.popViewController(animated:true)
         delegate?.doImport(self, contacts: self.previewContacts)
     }
@@ -188,6 +210,44 @@ class FileImportPreviewTableViewController : UITableViewController {
         }
         
         return ""
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if let section = FileImportPreviewSection(rawValue: section) {
+            if section == .preview {
+                if numberOfRows < previewContacts.count || numberOfRows > 7 {
+                    return 50
+                }
+            }
+        }
+        
+        return 0
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if let section = FileImportPreviewSection(rawValue: section) {
+            if section == .preview {
+                if numberOfRows < previewContacts.count {
+                    // More contacts available. Show button with info
+                    let button = UIButton(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
+                    button.setTitleColor(UIColor(white: 114/255, alpha: 1), for: UIControlState.normal)
+                    button.setTitle("\(numberOfRows) von \(previewContacts.count) - Mehr anzeigen", for: .normal)
+                    button.addTarget(self, action: #selector(showMoreAction), for: .touchUpInside)
+                    
+                    return button
+                } else if numberOfRows > 7 {
+                    // Show only info
+                    let label = UILabel()
+                    label.textColor = UIColor(white: 114/255, alpha: 1)
+                    label.textAlignment = .center
+                    label.text = "\(numberOfRows) Datensätze"
+                    
+                    return label
+                }
+            }
+        }
+        
+        return nil
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
